@@ -1,7 +1,8 @@
 ---
 layout: default
-home-title: H2O Theme For Jekyll
-description: 或许是最漂亮的Jekyll主题
+home-title: A PHPer's Original Content Blog
+description: 一个PHP开发人员的原创内容博客
+header-img: assets/img/hero.jpg
 ---
 
 {% include header.html %}
@@ -42,7 +43,7 @@ description: 或许是最漂亮的Jekyll主题
                             {% endfor %}
                         {% endif %}
                     </div>
-                    <time class="post-date" datetime="{{ post.date | date:"%y-%m-%d" }}">{{ post.date | date_to_string }}</time>
+                    <time class="post-date" datetime="{{ post.date | date:"%y-%m-%d" }}">{{ post.date | date:"%Y-%m-%d" }}</time>
                 </footer>
             </article>
         {% endfor %}
