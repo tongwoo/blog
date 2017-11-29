@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 'Proftpd 的安装与配置'
+title: '采用MySQL认证的Proftpd安装与配置'
 date: 2017-11-29
 author: wutong
 categories: 技术
