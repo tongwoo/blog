@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>安装PHP运行环境 - 武仝的博客</title>
+    <meta name="author"  content="武仝">
+    <meta name="description" content="安装PHP运行环境">
+    <meta name="keywords"  content="linux, php, mysql, mariadb, apahce">
+    <!-- Open Graph -->
+    <meta property="og:title" content="安装PHP运行环境 - 武仝的博客">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="http://localhost:4000/%E6%8A%80%E6%9C%AF/2016/11/22/install-php.html">
+    <meta property="og:description" content="PHP开发者，热爱技术&设计。很高兴能在这里分享我对技术的思考。">
+    <meta property="og:site_name" content="武仝的博客">
+    <link rel="stylesheet" href="//cdn.staticfile.org/normalize/6.0.0/normalize.min.css">
+    <link rel="stylesheet" href="//at.alicdn.com/t/font_roc50gemkxpw4s4i.css">
+    <link rel="stylesheet" href="/assets/css/github-markdown.css">
+    <link rel="stylesheet" href="/assets/css/prism.css">
+    <link rel="stylesheet" href="/assets/css/share.min.css">
+    <link rel="stylesheet" href="/assets/css/app.min.css">
+    <link rel="stylesheet" href="/assets/css/common.css">
+</head>
+<body>
+    <!--[if lt IE 10]>
+<div class="alert-danger" role="alert">你的浏览器实在太太太旧了，放学别走，升级完浏览器再说！<a target="_blank" class="alert-link" href="http://browsehappy.com">立即升级</a></div>
+<![endif]-->
+<input id="nm-switch" type="hidden" value="true">
+
+<header class="g-header">
+    <div class="g-logo">
+      <a href="/"></a>
+    </div>
+    <i id="menu-toggle" class="iconfont icon-menu"></i>
+    <nav class="g-nav">
+        <ul>
+            
+            <li><a href="/">首页</a></li>
+            
+            <li><a href="//wutong.me">2017之前文章</a></li>
+            
+            <li><a href="/tags.html">tags</a></li>
+            
+        </ul>
+    </nav>
+</header>
+
+
+<header class="g-banner post-header post-pattern-circuitBoard bgcolor-default post-no-cover" data-theme="default">
+    <div class="post-wrapper">
+        <div class="post-tags">
+            
+            
+            <a href="http://localhost:4000/tags#linux" class="post-tag">linux</a>
+            
+            <a href="http://localhost:4000/tags#php" class="post-tag">php</a>
+            
+            <a href="http://localhost:4000/tags#mysql" class="post-tag">mysql</a>
+            
+            <a href="http://localhost:4000/tags#mariadb" class="post-tag">mariadb</a>
+            
+            <a href="http://localhost:4000/tags#apahce" class="post-tag">apahce</a>
+            
+            
+        </div>
+        <h1>安装PHP运行环境</h1>
+        <div class="post-meta">
+            <span class="post-meta-item"><i class="iconfont icon-author"></i><a href="http://localhost:4000" target="_blank" rel="author">wutong</a></></span>
+            <time class="post-meta-item" datetime="2016-11-22"><i class="iconfont icon-date"></i>2016-11-22</time>
+        </div>
+    </div>
+    
+</header>
+
+<div class="post-content">
+    
+    <article class="markdown-body">
+        <p>经常要手动配置客户的web服务器，比较耗费时间，索性做个记录以便下次直接复制粘贴。</p>
+
+<h2 id="增加仓库">增加仓库</h2>
+
+<h3 id="centosrhel-7x">CentOS/RHEL 7.x:</h3>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>rpm <span class="nt">-Uvh</span> https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+rpm <span class="nt">-Uvh</span> https://mirror.webtatic.com/yum/el7/webtatic-release.rpm
+</code></pre></div></div>
+
+<h3 id="centosrhel-6x">CentOS/RHEL 6.x:</h3>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>rpm <span class="nt">-Uvh</span> https://dl.fedoraproject.org/pub/epel/epel-release-latest-6.noarch.rpm
+rpm <span class="nt">-Uvh</span> https://mirror.webtatic.com/yum/el6/latest.rpm
+</code></pre></div></div>
+
+<h2 id="安装php及其扩展包">安装PHP及其扩展包</h2>
+
+<h3 id="按需安装">按需安装</h3>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>yum install php71w-bcmath php71w-cli php71w-common php71w-dba php71w-devel php71w-embedded php71w-enchant php71w-fpm php71w-gd php71w-imap php71w-interbase php71w-intl php71w-ldap php71w-mbstring php71w-mcrypt php71w-mysqlnd php71w-odbc php71w-opcache php71w-pdo php71w-pdo_dblib php71w-pear php71w-pecl-apcu php71w-pecl-apcu-devel php71w-pecl-geoip php71w-pecl-igbinary php71w-pecl-igbinary-devel php71w-pecl-imagick php71w-pecl-imagick-devel php71w-pecl-memcached php71w-pecl-mongodb php71w-pecl-redis  php71w-pgsql php71w-process php71w-pspell php71w-recode php71w-snmp php71w-soap php71w-tidy php71w-xml php71w-xmlrpc
+</code></pre></div></div>
+
+<h3 id="全部安装">全部安装</h3>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>yum install <span class="nt">-y</span> php71w-bcmath php71w-cli php71w-common php71w-dba php71w-devel php71w-embedded php71w-enchant php71w-fpm php71w-gd php71w-imap php71w-interbase php71w-intl php71w-ldap php71w-mbstring php71w-mcrypt php71w-mysql php71w-mysqlnd php71w-odbc php71w-opcache php71w-pdo php71w-pdo_dblib php71w-pear php71w-pecl-apcu php71w-pecl-apcu-devel php71w-pecl-geoip php71w-pecl-igbinary php71w-pecl-igbinary-devel php71w-pecl-imagick php71w-pecl-imagick-devel php71w-pecl-memcached php71w-pecl-mongodb php71w-pecl-redis php71w-pecl-xdebug php71w-pgsql php71w-phpdbg php71w-process php71w-pspell php71w-recode php71w-snmp php71w-soap php71w-tidy php71w-xml php71w-xmlrpc
+</code></pre></div></div>
+
+<h2 id="web服务器">Web服务器</h2>
+
+<h3 id="安装apache和php模块">安装Apache和PHP模块</h3>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>yum install <span class="nt">-y</span> httpd
+yum install <span class="nt">-y</span> mod_php71w
+</code></pre></div></div>
+
+<p>修改默认的配置文件：/etc/httpd/conf/httpd.conf</p>
+
+<pre><code class="language-apacheconf">#不修改会有提示
+ServerName 127.0.0.1:80
+#根据需要配置相关参数
+DocumentRoot "/web"
+&lt;Directory "/web"&gt;    
+    AllowOverride All
+&lt;/Directory&gt;
+</code></pre>
+
+<p>进入 /etc/httpd/conf.d 目录新建一个配置文件，比如：wutong.conf</p>
+
+<p>增加一个Virtual配置段来当做虚拟主机</p>
+
+<pre><code class="language-apacheconf">&lt;VirtualHost *:80&gt;
+    #域名
+    ServerName wutong.me
+    #其他域名
+    ServerAlias blog.wutong.me
+    #网站目录
+    DocumentRoot "/web"
+    #错误日志
+    ErrorLog /tmp/error.log
+&lt;/VirtualHost&gt;
+</code></pre>
+
+<p>启动Apache</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>service httpd start
+</code></pre></div></div>
+
+<h3 id="安装nginx">安装Nginx</h3>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>yum install <span class="nt">-y</span> nginx
+</code></pre></div></div>
+
+<h3 id="配置nginx">配置Nginx</h3>
+
+<p>进入 /etc/nginx/conf.d 目录新建一个配置文件，比如：wutong.conf</p>
+
+<p>增加一个server配置段来当做虚拟主机</p>
+
+<div class="language-nginx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">server</span> <span class="p">{</span>
+    <span class="c1">#网站目录全路径
+</span>    <span class="kn">root</span> <span class="n">/web/explorer</span><span class="p">;</span>
+    <span class="c1">#默认页
+</span>    <span class="kn">index</span> <span class="s">index.html</span> <span class="s">index.php</span><span class="p">;</span>
+    <span class="c1">#监听端口
+</span>    <span class="kn">listen</span> <span class="mi">80</span><span class="p">;</span>
+    <span class="c1">#域名,多个域名用空格隔开
+</span>    <span class="kn">server_name</span> <span class="mi">140</span><span class="s">.143.145.108</span> <span class="s">www.iwoshai.com</span> <span class="s">iwoshai.com</span><span class="p">;</span>
+    <span class="c1">#错误日志路径
+</span>    <span class="kn">error_log</span> <span class="n">/web/explorer/logs/error_log</span> <span class="s">error</span><span class="p">;</span>
+    <span class="c1">#是否启用目录浏览
+</span>    <span class="kn">autoindex</span> <span class="no">on</span><span class="p">;</span>
+
+    <span class="c1">#URL重写
+</span>    <span class="kn">location</span> <span class="n">/</span> <span class="p">{</span>
+        <span class="kn">try_files</span> <span class="nv">$uri</span> <span class="nv">$uri</span><span class="n">/</span> <span class="n">/index.php</span><span class="nv">$is_args$args</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="c1">#处理PHP格式的文件
+</span>    <span class="kn">location</span> <span class="p">~</span> <span class="sr">\.php$</span> <span class="p">{</span>
+        <span class="c1">#try_files $uri=404;
+</span>        <span class="kn">include</span> <span class="n">/etc/nginx/fastcgi.conf</span><span class="p">;</span>
+        <span class="kn">fastcgi_pass</span> <span class="nf">127.0.0.1</span><span class="p">:</span><span class="mi">9000</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>启动 Nginx</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>service nginx start
+</code></pre></div></div>
+
+<p>启动 PHP-FPM</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>service php-fpm start
+</code></pre></div></div>
+
+    </article>
+    
+    <div class="social-share-wrapper">
+        <div class="social-share"></div>
+    </div>
+    
+</div>
+
+<section class="author-detail">
+    <section class="post-footer-item author-card">
+        <div class="avatar">
+            <img src="/assets/img/profile.jpg" alt="">
+        </div>
+        <div class="author-name" rel="author">武仝</div>
+        <div class="bio">
+            <p>PHP开发，热爱技术&设计，简单乐观爱创造</p>
+        </div>
+        
+        <ul class="sns-links">
+            
+            <li>
+                <a href="//weibo.com/u/3479312483" target="_blank">
+                    <i class="iconfont icon-weibo"></i>
+                </a>
+            </li>
+            
+            <li>
+                <a href="//github.com/tongwoo" target="_blank">
+                    <i class="iconfont icon-github"></i>
+                </a>
+            </li>
+            
+        </ul>
+        
+    </section>
+    <section class="post-footer-item read-next">
+        
+        <div class="read-next-item">
+            <a href="/%E6%8A%80%E6%9C%AF/2017/11/29/proftpd-config.html" class="read-next-link"></a>
+            <section>
+                <span>采用MySQL认证的Proftpd安装与配置</span>
+                <p>虽然SVN更新代码很方便，但是有的时候的情况下不得不使用FTP来上传文件，这个时候就需要一个FTP服务端来处理了，...</p>
+            </section>
+            
+        </div>
+        
+        
+        <div class="read-next-item">
+            <a href="/%E6%8A%80%E6%9C%AF/2015/11/14/install-shadowsocks.html" class="read-next-link"></a>
+            <section>
+                <span>安装Shadowsocks服务端</span>
+                <p>在不翻墙的情况下访问某些站点无法打开或者很慢，所以只能挂代理。但是，购买的代理不稳定，所以最好的方法就是自己花钱自...</p>
+            </section>
+            
+        </div>
+        
+    </section>
+    
+</section>
+
+<footer class="g-footer">
+    <section>武仝的博客 © 2017</section>
+    <section>Powered by <a href="//jekyllrb.com">Jekyll</a> | <a href="https://github.com/kaeyleo/jekyll-theme-H2O">Theme H2O</a></section>
+</footer>
+
+<script src="/assets/js/social-share.min.js"></script>
+<script>
+    socialShare('.social-share', {
+        sites: ['wechat','weibo','douban','twitter'],
+        wechatQrcodeTitle: "分享到微信朋友圈",
+        wechatQrcodeHelper: '<p>扫码后点击右上角</p><p>将本文分享至朋友圈</p>'
+    });
+</script>
+<script>
+/**
+*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+/*
+var disqus_config = function () {
+this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+*/
+(function() { // DON'T EDIT BELOW THIS LINE
+//var d = document, s = d.createElement('script');
+/*写入自己的disqus信息*/
+//s.src = 'https://liaokeyu.disqus.com/embed.js';
+//s.setAttribute('data-timestamp', +new Date());
+//(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<script src="https://cdn.staticfile.org/jquery/3.2.1/jquery.min.js"></script>
+<script src="/assets/js/prism.js"></script>
+<script src="/assets/js/index.min.js"></script>
+</body>
+</html>
