@@ -6,7 +6,7 @@
     <title>采用MySQL认证的Proftpd安装与配置 - 武仝的博客</title>
     <meta name="author"  content="武仝">
     <meta name="description" content="采用MySQL认证的Proftpd安装与配置">
-    <meta name="keywords"  content="jekyll">
+    <meta name="keywords"  content="proftpd, mysql">
     <!-- Open Graph -->
     <meta property="og:title" content="采用MySQL认证的Proftpd安装与配置 - 武仝的博客">
     <meta property="og:type" content="website">
@@ -51,7 +51,9 @@
         <div class="post-tags">
             
             
-            <a href="https://blog.wutong.me/tags#jekyll" class="post-tag">jekyll</a>
+            <a href="https://blog.wutong.me/tags#proftpd" class="post-tag">proftpd</a>
+            
+            <a href="https://blog.wutong.me/tags#mysql" class="post-tag">mysql</a>
             
             
         </div>
@@ -67,7 +69,10 @@
 <div class="post-content">
     
     <article class="markdown-body">
-        <h2 id="环境">环境</h2>
+        <p>虽然SVN更新代码很方便，但是有的时候的情况下不得不使用FTP来上传文件，这个时候就需要一个FTP服务端来处理了，
+本篇文章即是达到这个目的。</p>
+
+<h2 id="环境">环境</h2>
 
 <p>CentOS 6，其他差不多</p>
 
@@ -324,6 +329,23 @@ Group      apache
 
 <p>注意：路径必须为FTP客户端呈现的路径而不是系统上的路径</p>
 
+<h2 id="常见问题">常见问题</h2>
+
+<h3 id="1设置的-directory-路径参数不生效">1、设置的 Directory 路径参数不生效</h3>
+
+<p>路径必须为FTP客户端呈现的路径而不是系统上的路径</p>
+
+<h3 id="2设置的链接目录看不见">2、设置的链接目录看不见</h3>
+
+<p>FTP用户没有这个目录的权限</p>
+
+<h3 id="3无法连接到ftp服务器">3、无法连接到FTP服务器</h3>
+
+<p>检查服务器21端口是否在防火墙的入站白名单</p>
+
+<h3 id="4用mac系统的ftp客户端能连接管理文件但windows下的ftp客户端不行">4、用Mac系统的FTP客户端能连接管理文件，但Windows下的FTP客户端不行</h3>
+
+<p>粗暴方法：关闭服务端的防火墙</p>
 
     </article>
     

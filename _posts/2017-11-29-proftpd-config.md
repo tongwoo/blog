@@ -4,8 +4,11 @@ title: '采用MySQL认证的Proftpd安装与配置'
 date: 2017-11-29
 author: wutong
 categories: 技术
-tags: jekyll
+tags:  proftpd mysql
 ---
+
+虽然SVN更新代码很方便，但是有的时候的情况下不得不使用FTP来上传文件，这个时候就需要一个FTP服务端来处理了，
+本篇文章即是达到这个目的。
 
 ## 环境
 
@@ -198,3 +201,20 @@ ln -s /var/www/html/system /ftpfolder/测试系统
 注意：路径必须为FTP客户端呈现的路径而不是系统上的路径
 
 
+## 常见问题
+
+### 1、设置的 Directory 路径参数不生效
+ 
+ 路径必须为FTP客户端呈现的路径而不是系统上的路径
+ 
+### 2、设置的链接目录看不见
+
+ FTP用户没有这个目录的权限
+ 
+### 3、无法连接到FTP服务器
+
+ 检查服务器21端口是否在防火墙的入站白名单
+ 
+### 4、用Mac系统的FTP客户端能连接管理文件，但Windows下的FTP客户端不行
+
+ 粗暴方法：关闭服务端的防火墙
