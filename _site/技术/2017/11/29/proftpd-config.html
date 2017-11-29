@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Proftpd 的安装与配置 - 武仝的博客</title>
+    <meta name="author"  content="武仝">
+    <meta name="description" content="Proftpd 的安装与配置">
+    <meta name="keywords"  content="jekyll">
+    <!-- Open Graph -->
+    <meta property="og:title" content="Proftpd 的安装与配置 - 武仝的博客">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="http://localhost:4000/%E6%8A%80%E6%9C%AF/2017/11/29/proftpd-config.html">
+    <meta property="og:description" content="昵称悟空，千禧一代，前端开发者/伪极客/灵魂摄影师，热爱技术&设计。很高兴能在这里与你分享我对技术和生活的思考。">
+    <meta property="og:site_name" content="武仝的博客">
+    <link rel="stylesheet" href="//cdn.staticfile.org/normalize/6.0.0/normalize.min.css">
+    <link rel="stylesheet" href="//at.alicdn.com/t/font_roc50gemkxpw4s4i.css">
+    <link rel="stylesheet" href="/assets/css/github-markdown.css">
+    <link rel="stylesheet" href="/assets/css/prism.css">
+    <link rel="stylesheet" href="/assets/css/share.min.css">
+    <link rel="stylesheet" href="/assets/css/app.min.css">
+    <link rel="stylesheet" href="/assets/css/common.css">
+</head>
+<body>
+    <!--[if lt IE 10]>
+<div class="alert-danger" role="alert">你的浏览器实在太太太旧了，放学别走，升级完浏览器再说！<a target="_blank" class="alert-link" href="http://browsehappy.com">立即升级</a></div>
+<![endif]-->
+<input id="nm-switch" type="hidden" value="true">
+
+<header class="g-header">
+    <div class="g-logo">
+      <a href="/"></a>
+    </div>
+    <i id="menu-toggle" class="iconfont icon-menu"></i>
+    <nav class="g-nav">
+        <ul>
+            
+            <li><a href="/">首页</a></li>
+            
+            <li><a href="//wutong.me">旧版博客</a></li>
+            
+            <li><a href="/tags.html">tags</a></li>
+            
+        </ul>
+    </nav>
+</header>
+
+
+<header class="g-banner post-header post-pattern-circuitBoard bgcolor-default post-no-cover" data-theme="default">
+    <div class="post-wrapper">
+        <div class="post-tags">
+            
+            
+            <a href="http://localhost:4000/tags#jekyll" class="post-tag">jekyll</a>
+            
+            
+        </div>
+        <h1>Proftpd 的安装与配置</h1>
+        <div class="post-meta">
+            <span class="post-meta-item"><i class="iconfont icon-author"></i><a href="http://localhost:4000" target="_blank" rel="author">wutong</a></></span>
+            <time class="post-meta-item" datetime="17-11-29"><i class="iconfont icon-date"></i>29 Nov 2017</time>
+        </div>
+    </div>
+    
+</header>
+
+<div class="post-content">
+    
+    <article class="markdown-body">
+        <h2 id="环境">环境</h2>
+
+<p>CentOS 6，其他差不多</p>
+
+<h2 id="安装">安装</h2>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>yum install proftpd proftpd-mysql
+</code></pre></div></div>
+
+<h2 id="配置">配置</h2>
+
+<h4 id="配置文件">配置文件</h4>
+
+<p>安装后的配置文件路径：/etc/proftpd.conf</p>
+
+<p>打开配置文件，注释掉如下2行不启用</p>
+
+<pre><code class="language-apacheconf">AuthPAMConfig       proftpd
+AuthOrder           mod_auth_pam.c* mod_auth_unix.c
+</code></pre>
+
+<p>再取消如下几行的注释并启用</p>
+
+<pre><code class="language-apacheconf">LoadModule mod_sql.c
+LoadModule mod_sql_passwd.c
+LoadModule mod_sql_mysql.c
+</code></pre>
+
+<p>增加MYSQL的认证授权方式</p>
+
+<pre><code class="language-apacheconf">#检查用户或者用户组
+SQLAuthenticate users groups
+#类型为明文密码
+SQLAuthTypes Plaintext
+#数据库为MYSQL
+SQLBackend mysql
+#FTP连接成功后的默认目录（如果数据库里没填的话）
+SQLDefaultHomedir /ftpfolder
+#MYSQL数据库连接信息,格式：数据库名@主机地址:端口号 用户名 密码
+SQLConnectInfo ftp@127.0.0.1:3306 ftpuser ftpuser
+#SQL日志
+SQLLogFile /var/log/proftpd/sql.log
+#最小的UID,GID，这个到时候是和系统的用户进行对应的，我这里
+#用户的是apache，因为我要直接管理web站点
+SQLMinID 40
+</code></pre>
+
+<p>增加日志记录</p>
+
+<pre><code class="language-apacheconf">ExtendedLog /var/log/proftpd/ftp.log ALL
+SystemLog /var/log/proftpd/sys.log
+ServerLog /var/log/proftpd/server.log
+</code></pre>
+
+<p>增加虚拟目录的符号链接的支持</p>
+
+<pre><code class="language-apacheconf">VRootOptions allowSymlinks
+</code></pre>
+
+<p>我这里想直接管理web目录，所以最好的方式是使用apache用户和apache的组，输入如下命令查看apache的用户、组的UID、GID得知分别是48、48，记录下来备用</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@wz html]# <span class="nb">cat</span> /etc/passwd | <span class="nb">grep </span>apache
+apache:x:48:48:Apache:/var/www:/sbin/nologin
+<span class="o">[</span>root@wz html]# <span class="nb">cat</span> /etc/group | <span class="nb">grep </span>apache
+apache:x:48:
+</code></pre></div></div>
+
+<p>将配置文件的User和Group分别改成apache</p>
+
+<pre><code class="language-apacheconf">User       apache
+Group      apache
+</code></pre>
+
+<h4 id="数据库配置">数据库配置</h4>
+
+<p>运行如下的SQL语句建立 users、groups 表，注意：users没加uid的唯一索引，意味着不同的用户可以使用同样的uid，即同样的apache用户</p>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">CREATE</span> <span class="k">TABLE</span> <span class="nv">`users`</span> <span class="p">(</span>
+  <span class="nv">`userid`</span> <span class="n">varchar</span><span class="p">(</span><span class="mi">30</span><span class="p">)</span> <span class="k">NOT</span> <span class="k">NULL</span><span class="p">,</span>
+  <span class="nv">`passwd`</span> <span class="n">varchar</span><span class="p">(</span><span class="mi">80</span><span class="p">)</span> <span class="k">NOT</span> <span class="k">NULL</span><span class="p">,</span>
+  <span class="nv">`uid`</span> <span class="n">int</span><span class="p">(</span><span class="mi">11</span><span class="p">)</span> <span class="k">DEFAULT</span> <span class="k">NULL</span><span class="p">,</span>
+  <span class="nv">`gid`</span> <span class="n">int</span><span class="p">(</span><span class="mi">11</span><span class="p">)</span> <span class="k">DEFAULT</span> <span class="k">NULL</span><span class="p">,</span>
+  <span class="nv">`homedir`</span> <span class="n">varchar</span><span class="p">(</span><span class="mi">255</span><span class="p">)</span> <span class="k">DEFAULT</span> <span class="k">NULL</span><span class="p">,</span>
+  <span class="nv">`shell`</span> <span class="n">varchar</span><span class="p">(</span><span class="mi">255</span><span class="p">)</span> <span class="k">DEFAULT</span> <span class="k">NULL</span><span class="p">,</span>
+  <span class="k">UNIQUE</span> <span class="k">KEY</span> <span class="nv">`userid`</span> <span class="p">(</span><span class="nv">`userid`</span><span class="p">),</span>
+  <span class="k">KEY</span> <span class="nv">`users_userid_idx`</span> <span class="p">(</span><span class="nv">`userid`</span><span class="p">)</span>
+<span class="p">)</span> <span class="n">ENGINE</span><span class="o">=</span><span class="n">InnoDB</span> <span class="k">DEFAULT</span> <span class="n">CHARSET</span><span class="o">=</span><span class="n">utf8</span><span class="p">;</span>
+</code></pre></div></div>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">CREATE</span> <span class="k">TABLE</span> <span class="nv">`groups`</span> <span class="p">(</span>
+  <span class="nv">`groupname`</span> <span class="n">varchar</span><span class="p">(</span><span class="mi">30</span><span class="p">)</span> <span class="k">NOT</span> <span class="k">NULL</span><span class="p">,</span>
+  <span class="nv">`gid`</span> <span class="n">int</span><span class="p">(</span><span class="mi">11</span><span class="p">)</span> <span class="k">NOT</span> <span class="k">NULL</span><span class="p">,</span>
+  <span class="nv">`members`</span> <span class="n">varchar</span><span class="p">(</span><span class="mi">255</span><span class="p">)</span> <span class="k">DEFAULT</span> <span class="k">NULL</span><span class="p">,</span>
+  <span class="k">KEY</span> <span class="nv">`groups_gid_idx`</span> <span class="p">(</span><span class="nv">`gid`</span><span class="p">)</span>
+<span class="p">)</span> <span class="n">ENGINE</span><span class="o">=</span><span class="n">InnoDB</span> <span class="k">DEFAULT</span> <span class="n">CHARSET</span><span class="o">=</span><span class="n">utf8</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p>增加个一个测试用户试试</p>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">INSERT</span> <span class="k">INTO</span> <span class="n">users</span><span class="p">(</span><span class="n">userid</span><span class="p">,</span><span class="n">passwd</span><span class="p">,</span><span class="n">uid</span><span class="p">,</span><span class="n">gid</span><span class="p">)</span><span class="k">VALUES</span><span class="p">(</span><span class="nv">"xiaowu"</span><span class="p">,</span><span class="nv">"mima"</span><span class="p">,</span><span class="mi">48</span><span class="p">,</span><span class="mi">48</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>使用FTP客户端连接测试成功，如果登录失败请查看 /var/log/proftpd/server.log 日志的提示</p>
+
+<h2 id="增加虚拟目录的支持">增加虚拟目录的支持</h2>
+
+<p>我这里的实现方式是创建一个软连接，比如我想把 /var/www/html/system 映射到我的FTP根目录，则执行如下命令</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ln <span class="nt">-s</span> /var/www/html/system /ftpfolder/测试系统
+</code></pre></div></div>
+
+<p>这个时候在FTP客户端里即可看到“测试系统”的一个文件夹，如果没有显示则是当前用户没有这个文件夹的权限</p>
+
+<h2 id="目录权限">目录权限</h2>
+
+<p>增加如下配置端可实现不用用户、组的控制权限</p>
+
+<pre><code class="language-apacheconf">&lt;Directory "/目录全路径"&gt;
+    &lt;Limit ALL&gt;
+        AllowGroup OR 用户组,用户组2
+        DenyAll
+    &lt;/Limit&gt;
+&lt;/Directory&gt;
+</code></pre>
+
+<p>比如想让 /web 只有 phper 用户组才有写入的权限：</p>
+
+<pre><code class="language-apacheconf">&lt;Directory "/web"&gt;
+    &lt;Limit WRITE&gt;
+        AllowGroup phper
+        DenyAll
+    &lt;/Limit&gt;
+&lt;/Directory&gt;
+</code></pre>
+<p>这个时候 groups、users 表的数据为：</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>groupname</th>
+      <th>gid</th>
+      <th>members</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>phper</td>
+      <td>1000</td>
+      <td>tony,alice</td>
+    </tr>
+  </tbody>
+</table>
+
+<table>
+  <thead>
+    <tr>
+      <th>userid</th>
+      <th>passwd</th>
+      <th>uid</th>
+      <th>gid</th>
+      <th>homedir</th>
+      <th>shell</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>tony</td>
+      <td>tony</td>
+      <td>1000</td>
+      <td>1000</td>
+      <td>null</td>
+      <td>null</td>
+    </tr>
+    <tr>
+      <td>alice</td>
+      <td>alice</td>
+      <td>1000</td>
+      <td>1000</td>
+      <td>null</td>
+      <td>null</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>比如想让 /web 只有 phper或者javaer 用户组才有写入的权限：</p>
+
+<pre><code class="language-apacheconf">&lt;Directory "/web"&gt;
+    &lt;Limit WRITE&gt;
+        AllowGroup OR phper,javaer
+        DenyAll
+    &lt;/Limit&gt;
+&lt;/Directory&gt;
+</code></pre>
+<p>这个时候 groups、users 表的数据为：</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>groupname</th>
+      <th>gid</th>
+      <th>members</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>phper</td>
+      <td>1000</td>
+      <td>tony,alice</td>
+    </tr>
+    <tr>
+      <td>javaer</td>
+      <td>1000</td>
+      <td>tony,mei</td>
+    </tr>
+  </tbody>
+</table>
+
+<table>
+  <thead>
+    <tr>
+      <th>userid</th>
+      <th>passwd</th>
+      <th>uid</th>
+      <th>gid</th>
+      <th>homedir</th>
+      <th>shell</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>tony</td>
+      <td>tony</td>
+      <td>1000</td>
+      <td>1000</td>
+      <td>null</td>
+      <td>null</td>
+    </tr>
+    <tr>
+      <td>alice</td>
+      <td>alice</td>
+      <td>1000</td>
+      <td>1000</td>
+      <td>null</td>
+      <td>null</td>
+    </tr>
+    <tr>
+      <td>mei</td>
+      <td>mei</td>
+      <td>1000</td>
+      <td>1000</td>
+      <td>null</td>
+      <td>null</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>注意：路径必须为FTP客户端呈现的路径而不是系统上的路径</p>
+
+
+    </article>
+    
+    <div class="social-share-wrapper">
+        <div class="social-share"></div>
+    </div>
+    
+</div>
+
+<section class="author-detail">
+    <section class="post-footer-item author-card">
+        <div class="avatar">
+            <img src="http://localhost:4000/assets/img/profile.png" alt="">
+        </div>
+        <div class="author-name" rel="author">武仝</div>
+        <div class="bio">
+            <p>PHP开发，热爱技术&设计，简单乐观爱创造</p>
+        </div>
+        
+        <ul class="sns-links">
+            
+            <li>
+                <a href="//weibo.com/lovecolcol" target="_blank">
+                    <i class="iconfont icon-weibo"></i>
+                </a>
+            </li>
+            
+            <li>
+                <a href="//juejin.im/user/57a6f434165abd006159b4cc" target="_blank">
+                    <i class="iconfont icon-juejin"></i>
+                </a>
+            </li>
+            
+            <li>
+                <a href="//www.instagram.com/steveliaocn" target="_blank">
+                    <i class="iconfont icon-instagram"></i>
+                </a>
+            </li>
+            
+            <li>
+                <a href="//github.com/kaeyleo" target="_blank">
+                    <i class="iconfont icon-github"></i>
+                </a>
+            </li>
+            
+        </ul>
+        
+    </section>
+    <section class="post-footer-item read-next">
+        
+        
+        <div class="read-next-item">
+            <a href="/%E6%8A%80%E6%9C%AF/2017/04/18/new-theme-h2o.html" class="read-next-link"></a>
+            <section>
+                <span>H2O theme for Jekyll</span>
+                <p>正如我在微博上所说的，使用Jekyll半年以来一直没有令我满意的主题模板，所以开始计划自己写一套好看又好用的主题模...</p>
+            </section>
+            
+            <div class="filter"></div>
+            <img src="http://on2171g4d.bkt.clouddn.com/jekyll-theme-h2o-postcover.jpg" alt="">
+            
+        </div>
+        
+    </section>
+    
+</section>
+
+<footer class="g-footer">
+    <section>武仝的博客 © 2017</section>
+    <section>Powered by <a href="//jekyllrb.com">Jekyll</a> | <a href="https://github.com/kaeyleo/jekyll-theme-H2O">Theme H2O</a></section>
+</footer>
+
+<script src="/assets/js/social-share.min.js"></script>
+<script>
+    socialShare('.social-share', {
+        sites: ['wechat','weibo','douban','twitter'],
+        wechatQrcodeTitle: "分享到微信朋友圈",
+        wechatQrcodeHelper: '<p>扫码后点击右上角</p><p>将本文分享至朋友圈</p>'
+    });
+</script>
+<script>
+/**
+*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+/*
+var disqus_config = function () {
+this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+*/
+(function() { // DON'T EDIT BELOW THIS LINE
+//var d = document, s = d.createElement('script');
+/*写入自己的disqus信息*/
+//s.src = 'https://liaokeyu.disqus.com/embed.js';
+//s.setAttribute('data-timestamp', +new Date());
+//(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<script src="https://cdn.staticfile.org/jquery/3.2.1/jquery.min.js"></script>
+<script src="/assets/js/prism.js"></script>
+<script src="/assets/js/index.min.js"></script>
+</body>
+</html>
