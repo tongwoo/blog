@@ -3,7 +3,6 @@ layout: post
 title: '安装PHP运行环境'
 date: 2016-11-22
 author: wutong
-categories: 技术
 tags:  linux php mysql mariadb apahce
 cover: '/assets/img/hero.jpg'
 ---

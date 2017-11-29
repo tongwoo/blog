@@ -25,3 +25,10 @@ table thead tr th {
 .article-list .article-item .post-preview .post-excerpt {
     font-family: -apple-system, Verdana, "PingFang SC", "Helvetica Neue", Arial, "Hiragino Sans GB", "Microsoft YaHei", "WenQuanYi Micro Hei", sans-serif;
 }
+
+.post-forward-message{
+    font-size: 12px;
+    margin: 0 auto;
+    padding-bottom: 10px;
+    color: #aaa;
+}

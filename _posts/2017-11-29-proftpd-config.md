@@ -3,7 +3,6 @@ layout: post
 title: '采用MySQL认证的Proftpd安装与配置'
 date: 2017-11-29
 author: wutong
-categories: 技术
 tags:  proftpd mysql
 ---
 

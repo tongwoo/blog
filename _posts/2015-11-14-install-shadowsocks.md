@@ -3,7 +3,6 @@ layout: post
 title: '安装Shadowsocks服务端'
 date: 2015-11-14
 author: wutong
-categories: 技术
 tags:  linux shadowsocks
 ---
 

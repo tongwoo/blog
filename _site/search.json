@@ -3,19 +3,19 @@
     {
       "title"    : "采用MySQL认证的Proftpd安装与配置",
       "tags"     : "proftpd mysql",
-      "url"      : "/%E6%8A%80%E6%9C%AF/2017/11/29/proftpd-config.html"
+      "url"      : "/2017/11/29/proftpd-config.html"
     } ,
   
     {
       "title"    : "安装PHP运行环境",
       "tags"     : "linux php mysql mariadb apahce",
-      "url"      : "/%E6%8A%80%E6%9C%AF/2016/11/22/install-php.html"
+      "url"      : "/2016/11/22/install-php.html"
     } ,
   
     {
       "title"    : "安装Shadowsocks服务端",
       "tags"     : "linux shadowsocks",
-      "url"      : "/%E6%8A%80%E6%9C%AF/2015/11/14/install-shadowsocks.html"
+      "url"      : "/2015/11/14/install-shadowsocks.html"
     } 
   
 ]
