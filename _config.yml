@@ -2,7 +2,7 @@
 title: '武仝的博客'
 description: 'PHP开发者，热爱技术&设计。很高兴能在这里分享我对技术的思考。'
 keyword: '武仝, 武仝的独立博客, 武仝的博客, PHP, PHP开发, PHP开发博客, Yii, Yii2'
-url: 'https://blog.wutong.me' # your host
+rooturl: 'https://blog.wutong.me' # your host
 
 # if you don't need baseurl, you should leave this value blank.
 baseurl: ''
