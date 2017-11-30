@@ -106,7 +106,7 @@ server {
     #监听端口
     listen 80;
     #域名,多个域名用空格隔开
-    server_name 140.143.145.108 www.iwoshai.com iwoshai.com;
+    server_name 140.143.45.28 www.shai.com shai.com;
     #错误日志路径
     error_log /web/explorer/logs/error_log error;
     #是否启用目录浏览

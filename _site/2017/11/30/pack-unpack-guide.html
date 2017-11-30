@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>pack/unpack详解 - 武仝的博客</title>
+    <meta name="author"  content="武仝">
+    <meta name="description" content="pack/unpack详解">
+    <meta name="keywords"  content="php">
+    <!-- Open Graph -->
+    <meta property="og:title" content="pack/unpack详解 - 武仝的博客">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="http://localhost:4000/2017/11/30/pack-unpack-guide.html">
+    <meta property="og:description" content="PHP开发者，热爱技术&设计。很高兴能在这里分享我对技术的思考。">
+    <meta property="og:site_name" content="武仝的博客">
+    <link rel="stylesheet" href="//cdn.staticfile.org/normalize/6.0.0/normalize.min.css">
+    <link rel="stylesheet" href="//at.alicdn.com/t/font_roc50gemkxpw4s4i.css">
+    <link rel="stylesheet" href="/assets/css/github-markdown.css">
+    <link rel="stylesheet" href="/assets/css/prism.css">
+    <link rel="stylesheet" href="/assets/css/share.min.css">
+    <link rel="stylesheet" href="/assets/css/app.min.css">
+    <link rel="stylesheet" href="/assets/css/common.css">
+</head>
+<body>
+    <!--[if lt IE 10]>
+<div class="alert-danger" role="alert">你的浏览器实在太太太旧了，放学别走，升级完浏览器再说！<a target="_blank" class="alert-link" href="http://browsehappy.com">立即升级</a></div>
+<![endif]-->
+<input id="nm-switch" type="hidden" value="false">
+
+<header class="g-header">
+    <div class="g-logo">
+      <a href="/"></a>
+    </div>
+    <i id="menu-toggle" class="iconfont icon-menu"></i>
+    <nav class="g-nav">
+        <ul>
+            
+            <li><a href="/">首页</a></li>
+            
+            <li><a href="//wutong.me">2017之前文章</a></li>
+            
+            <li><a href="/tags.html">tags</a></li>
+            
+        </ul>
+    </nav>
+</header>
+
+
+<header class="g-banner post-header post-pattern-circuitBoard bgcolor-default post-no-cover" data-theme="default">
+    <div class="post-wrapper">
+        <div class="post-tags">
+            
+            
+            <a href="http://localhost:4000/tags#php" class="post-tag">php</a>
+            
+            
+        </div>
+        <h1>pack/unpack详解</h1>
+        <div class="post-meta">
+            <span class="post-meta-item"><i class="iconfont icon-author"></i><a href="http://localhost:4000" target="_blank" rel="author">wutong</a></></span>
+            <time class="post-meta-item" datetime="2017-11-30"><i class="iconfont icon-date"></i>2017-11-30</time>
+        </div>
+    </div>
+    
+</header>
+
+<div class="post-content">
+    
+    <article class="markdown-body">
+        <div class="post-forward-message">本文章地址：http://localhost:4000/2017/11/30/pack-unpack-guide.html 转载请注明出处</div>
+        <h2 id="pack函数的用途">pack函数的用途</h2>
+
+<blockquote>
+  <p>Pack data into binary string</p>
+</blockquote>
+
+<p>官方文档的描述是“将数据放入到二进制字符串中”。</p>
+
+<p>一般人听起来犯迷糊，套用本人的描述就是：<strong>将每种不同类型的数据（字符串、数字等）转换成二进制字符串并串接在一起</strong>。</p>
+
+<h2 id="unpack函数的用途">unpack函数的用途</h2>
+
+<blockquote>
+  <p>Unpack data from binary string
+array unpack ( string $format , string $data )</p>
+</blockquote>
+
+<p>代表从一个二进制数据中解包，其 $format 参数跟 pack函数的$format参数一样</p>
+
+<h2 id="pack函数的参数">pack函数的参数</h2>
+
+<blockquote>
+  <p>string pack ( string $format [, mixed $args [, mixed $… ]] )</p>
+</blockquote>
+
+<h4 id="format">$format</h4>
+<p>$format 的参数代表了以何种方式将对应的 $args 的参数值转换成二进制字符串。</p>
+
+<p><em>请注意上面的 “对应” 文字，每个 $format 代码都有对应的 $args 参数，按顺序对应</em></p>
+
+<p>根据文档的描述，在 $format 使用诸如 “a,A,h,H” 代码的时候，后面可以加一个长度，这个长度代表了对对应的 $args 参数的前多少字节来进行转换，如果长度为2，则对 $args 参数前2个字节进行转换，后面忽略。如果长度为”*“，则对对应的 $args 参数所有字节进行转换</p>
+
+<p><strong>$format 有如下参数：</strong></p>
+
+<table>
+  <thead>
+    <tr>
+      <th>代码</th>
+      <th>描述</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>a</td>
+      <td>NUL-padded string</td>
+    </tr>
+    <tr>
+      <td>A</td>
+      <td>SPACE-padded string</td>
+    </tr>
+    <tr>
+      <td>h</td>
+      <td>Hex string, low nibble first</td>
+    </tr>
+    <tr>
+      <td>H</td>
+      <td>Hex string, high nibble first</td>
+    </tr>
+    <tr>
+      <td>c</td>
+      <td>signed char</td>
+    </tr>
+    <tr>
+      <td>C</td>
+      <td>unsigned char</td>
+    </tr>
+    <tr>
+      <td>s</td>
+      <td>signed short (always 16 bit, machine byte order)</td>
+    </tr>
+    <tr>
+      <td>S</td>
+      <td>unsigned short (always 16 bit, machine byte order)</td>
+    </tr>
+    <tr>
+      <td>n</td>
+      <td>unsigned short (always 16 bit, big endian byte order)</td>
+    </tr>
+    <tr>
+      <td>v</td>
+      <td>unsigned short (always 16 bit, little endian byte order)</td>
+    </tr>
+    <tr>
+      <td>i</td>
+      <td>signed integer (machine dependent size and byte order)</td>
+    </tr>
+    <tr>
+      <td>I</td>
+      <td>unsigned integer (machine dependent size and byte order)</td>
+    </tr>
+    <tr>
+      <td>l</td>
+      <td>signed long (always 32 bit, machine byte order)</td>
+    </tr>
+    <tr>
+      <td>L</td>
+      <td>unsigned long (always 32 bit, machine byte order)</td>
+    </tr>
+    <tr>
+      <td>N</td>
+      <td>unsigned long (always 32 bit, big endian byte order)</td>
+    </tr>
+    <tr>
+      <td>V</td>
+      <td>unsigned long (always 32 bit, little endian byte order)</td>
+    </tr>
+    <tr>
+      <td>q</td>
+      <td>signed long long (always 64 bit, machine byte order)</td>
+    </tr>
+    <tr>
+      <td>Q</td>
+      <td>unsigned long long (always 64 bit, machine byte order)</td>
+    </tr>
+    <tr>
+      <td>J</td>
+      <td>unsigned long long (always 64 bit, big endian byte order)</td>
+    </tr>
+    <tr>
+      <td>P</td>
+      <td>unsigned long long (always 64 bit, little endian byte order)</td>
+    </tr>
+    <tr>
+      <td>f</td>
+      <td>float (machine dependent size and representation)</td>
+    </tr>
+    <tr>
+      <td>g</td>
+      <td>float (machine dependent size, little endian byte order)</td>
+    </tr>
+    <tr>
+      <td>G</td>
+      <td>float (machine dependent size, big endian byte order)</td>
+    </tr>
+    <tr>
+      <td>d</td>
+      <td>double (machine dependent size and representation)</td>
+    </tr>
+    <tr>
+      <td>e</td>
+      <td>double (machine dependent size, little endian byte order)</td>
+    </tr>
+    <tr>
+      <td>E</td>
+      <td>double (machine dependent size, big endian byte order)</td>
+    </tr>
+    <tr>
+      <td>x</td>
+      <td>NUL byte</td>
+    </tr>
+    <tr>
+      <td>X</td>
+      <td>Back up one byte</td>
+    </tr>
+    <tr>
+      <td>Z</td>
+      <td>NUL-padded string (new in PHP 5.5)</td>
+    </tr>
+    <tr>
+      <td>@</td>
+      <td>NUL-fill to absolute position</td>
+    </tr>
+  </tbody>
+</table>
+
+<h4 id="args">$args</h4>
+
+<p>这是一个不限制数量的参数列表，每个参数都要被转换成二进制字符串，可以使用不同类型的数据，如：字符串、数字</p>
+
+<h2 id="pack函数的用法">pack函数的用法</h2>
+
+<p>$format 的参数代码不同，转换出来的数据也不同，所以这里我依次讲解不同的 $format 参数代码如何使用。</p>
+
+<h4 id="代码a">代码：”a”</h4>
+
+<p>官方的说明是：</p>
+
+<blockquote>
+  <p>NUL-padded string</p>
+</blockquote>
+
+<p>简单的来说就是将 $args 当做字符来转换（可以对照ASCII表），那为什么描述上说是 “用NUL来填充“？后面会讲到的。</p>
+
+<p><strong>为了方便，后面出现的转换结果都用16进制来表示，请知悉</strong>。</p>
+
+<p>常规转换：</p>
+
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">pack</span><span class="p">(</span><span class="s2">"a"</span><span class="p">,</span><span class="s2">"w"</span><span class="p">);</span>
+<span class="c1">// 将 "w" 这个字符转换成二进制字符串，直接对照ASCII码表就晓得了
+// 对应的二进制字符串的16进制就是：0x77
+</span></code></pre></div></div>
+
+<p>带长度的转换：</p>
+
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">pack</span><span class="p">(</span><span class="s2">"a3"</span><span class="p">,</span><span class="s2">"abcde"</span><span class="p">);</span>
+<span class="c1">// 根据文档说明，我们知道只要转换 "abcde" 的前3个字节
+// 对照ASCII表得知其转换结果是：0x61 0x62 0x63
+</span></code></pre></div></div>
+
+<p>带长度但是参数值字节长度不够的转换：</p>
+
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">pack</span><span class="p">(</span><span class="s2">"a8"</span><span class="p">,</span><span class="s2">"abcde"</span><span class="p">);</span>
+<span class="c1">// 根据文档说明，我们要把 "abcde" 字符串来当做8个字节来转换
+// 但是参数值的长度不够怎么办，根据文档说明
+// PHP会把不够的字节转换成NUL(解答了上面的疑问)
+// 所以对照ASCII表得知其最终转换结果是：
+// 0x61 0x62 0x63 0x64 0x65 0x00 0x00 0x00 
+</span></code></pre></div></div>
+
+<p>参数不是字符而是数值型的转换：</p>
+
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">pack</span><span class="p">(</span><span class="s1">'a'</span><span class="p">,</span><span class="mi">61</span><span class="p">);</span>
+<span class="c1">// 对于10进制的参数而言，直接当做字符处理，即：pack('a',"61");
+// 对不是10进制的参数要先转换成10进制
+// 转换1个字节，所以ASCII字符6的转换后的结果就是：0x36
+</span>
+<span class="nb">pack</span><span class="p">(</span><span class="s1">'a'</span><span class="p">,</span><span class="mh">0x61</span><span class="p">);</span>
+<span class="c1">// 即：pack('a','97');
+// 结果： 0x39
+</span></code></pre></div></div>
+
+<h4 id="代码a-1">代码：”A”</h4>
+
+<p>跟 “a” 代码的区别就是，参数值长度不够的话则以空格代替。</p>
+
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">pack</span><span class="p">(</span><span class="s2">"A8"</span><span class="p">,</span><span class="s2">"abcde"</span><span class="p">);</span>
+<span class="c1">// 结果：0x61 0x62 0x63 0x64 0x65 0x20 0x20 0x20 
+</span></code></pre></div></div>
+
+<h4 id="代码h">代码：”h”</h4>
+
+<p>官方文档说明：</p>
+
+<blockquote>
+  <p>Hex string, low nibble first</p>
+</blockquote>
+
+<p>16进制字符串，低半字节在前。</p>
+
+<p>就是说当做一个16进制符串来处理，我们知道1个字节用16进制来表示的话就是2个16进制字符，如：A3。低半字节在前的意思就是说这个16进制的后4位在前。</p>
+
+<p>常规转换：</p>
+
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">pack</span><span class="p">(</span><span class="s2">"h2"</span><span class="p">,</span><span class="s2">"A3"</span><span class="p">);</span>
+<span class="c1">// 读取2个字节当做16进制处理，A是高位，3是低位
+// 转换要求是，低位在前，所以结果就是：0x3A
+</span>
+<span class="nb">pack</span><span class="p">(</span><span class="s2">"h"</span><span class="p">,</span><span class="s2">"A3"</span><span class="p">);</span>
+<span class="c1">// 读取一个字节当做16进制，不满1个字节后面补0（很奇怪为什么不是前面补0）
+// 或者可以理解为不满一个字节则不转换
+// A是高位，0是低位，低位在前，结果：0x0A
+</span>
+<span class="nb">pack</span><span class="p">(</span><span class="s2">"h3"</span><span class="p">,</span><span class="s2">"A3B"</span><span class="p">);</span>
+<span class="c1">// 结果：0x3A 0x0B
+</span></code></pre></div></div>
+
+<p>数值型转换：</p>
+
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">pack</span><span class="p">(</span><span class="s2">"h2"</span><span class="p">,</span><span class="mi">13</span><span class="p">);</span>
+<span class="c1">// 跟上面的“a”代码运算方式一样，结果：0x31
+</span>
+<span class="nb">pack</span><span class="p">(</span><span class="s2">"h3"</span><span class="p">,</span><span class="mh">0x159</span><span class="p">);</span>
+<span class="c1">// 即：pack("h3","345")
+// 结果：0x43 0x05
+</span></code></pre></div></div>
+
+<h4 id="代码h-1">代码：”H”</h4>
+
+<p>跟 “h” 代码的区别就是高半字节在前，不再解释</p>
+
+<h4 id="代码c-和-c">代码：”c” 和 “C”</h4>
+
+<p>char类型，范围 -255-255，感觉没有什么差别，超过范围的话则从头算起，如果提供的不是数值则保存 0x00</p>
+
+<h4 id="代码s-和-s">代码：”s” 和 “S”</h4>
+
+<p>int类型，只不过是16位的，既范围： -65535-65535，字节序由机器决定</p>
+
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">pack</span><span class="p">(</span><span class="s2">"s2"</span><span class="p">,</span><span class="mi">2400</span><span class="p">,</span><span class="mi">72300</span><span class="p">);</span>
+<span class="c1">// 结果 0x60096C1A
+// 可以得知我的机器是按照小端来的
+// 72300 超过最大范围所以减去 65536 在进行转换
+</span></code></pre></div></div>
+
+<h4 id="代码n-和-v">代码：”n” 和 “v”</h4>
+
+<p>同 s 和 S 一样，只不过是无符号的，并且字节序分别变成了 大端 和 小端</p>
+
+<h4 id="代码-i-i-l-l-n-v-q-q-j-p">代码 “i I l L N V q Q J P”</h4>
+
+<p>同上面差不多，只不过字节序、符号类型、长度有所不同</p>
+
+<h4 id="代码-f-g-g">代码 “f” “g” “G”</h4>
+
+<p>f，浮点型，有效范围根据机器决定（一般4个字节），字节序根据机器决定</p>
+
+<p>g，浮点型，有效范围根据机器决定（一般4个字节），字节序 小端</p>
+
+<p>G，浮点型，有效范围根据机器决定（一般4个字节），字节序 大端</p>
+
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">pack</span><span class="p">(</span><span class="s2">"f"</span><span class="p">,</span><span class="mf">3.1415926</span><span class="p">);</span>
+<span class="c1">// 结果 0xDA0F4940
+</span>
+<span class="nb">pack</span><span class="p">(</span><span class="s2">"g"</span><span class="p">,</span><span class="mf">3.1415926</span><span class="p">);</span>
+<span class="c1">// 结果 0xDA0F4940
+</span>
+<span class="nb">pack</span><span class="p">(</span><span class="s2">"G"</span><span class="p">,</span><span class="mf">3.1415926</span><span class="p">);</span>
+<span class="c1">// 结果 0x40490FDA
+</span></code></pre></div></div>
+
+<h4 id="代码-d-e-e">代码 “d” “E” “E”</h4>
+
+<p>d，双精度浮点型，有效范围根据机器决定（一般8个字节），字节序根据机器决定</p>
+
+<p>e，双精度浮点型，有效范围根据机器决定（一般8个字节），字节序 小端</p>
+
+<p>E，双精度浮点型，有效范围根据机器决定（一般8个字节），字节序 大端</p>
+
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">pack</span><span class="p">(</span><span class="s2">"d"</span><span class="p">,</span><span class="mf">3.1415926</span><span class="p">);</span>
+<span class="c1">// 结果 0x4AD8124DFB210940
+</span>
+<span class="nb">pack</span><span class="p">(</span><span class="s2">"e"</span><span class="p">,</span><span class="mf">3.1415926</span><span class="p">);</span>
+<span class="c1">// 结果 0x4AD8124DFB210940
+</span>
+<span class="nb">pack</span><span class="p">(</span><span class="s2">"E"</span><span class="p">,</span><span class="mf">3.1415926</span><span class="p">);</span>
+<span class="c1">// 结果 0x400921FB4D12D84A
+</span></code></pre></div></div>
+
+<h4 id="代码-x">代码 “x”</h4>
+
+<p>填充1个空字节，即：0x00</p>
+
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">pack</span><span class="p">(</span><span class="s2">"x"</span><span class="p">);</span>
+<span class="c1">// 结果 0x00
+</span><span class="nb">pack</span><span class="p">(</span><span class="s2">"xx"</span><span class="p">);</span>
+<span class="c1">// 结果 0x0000
+</span></code></pre></div></div>
+
+<h4 id="代码-x-1">代码 “X”</h4>
+
+<p>删除前面1个字节</p>
+
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">pack</span><span class="p">(</span><span class="s2">"a4X"</span><span class="p">,</span><span class="s2">"haha"</span><span class="p">);</span>
+<span class="c1">// 结果 0x0686168
+</span></code></pre></div></div>
+
+<h4 id="代码-z">代码 “Z”</h4>
+
+<p>跟 a 差不多，只不过最后一个字节用 0x00填充</p>
+
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">pack</span><span class="p">(</span><span class="s2">"a4Z4"</span><span class="p">,</span><span class="s2">"lala"</span><span class="p">,</span><span class="s2">"haha"</span><span class="p">);</span>
+<span class="c1">// 结果 0x6C616C6168616800
+</span></code></pre></div></div>
+
+<h4 id="代码-">代码 “@”</h4>
+
+<p>取之前的打包数据的数据，如 @3，则取之前打包数据的3个字节，如果不提供位置参数则取1个字节</p>
+
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">pack</span><span class="p">(</span><span class="s2">"a4a2@"</span><span class="p">,</span><span class="s2">"abcdef"</span><span class="p">,</span><span class="s2">"ghijklmn"</span><span class="p">);</span>
+<span class="c1">// 结果 0x61
+</span><span class="nb">pack</span><span class="p">(</span><span class="s2">"a4a2@6"</span><span class="p">,</span><span class="s2">"abcdef"</span><span class="p">,</span><span class="s2">"ghijklmn"</span><span class="p">);</span>
+<span class="c1">// 结果 0x616263646768
+</span></code></pre></div></div>
+
+
+    </article>
+    
+    <div class="social-share-wrapper">
+        <div class="social-share"></div>
+    </div>
+    
+</div>
+
+<section class="author-detail">
+    <section class="post-footer-item author-card">
+        <div class="avatar">
+            <img src="/assets/img/profile.jpg" alt="">
+        </div>
+        <div class="author-name" rel="author">武仝</div>
+        <div class="bio">
+            <p>PHP开发，热爱技术&设计</p>
+        </div>
+        
+        <ul class="sns-links">
+            
+            <li>
+                <a href="//weibo.com/u/3479312483" target="_blank">
+                    <i class="iconfont icon-weibo"></i>
+                </a>
+            </li>
+            
+            <li>
+                <a href="//github.com/tongwoo" target="_blank">
+                    <i class="iconfont icon-github"></i>
+                </a>
+            </li>
+            
+        </ul>
+        
+    </section>
+    <section class="post-footer-item read-next">
+        
+        
+        <div class="read-next-item">
+            <a href="/2017/11/29/proftpd-config.html" class="read-next-link"></a>
+            <section>
+                <span>采用MySQL认证的Proftpd安装与配置</span>
+                <p>虽然SVN更新代码很方便，但是有的时候的情况下不得不使用FTP来上传文件，这个时候就需要一个FTP服务端来处理了，...</p>
+            </section>
+            
+        </div>
+        
+    </section>
+    
+</section>
+
+<footer class="g-footer">
+    <section>武仝的博客 © 2017</section>
+    <section>Powered by <a href="//jekyllrb.com">Jekyll</a> | <a href="https://github.com/kaeyleo/jekyll-theme-H2O">Theme H2O</a></section>
+</footer>
+
+<script src="/assets/js/social-share.min.js"></script>
+<script>
+    socialShare('.social-share', {
+        sites: ['wechat','weibo','douban','twitter'],
+        wechatQrcodeTitle: "分享到微信朋友圈",
+        wechatQrcodeHelper: '<p>扫码后点击右上角</p><p>将本文分享至朋友圈</p>'
+    });
+</script>
+<script>
+/**
+*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+/*
+var disqus_config = function () {
+this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+*/
+(function() { // DON'T EDIT BELOW THIS LINE
+//var d = document, s = d.createElement('script');
+/*写入自己的disqus信息*/
+//s.src = 'https://liaokeyu.disqus.com/embed.js';
+//s.setAttribute('data-timestamp', +new Date());
+//(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<script src="/assets/js/jquery.min.js"></script>
+<script src="/assets/js/prism.js"></script>
+<script src="/assets/js/index.min.js"></script>
+</body>
+</html>
