@@ -68,7 +68,10 @@
     
     <article class="markdown-body">
         <div class="post-forward-message">本文章地址：https://blog.wutong.me/2017/11/30/pack-unpack-guide.html 转载请注明出处</div>
-        <h2 id="pack函数的用途">pack函数的用途</h2>
+        <p>有的时候想把数据打包成按字节传递，比如一些基于TCP/UDP的应用，当接收到的数据
+包按照规定格式组装的时候，这个时候pack/unpack就能派上用场了。</p>
+
+<h2 id="pack函数的用途">pack函数的用途</h2>
 
 <blockquote>
   <p>Pack data into binary string</p>
@@ -76,7 +79,7 @@
 
 <p>官方文档的描述是“将数据放入到二进制字符串中”。</p>
 
-<p>一般人听起来犯迷糊，套用本人的描述就是：<strong>将每种不同类型的数据（字符串、数字等）转换成二进制字符串并串接在一起</strong>。</p>
+<p>简单的描述就是：<strong>将每种不同类型的数据（字符串、数字等）转换成二进制字符串并串接在一起</strong>。</p>
 
 <h2 id="unpack函数的用途">unpack函数的用途</h2>
 
@@ -85,7 +88,7 @@
 array unpack ( string $format , string $data )</p>
 </blockquote>
 
-<p>代表从一个二进制数据中解包，其 $format 参数跟 pack函数的$format参数一样</p>
+<p>从一个二进制数据中解包，其 $format 参数跟 pack函数的$format参数一样</p>
 
 <h2 id="pack函数的参数">pack函数的参数</h2>
 
@@ -378,7 +381,7 @@ array unpack ( string $format , string $data )</p>
 <span class="c1">// 结果 0x40490FDA
 </span></code></pre></div></div>
 
-<h4 id="代码-d-e-e">代码 “d” “E” “E”</h4>
+<h4 id="代码-d-e-e">代码 “d” “e” “E”</h4>
 
 <p>d，双精度浮点型，有效范围根据机器决定（一般8个字节），字节序根据机器决定</p>
 
