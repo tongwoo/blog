@@ -172,11 +172,18 @@ DocumentRoot "/web"
     <span class="c1">#是否启用目录浏览
 </span>    <span class="kn">autoindex</span> <span class="no">on</span><span class="p">;</span>
 
-    <span class="c1">#URL重写
+    <span class="c1">#如果用Yii、Laravel等之类的框架则用下面这段配置
 </span>    <span class="kn">location</span> <span class="n">/</span> <span class="p">{</span>
         <span class="kn">try_files</span> <span class="nv">$uri</span> <span class="nv">$uri</span><span class="n">/</span> <span class="n">/index.php</span><span class="nv">$is_args$args</span><span class="p">;</span>
     <span class="p">}</span>
 
+    <span class="c1">#如果你用的是ThinkPHP框架则用下面这段配置
+</span>    <span class="kn">location</span> <span class="n">/</span> <span class="p">{</span>
+        <span class="kn">if</span> <span class="s">(!-e</span> <span class="nv">$request_filename</span><span class="s">)</span> <span class="p">{</span>
+            <span class="kn">rewrite</span>  <span class="s">^(.*)</span>$  <span class="n">/index.php?s=</span><span class="nv">$1</span>  <span class="s">last</span><span class="p">;</span>
+            <span class="kn">break</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
     <span class="c1">#处理PHP格式的文件
 </span>    <span class="kn">location</span> <span class="p">~</span> <span class="sr">\.php$</span> <span class="p">{</span>
         <span class="c1">#try_files $uri=404;

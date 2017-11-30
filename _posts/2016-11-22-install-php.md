@@ -112,11 +112,18 @@ server {
     #是否启用目录浏览
     autoindex on;
 
-    #URL重写
+    #如果用Yii、Laravel等之类的框架则用下面这段配置
     location / {
         try_files $uri $uri/ /index.php$is_args$args;
     }
 
+    #如果你用的是ThinkPHP框架则用下面这段配置
+    location / {
+        if (!-e $request_filename) {
+            rewrite  ^(.*)$  /index.php?s=$1  last;
+            break;
+        }
+    }
     #处理PHP格式的文件
     location ~ \.php$ {
         #try_files $uri=404;
