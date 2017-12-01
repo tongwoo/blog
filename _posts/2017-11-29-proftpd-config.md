@@ -30,6 +30,12 @@ yum install proftpd proftpd-mysql
 AuthPAMConfig       proftpd
 AuthOrder           mod_auth_pam.c* mod_auth_unix.c
 ```
+增加一行被动模式端口范围，当用户以被动模式连接的时候，需要服务器提供额外的端口来交互，否则
+客户端无法连接，防火墙要允许这些范围的端口
+
+```apacheconf
+PassivePorts 30000 30050
+```
 
 再取消如下几行的注释并启用
 
