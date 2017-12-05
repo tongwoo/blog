@@ -47,7 +47,7 @@ yum install -y mariadb mariadb-server
 ```
 启动数据库服务
 
-```
+```bash
 systemctl start mariadb
 ```
 初始化数据库，根据提示完成
@@ -55,7 +55,6 @@ systemctl start mariadb
 ```bash
 mysql_secure_installation
 ```
-
 初始化过程
 
 ```bash
