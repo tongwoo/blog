@@ -111,6 +111,14 @@ rpm <span class="nt">-Uvh</span> https://mirror.webtatic.com/yum/el6/latest.rpm
 
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>yum install <span class="nt">-y</span> mariadb mariadb-server
 </code></pre></div></div>
+<p>打开 /etc/my.cnf 修改一下默认编码</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>client]
+default-character-set<span class="o">=</span>utf8
+<span class="o">[</span>mysqld]
+character-set-server<span class="o">=</span>utf8
+</code></pre></div></div>
+
 <p>启动数据库服务</p>
 
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>systemctl start mariadb
