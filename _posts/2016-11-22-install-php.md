@@ -45,6 +45,15 @@ yum install -y php71w-bcmath php71w-cli php71w-common php71w-dba php71w-devel ph
 ```bash
 yum install -y mariadb mariadb-server
 ```
+打开 /etc/my.cnf 修改一下默认编码
+
+```bash
+[client]
+default-character-set=utf8
+[mysqld]
+character-set-server=utf8
+```
+
 启动数据库服务
 
 ```bash
