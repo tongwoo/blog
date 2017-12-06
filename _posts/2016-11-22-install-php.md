@@ -4,7 +4,6 @@ title: '安装PHP运行环境'
 date: 2016-11-22
 author: wutong
 tags:  linux php mysql mariadb apahce
-cover: '/assets/img/hero.jpg'
 ---
 
 经常要手动配置客户的web服务器，比较耗费时间，索性做个记录以便下次直接复制粘贴。

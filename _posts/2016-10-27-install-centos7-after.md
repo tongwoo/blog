@@ -4,7 +4,6 @@ title: '安装完CentOS7之后出现的相关问题'
 date: 2016-10-27
 author: wutong
 tags:  linux centos
-cover: '/assets/img/hero.jpg'
 ---
 
 有时候因为次要版本号的不同总会有一些莫名奇妙的问题，以下是常遇到的问题和解决方法。
