@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>安装Shadowsocks服务端 - 武仝的博客</title>
+    <title>安装完CentOS7之后出现的相关问题 - 武仝的博客</title>
     <meta name="author"  content="武仝">
-    <meta name="description" content="安装Shadowsocks服务端">
-    <meta name="keywords"  content="linux, shadowsocks">
+    <meta name="description" content="安装完CentOS7之后出现的相关问题">
+    <meta name="keywords"  content="linux, centos">
     <!-- Open Graph -->
-    <meta property="og:title" content="安装Shadowsocks服务端 - 武仝的博客">
+    <meta property="og:title" content="安装完CentOS7之后出现的相关问题 - 武仝的博客">
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://blog.wutong.me/2015/11/14/install-shadowsocks.html">
+    <meta property="og:url" content="https://blog.wutong.me/2016/10/27/install-centos7-after.html">
     <meta property="og:description" content="PHP开发者，热爱技术&设计。很高兴能在这里分享我对技术的思考。">
     <meta property="og:site_name" content="武仝的博客">
     <link rel="stylesheet" href="//cdn.staticfile.org/normalize/6.0.0/normalize.min.css">
@@ -46,70 +46,67 @@
 </header>
 
 
-<header class="g-banner post-header post-pattern-circuitBoard bgcolor-default post-no-cover" data-theme="default">
+<header class="g-banner post-header post-pattern-circuitBoard bgcolor-default " data-theme="default">
     <div class="post-wrapper">
         <div class="post-tags">
             
             
             <a href="https://blog.wutong.me/tags.html#linux" class="post-tag">linux</a>
             
-            <a href="https://blog.wutong.me/tags.html#shadowsocks" class="post-tag">shadowsocks</a>
+            <a href="https://blog.wutong.me/tags.html#centos" class="post-tag">centos</a>
             
             
         </div>
-        <h1>安装Shadowsocks服务端</h1>
+        <h1>安装完CentOS7之后出现的相关问题</h1>
         <div class="post-meta">
             <span class="post-meta-item"><i class="iconfont icon-author"></i><a href="https://blog.wutong.me" target="_blank" rel="author">wutong</a></></span>
-            <time class="post-meta-item" datetime="2015-11-14"><i class="iconfont icon-date"></i>2015-11-14</time>
+            <time class="post-meta-item" datetime="2016-10-27"><i class="iconfont icon-date"></i>2016-10-27</time>
         </div>
     </div>
+    
+    <div class="filter"></div>
+    <div class="post-cover" style="background: url('/assets/img/hero.jpg') center no-repeat; background-size: cover;">
     
 </header>
 
 <div class="post-content">
     
     <article class="markdown-body">
-        <div class="post-forward-message">本文章地址：https://blog.wutong.me/2015/11/14/install-shadowsocks.html 转载请注明出处</div>
-        <p>在不翻墙的情况下访问某些站点无法打开或者很慢，所以只能挂代理。
-但是，购买的代理不稳定，所以最好的方法就是自己花钱自己搭建代理
-服务器。</p>
+        <div class="post-forward-message">本文章地址：https://blog.wutong.me/2016/10/27/install-centos7-after.html 转载请注明出处</div>
+        <p>有时候因为次要版本号的不同总会有一些莫名奇妙的问题，以下是常遇到的问题和解决方法。</p>
 
-<h2 id="centos下的安装">CentOS下的安装</h2>
+<h3 id="pdo连接-mysql-出现-sqlstatehy000-2002-permission-denied">PDO连接 mysql 出现 【SQLSTATE[HY000] [2002] Permission denied】</h3>
 
-<h3 id="安装">安装</h3>
+<p>关闭 selinux 临时关闭敲：“setenforce 0”，永久关闭：/etc/sysconfig/selinux 增加 SELINUX=disabled</p>
 
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>yum install python-setuptools <span class="o">&amp;&amp;</span> easy_install pip
-pip install shadowsocks
-</code></pre></div></div>
-<h3 id="命令行启动">命令行启动</h3>
+<h2 id="安装xunsearch无法编译">安装xunsearch无法编译</h2>
 
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">#默认启动无密码，端口 8838，加密方式为 aes-256-cfb</span>
-ssserver <span class="nt">-d</span> start
-</code></pre></div></div>
+<p>安装gcc，gcc-c++</p>
 
-<h3 id="使用配置文件启动">使用配置文件启动</h3>
+<h3 id="更改sshd端口不生效">更改sshd端口不生效</h3>
 
-<p>创建 /etc/shadowsocks/config.json 并填入如下参数</p>
+<p>执行下列代码并重启sshd服务，然后防火墙也要加端口</p>
 
-<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
-    </span><span class="s2">"server"</span><span class="p">:</span><span class="s2">"104.214.138.102"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"server_port"</span><span class="p">:</span><span class="mi">443</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"local_address"</span><span class="p">:</span><span class="w"> </span><span class="s2">"127.0.0.1"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"local_port"</span><span class="p">:</span><span class="mi">1080</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"password"</span><span class="p">:</span><span class="s2">"mima"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"timeout"</span><span class="p">:</span><span class="mi">600</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"method"</span><span class="p">:</span><span class="s2">"aes-256-cfb"</span><span class="w">
-</span><span class="p">}</span><span class="w">
-</span></code></pre></div></div>
-
-<p>执行启动命令</p>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ssserver <span class="nt">-c</span> /etc/shadowsocks/config.json <span class="nt">-d</span> start
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>semanage port <span class="nt">-a</span> <span class="nt">-t</span> ssh_port_t <span class="nt">-p</span> tcp 新的端口号
 </code></pre></div></div>
 
-<p>执行关闭命令</p>
+<h3 id="超级管理员root无法ssh登录">超级管理员root无法ssh登录</h3>
 
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ssserver <span class="nt">-c</span> /etc/shadowsocks/config.json <span class="nt">-d</span> stop
+<p>/etc/ssh/sshd_config 文件的 AllowUsers 区块加入 root</p>
+
+<h3 id="修改rclocal文件不生效">修改rc.local文件不生效</h3>
+
+<p>添加执行权限</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>chmod +x /etc/rc.local
+</code></pre></div></div>
+
+<h3 id="端口无法访问">端口无法访问</h3>
+
+<p>添加允许端口访问</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">#添加80端口</span>
+firewall-cmd <span class="nt">--add-port</span><span class="o">=</span>80/tcp <span class="nt">--permanent</span>
 </code></pre></div></div>
 
     </article>
@@ -150,10 +147,10 @@ ssserver <span class="nt">-d</span> start
     <section class="post-footer-item read-next">
         
         <div class="read-next-item">
-            <a href="/2016/10/27/install-centos7-after.html" class="read-next-link"></a>
+            <a href="/2016/11/22/install-php.html" class="read-next-link"></a>
             <section>
-                <span>安装完CentOS7之后出现的相关问题</span>
-                <p>有时候因为次要版本号的不同总会有一些莫名奇妙的问题，以下是常遇到的问题和解决方法。</p>
+                <span>安装PHP运行环境</span>
+                <p>经常要手动配置客户的web服务器，比较耗费时间，索性做个记录以便下次直接复制粘贴。</p>
             </section>
             
             <div class="filter"></div>
@@ -161,6 +158,15 @@ ssserver <span class="nt">-d</span> start
             
         </div>
         
+        
+        <div class="read-next-item">
+            <a href="/2015/11/14/install-shadowsocks.html" class="read-next-link"></a>
+            <section>
+                <span>安装Shadowsocks服务端</span>
+                <p>在不翻墙的情况下访问某些站点无法打开或者很慢，所以只能挂代理。但是，购买的代理不稳定，所以最好的方法就是自己花钱自...</p>
+            </section>
+            
+        </div>
         
     </section>
     

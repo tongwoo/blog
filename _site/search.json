@@ -19,6 +19,12 @@
     } ,
   
     {
+      "title"    : "安装完CentOS7之后出现的相关问题",
+      "tags"     : "linux centos",
+      "url"      : "/2016/10/27/install-centos7-after.html"
+    } ,
+  
+    {
       "title"    : "安装Shadowsocks服务端",
       "tags"     : "linux shadowsocks",
       "url"      : "/2015/11/14/install-shadowsocks.html"
