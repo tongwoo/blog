@@ -78,33 +78,33 @@
         <div class="post-forward-message">本文章地址：https://blog.wutong.me/2016/11/22/install-php.html 转载请注明出处</div>
         <p>经常要手动配置客户的web服务器，比较耗费时间，索性做个记录以便下次直接复制粘贴。</p>
 
-<h2 id="增加仓库">增加仓库</h2>
+<h3 id="增加仓库">增加仓库</h3>
 
-<h3 id="centosrhel-7x">CentOS/RHEL 7.x:</h3>
+<h4 id="centosrhel-7x">CentOS/RHEL 7.x:</h4>
 
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>rpm <span class="nt">-Uvh</span> https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
 rpm <span class="nt">-Uvh</span> https://mirror.webtatic.com/yum/el7/webtatic-release.rpm
 </code></pre></div></div>
 
-<h3 id="centosrhel-6x">CentOS/RHEL 6.x:</h3>
+<h4 id="centosrhel-6x">CentOS/RHEL 6.x:</h4>
 
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>rpm <span class="nt">-Uvh</span> https://dl.fedoraproject.org/pub/epel/epel-release-latest-6.noarch.rpm
 rpm <span class="nt">-Uvh</span> https://mirror.webtatic.com/yum/el6/latest.rpm
 </code></pre></div></div>
 
-<h2 id="安装php及其扩展包">安装PHP及其扩展包</h2>
+<h3 id="安装php及其扩展包">安装PHP及其扩展包</h3>
 
-<h3 id="按需安装">按需安装</h3>
+<h4 id="按需安装">按需安装</h4>
 
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>yum install php71w-bcmath php71w-cli php71w-common php71w-dba php71w-devel php71w-embedded php71w-enchant php71w-fpm php71w-gd php71w-imap php71w-interbase php71w-intl php71w-ldap php71w-mbstring php71w-mcrypt php71w-mysqlnd php71w-odbc php71w-opcache php71w-pdo php71w-pdo_dblib php71w-pear php71w-pecl-apcu php71w-pecl-apcu-devel php71w-pecl-geoip php71w-pecl-igbinary php71w-pecl-igbinary-devel php71w-pecl-imagick php71w-pecl-imagick-devel php71w-pecl-memcached php71w-pecl-mongodb php71w-pecl-redis  php71w-pgsql php71w-process php71w-pspell php71w-recode php71w-snmp php71w-soap php71w-tidy php71w-xml php71w-xmlrpc
 </code></pre></div></div>
 
-<h3 id="全部安装">全部安装</h3>
+<h4 id="全部安装">全部安装</h4>
 
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>yum install <span class="nt">-y</span> php71w-bcmath php71w-cli php71w-common php71w-dba php71w-devel php71w-embedded php71w-enchant php71w-fpm php71w-gd php71w-imap php71w-interbase php71w-intl php71w-ldap php71w-mbstring php71w-mcrypt php71w-mysql php71w-mysqlnd php71w-odbc php71w-opcache php71w-pdo php71w-pdo_dblib php71w-pear php71w-pecl-apcu php71w-pecl-apcu-devel php71w-pecl-geoip php71w-pecl-igbinary php71w-pecl-igbinary-devel php71w-pecl-imagick php71w-pecl-imagick-devel php71w-pecl-memcached php71w-pecl-mongodb php71w-pecl-redis php71w-pecl-xdebug php71w-pgsql php71w-phpdbg php71w-process php71w-pspell php71w-recode php71w-snmp php71w-soap php71w-tidy php71w-xml php71w-xmlrpc
 </code></pre></div></div>
 
-<h2 id="安装mysql">安装MySQL</h2>
+<h3 id="安装mysql">安装MySQL</h3>
 
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>yum install <span class="nt">-y</span> mariadb mariadb-server
 </code></pre></div></div>
@@ -189,9 +189,9 @@ installation should now be secure.
 Thanks <span class="k">for </span>using MariaDB!
 </code></pre></div></div>
 
-<h2 id="web服务器">Web服务器</h2>
+<h3 id="web服务器">Web服务器</h3>
 
-<h3 id="安装apache和php模块">安装Apache和PHP模块</h3>
+<h4 id="安装apache和php模块">安装Apache和PHP模块</h4>
 
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>yum install <span class="nt">-y</span> httpd
 yum install <span class="nt">-y</span> mod_php71w
@@ -229,12 +229,12 @@ DocumentRoot "/web"
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>service httpd start
 </code></pre></div></div>
 
-<h3 id="安装nginx">安装Nginx</h3>
+<h4 id="安装nginx">安装Nginx</h4>
 
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>yum install <span class="nt">-y</span> nginx
 </code></pre></div></div>
 
-<h3 id="配置nginx">配置Nginx</h3>
+<h4 id="配置nginx">配置Nginx</h4>
 
 <p>进入 /etc/nginx/conf.d 目录新建一个配置文件，比如：wutong.conf</p>
 

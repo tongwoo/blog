@@ -9,37 +9,37 @@ tags:  linux php mysql mariadb apahce
 经常要手动配置客户的web服务器，比较耗费时间，索性做个记录以便下次直接复制粘贴。
 
 
-## 增加仓库
+### 增加仓库
 
-### CentOS/RHEL 7.x:
+#### CentOS/RHEL 7.x:
 
 ```bash
 rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
 rpm -Uvh https://mirror.webtatic.com/yum/el7/webtatic-release.rpm
 ```
 
-### CentOS/RHEL 6.x:
+#### CentOS/RHEL 6.x:
 
 ```bash
 rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-6.noarch.rpm
 rpm -Uvh https://mirror.webtatic.com/yum/el6/latest.rpm
 ```
 
-## 安装PHP及其扩展包
+### 安装PHP及其扩展包
 
-### 按需安装
+#### 按需安装
 
 ```bash
 yum install php71w-bcmath php71w-cli php71w-common php71w-dba php71w-devel php71w-embedded php71w-enchant php71w-fpm php71w-gd php71w-imap php71w-interbase php71w-intl php71w-ldap php71w-mbstring php71w-mcrypt php71w-mysqlnd php71w-odbc php71w-opcache php71w-pdo php71w-pdo_dblib php71w-pear php71w-pecl-apcu php71w-pecl-apcu-devel php71w-pecl-geoip php71w-pecl-igbinary php71w-pecl-igbinary-devel php71w-pecl-imagick php71w-pecl-imagick-devel php71w-pecl-memcached php71w-pecl-mongodb php71w-pecl-redis  php71w-pgsql php71w-process php71w-pspell php71w-recode php71w-snmp php71w-soap php71w-tidy php71w-xml php71w-xmlrpc
 ```
 
-### 全部安装
+#### 全部安装
 
 ```bash
 yum install -y php71w-bcmath php71w-cli php71w-common php71w-dba php71w-devel php71w-embedded php71w-enchant php71w-fpm php71w-gd php71w-imap php71w-interbase php71w-intl php71w-ldap php71w-mbstring php71w-mcrypt php71w-mysql php71w-mysqlnd php71w-odbc php71w-opcache php71w-pdo php71w-pdo_dblib php71w-pear php71w-pecl-apcu php71w-pecl-apcu-devel php71w-pecl-geoip php71w-pecl-igbinary php71w-pecl-igbinary-devel php71w-pecl-imagick php71w-pecl-imagick-devel php71w-pecl-memcached php71w-pecl-mongodb php71w-pecl-redis php71w-pecl-xdebug php71w-pgsql php71w-phpdbg php71w-process php71w-pspell php71w-recode php71w-snmp php71w-soap php71w-tidy php71w-xml php71w-xmlrpc
 ```
 
-## 安装MySQL
+### 安装MySQL
 
 ```bash
 yum install -y mariadb mariadb-server
@@ -129,9 +129,9 @@ installation should now be secure.
 Thanks for using MariaDB!
 ```
 
-## Web服务器
+### Web服务器
 
-### 安装Apache和PHP模块
+#### 安装Apache和PHP模块
 
 ```bash
 yum install -y httpd
@@ -174,13 +174,13 @@ service httpd start
 ```
 
 
-### 安装Nginx 
+#### 安装Nginx 
 
 ```bash
 yum install -y nginx
 ```
 
-### 配置Nginx
+#### 配置Nginx
 
 进入 /etc/nginx/conf.d 目录新建一个配置文件，比如：wutong.conf
 
