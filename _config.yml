@@ -9,9 +9,8 @@ baseurl: ''
 
 # Navigation links
 nav:
-  首页: '/'
-  2017之前文章: '//wutong.me'
-  tags: '/tags.html'
+  Home: '/'
+  Tags: '/tags.html'
 
 # Author 配置博主信息
 author: '武仝'
