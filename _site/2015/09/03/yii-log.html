@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yii2日志 - 武仝的博客</title>
+    <meta name="author"  content="武仝">
+    <meta name="description" content="Yii2日志">
+    <meta name="keywords"  content="linux, php, yii">
+    <!-- Open Graph -->
+    <meta property="og:title" content="Yii2日志 - 武仝的博客">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://blog.wutong.me/2015/09/03/yii-log.html">
+    <meta property="og:description" content="PHP开发者，热爱技术&设计。很高兴能在这里分享我对技术的思考。">
+    <meta property="og:site_name" content="武仝的博客">
+    <link rel="stylesheet" href="//cdn.staticfile.org/normalize/6.0.0/normalize.min.css">
+    <link rel="stylesheet" href="//at.alicdn.com/t/font_roc50gemkxpw4s4i.css">
+    <link rel="stylesheet" href="/assets/css/github-markdown.css">
+    <link rel="stylesheet" href="/assets/css/prism.css">
+    <link rel="stylesheet" href="/assets/css/share.min.css">
+    <link rel="stylesheet" href="/assets/css/app.min.css">
+    <link rel="stylesheet" href="/assets/css/common.css">
+</head>
+<body>
+    <!--[if lt IE 10]>
+<div class="alert-danger" role="alert">你的浏览器实在太太太旧了，放学别走，升级完浏览器再说！<a target="_blank" class="alert-link" href="http://browsehappy.com">立即升级</a></div>
+<![endif]-->
+<input id="nm-switch" type="hidden" value="false">
+
+<header class="g-header">
+    <div class="g-logo">
+      <a href="/"></a>
+    </div>
+    <i id="menu-toggle" class="iconfont icon-menu"></i>
+    <nav class="g-nav">
+        <ul>
+            
+            <li><a href="/">首页</a></li>
+            
+            <li><a href="//wutong.me">2017之前文章</a></li>
+            
+            <li><a href="/tags.html">tags</a></li>
+            
+        </ul>
+    </nav>
+</header>
+
+
+<header class="g-banner post-header post-pattern-circuitBoard bgcolor-default post-no-cover" data-theme="default">
+    <div class="post-wrapper">
+        <div class="post-tags">
+            
+            
+            <a href="https://blog.wutong.me/tags.html#linux" class="post-tag">linux</a>
+            
+            <a href="https://blog.wutong.me/tags.html#php" class="post-tag">php</a>
+            
+            <a href="https://blog.wutong.me/tags.html#yii" class="post-tag">yii</a>
+            
+            
+        </div>
+        <h1>Yii2日志</h1>
+        <div class="post-meta">
+            <span class="post-meta-item"><i class="iconfont icon-author"></i><a href="https://blog.wutong.me" target="_blank" rel="author">wutong</a></></span>
+            <time class="post-meta-item" datetime="2015-09-03"><i class="iconfont icon-date"></i>2015-09-03</time>
+        </div>
+    </div>
+    
+</header>
+
+<div class="post-content">
+    
+    <article class="markdown-body">
+        <div class="post-forward-message">本文章地址：https://blog.wutong.me/2015/09/03/yii-log.html 转载请注明出处</div>
+        <p>Yii中的日志是比较一个强大的功能。</p>
+
+<h3 id="配置">配置</h3>
+
+<p>使用日志需要在components中配置</p>
+
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">//配置
+</span><span class="nv">$config</span> <span class="o">=</span> <span class="p">[</span>
+	<span class="c1">//组件配置
+</span>	<span class="s1">'components'</span> <span class="o">=&gt;</span> <span class="p">[</span>
+		<span class="c1">//日志
+</span>		<span class="s1">'log'</span> <span class="o">=&gt;</span> <span class="p">[</span>
+			<span class="s1">'flushInterval'</span><span class="o">=&gt;</span><span class="mi">500</span><span class="p">,</span>
+			<span class="s1">'traceLevel'</span> <span class="o">=&gt;</span> <span class="nx">YII_DEBUG</span> <span class="o">?</span> <span class="mi">3</span> <span class="o">:</span> <span class="mi">0</span><span class="p">,</span>
+			<span class="s1">'targets'</span> <span class="o">=&gt;</span> <span class="p">[</span>
+				<span class="p">[</span>
+					<span class="s1">'class'</span> <span class="o">=&gt;</span> <span class="s1">'yii\log\FileTarget'</span><span class="p">,</span>
+					<span class="s1">'levels'</span> <span class="o">=&gt;</span> <span class="p">[</span><span class="s1">'error'</span><span class="p">,</span> <span class="s1">'warning'</span><span class="p">],</span>
+				<span class="p">],</span>
+				<span class="c1">//记录数据库相关操作的日志并保存到数据库中
+</span>				<span class="p">[</span>
+					<span class="s1">'class'</span> <span class="o">=&gt;</span> <span class="s1">'yii\log\DbTarget'</span><span class="p">,</span>
+					<span class="s1">'levels'</span> <span class="o">=&gt;</span> <span class="p">[</span><span class="s1">'error'</span><span class="p">,</span> <span class="s1">'warning'</span><span class="p">,</span><span class="s1">'info'</span><span class="p">],</span>
+					<span class="s1">'logTable'</span><span class="o">=&gt;</span><span class="s1">'log'</span><span class="p">,</span>
+					<span class="s1">'categories'</span><span class="o">=&gt;</span><span class="p">[</span><span class="s1">'yiidb*'</span><span class="p">]</span>
+				<span class="p">],</span>
+			<span class="p">],</span>
+		<span class="p">]</span>
+	<span class="p">]</span>
+<span class="p">];</span>
+</code></pre></div></div>
+
+<p>其中的 log 是 yii\log\Dispatcher的实例，所以如果想获得log记录的信息，需要使用下面的代码</p>
+
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">Yii</span><span class="o">::</span><span class="nv">$app</span><span class="o">-&gt;</span><span class="na">getLog</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">getLogger</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">messages</span>
+</code></pre></div></div>
+
+<p>targets表示记录的日志信息要发送到哪些载体中，如果是yii\log\FileTarget，就保存到文件中（默认是runtime\logs目录下）；如果是yii\log\DbTarget，就保存到数据表中，主要有以下的target：</p>
+
+<ul>
+  <li>yii\debug\LogTarget</li>
+  <li>yii\log\DbTarget</li>
+  <li>yii\log\EmailTarget</li>
+  <li>yii\log\FileTarget</li>
+  <li>yii\log\SyslogTarget</li>
+  <li>yii\mongodb\log\MongoDbTarget</li>
+</ul>
+
+<p>flushInterval表示当内存中的日志信息达到多少条的时候进行刷新，刷新的意思就是把日志信息根据target的不同写入到不同的载体中，如文件、数据库</p>
+
+<h3 id="日志类别">日志类别</h3>
+
+<p>日志的类别完全是自定义的，需要在yiilogTarget派生的子类中配置，配置属性为：categories ，这是一个数组，其中每个元素跟命名空间差不多，如果想记录db相关下的所有的日志则可以填写 ‘yiidb*‘，如：</p>
+
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code>	<span class="p">[</span>
+		<span class="s1">'class'</span> <span class="o">=&gt;</span> <span class="s1">'yii\log\DbTarget'</span><span class="p">,</span>
+		<span class="s1">'levels'</span> <span class="o">=&gt;</span> <span class="p">[</span><span class="s1">'error'</span><span class="p">,</span> <span class="s1">'warning'</span><span class="p">,</span><span class="s1">'info'</span><span class="p">],</span>
+		<span class="s1">'logTable'</span><span class="o">=&gt;</span><span class="s1">'log'</span><span class="p">,</span>
+		<span class="s1">'categories'</span><span class="o">=&gt;</span><span class="p">[</span><span class="s1">'yii\db*'</span><span class="p">]</span>
+	<span class="p">],</span>
+</code></pre></div></div>
+
+<h3 id="日志级别">日志级别</h3>
+
+<p>分为以下几种：</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>常量</th>
+      <th>值</th>
+      <th>描述</th>
+      <th>定义位置</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>LEVEL_ERROR</td>
+      <td>1</td>
+      <td>错误信息。错误信息是一个指示异常终止的应用程序，并可能需要开发人员进行处理。</td>
+      <td>yii\log\Logger</td>
+    </tr>
+    <tr>
+      <td>LEVEL_INFO</td>
+      <td>4</td>
+      <td>参考信息。一些无关紧要的，需要开发人员审查。</td>
+      <td>yii\log\Logger</td>
+    </tr>
+    <tr>
+      <td>LEVEL_PROFILE</td>
+      <td>64</td>
+      <td>剖析消息。这表明该消息是用于分析目的。</td>
+      <td>yii\log\Logger</td>
+    </tr>
+    <tr>
+      <td>LEVEL_PROFILE_BEGIN</td>
+      <td>80</td>
+      <td>剖析消息。这表明该消息是用于分析目的。标明分析块的开始</td>
+      <td>yii\log\Logger</td>
+    </tr>
+    <tr>
+      <td>LEVEL_PROFILE_END</td>
+      <td>96</td>
+      <td>剖析消息。这表明该消息是用于分析目的。标明分析块的结束</td>
+      <td>yii\log\Logger</td>
+    </tr>
+    <tr>
+      <td>LEVEL_TRACE</td>
+      <td>8</td>
+      <td>跟踪消息。揭示了代码被执行。</td>
+      <td>yii\log\Logger</td>
+    </tr>
+    <tr>
+      <td>LEVEL_WARNING</td>
+      <td>2</td>
+      <td>警告消息。警告消息是指示一些异常情况，但应用程序能够继续运行。开发人员应该注意这条消息。</td>
+      <td>yii\log\Logger</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="日志格式">日志格式</h3>
+
+<p>假如通过Yii::$app-&gt;log-&gt;getLoger()-&gt;messages输出了下列的日志信息</p>
+
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="k">array</span> <span class="p">(</span><span class="nx">size</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+      <span class="mi">0</span> <span class="o">=&gt;</span> <span class="nx">string</span> <span class="s1">'Bootstrap with yiidebugModule::bootstrap()'</span> <span class="p">(</span><span class="nx">length</span><span class="o">=</span><span class="mi">44</span><span class="p">)</span>
+      <span class="mi">1</span> <span class="o">=&gt;</span> <span class="nx">int</span> <span class="mi">8</span>
+      <span class="mi">2</span> <span class="o">=&gt;</span> <span class="nx">string</span> <span class="s1">'yiibaseApplication::bootstrap'</span> <span class="p">(</span><span class="nx">length</span><span class="o">=</span><span class="mi">31</span><span class="p">)</span>
+      <span class="mi">3</span> <span class="o">=&gt;</span> <span class="nx">float</span> <span class="mf">1441289991.0516</span>
+      <span class="mi">4</span> <span class="o">=&gt;</span> 
+        <span class="k">array</span> <span class="p">(</span><span class="nx">size</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+</code></pre></div></div>
+<h4 id="解释如下">解释如下</h4>
+
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">[</span>
+  <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=&gt;</span> <span class="nx">消息</span> <span class="p">(</span><span class="nx">复合类型</span><span class="p">,</span> <span class="nx">可能是字符串也可能是其他类型数据或者是异常对象</span><span class="p">)</span>
+  <span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=&gt;</span> <span class="nx">等级</span> <span class="p">(</span><span class="nx">整型</span><span class="p">)</span>
+  <span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=&gt;</span> <span class="nx">类别</span> <span class="p">(</span><span class="nx">字符型</span><span class="p">)</span>
+  <span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">=&gt;</span> <span class="nx">记录时间</span> <span class="p">(</span><span class="nx">浮点型</span><span class="p">,</span> <span class="nx">obtained</span> <span class="nx">by</span> <span class="nb">microtime</span><span class="p">(</span><span class="kc">true</span><span class="p">))</span>
+  <span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">=&gt;</span> <span class="nx">跟踪</span> <span class="p">(</span><span class="nx">数组</span><span class="p">,</span> <span class="nx">debug回调</span><span class="err">，</span><span class="nx">包含了应用程序的代码跟踪</span><span class="p">)</span>
+<span class="p">]</span>
+</code></pre></div></div>
+
+    </article>
+    
+    <div class="social-share-wrapper">
+        <div class="social-share"></div>
+    </div>
+    
+</div>
+
+<section class="author-detail">
+    <section class="post-footer-item author-card">
+        <div class="avatar">
+            <img src="/assets/img/profile.jpg" alt="">
+        </div>
+        <div class="author-name" rel="author">武仝</div>
+        <div class="bio">
+            <p>PHP开发，热爱技术&设计</p>
+        </div>
+        
+        <ul class="sns-links">
+            
+            <li>
+                <a href="//weibo.com/u/3479312483" target="_blank">
+                    <i class="iconfont icon-weibo"></i>
+                </a>
+            </li>
+            
+            <li>
+                <a href="//github.com/tongwoo" target="_blank">
+                    <i class="iconfont icon-github"></i>
+                </a>
+            </li>
+            
+        </ul>
+        
+    </section>
+    <section class="post-footer-item read-next">
+        
+        <div class="read-next-item">
+            <a href="/2015/10/08/php-config-db2.html" class="read-next-link"></a>
+            <section>
+                <span>PHP配置DB2(windows)</span>
+                <p>供电局的系统用的DB2，不给接口直接给数据库的操作权限，想想也是醉了，废话不多说，下面是我的配置DB2扩展的过程（...</p>
+            </section>
+            
+        </div>
+        
+        
+        <div class="read-next-item">
+            <a href="/2015/08/12/reset-mysql-password.html" class="read-next-link"></a>
+            <section>
+                <span>恢复MySQL密码</span>
+                <p>MySQL密码忘记了怎么办？</p>
+            </section>
+            
+        </div>
+        
+    </section>
+    
+</section>
+
+<footer class="g-footer">
+    <section>武仝的博客 © 2017</section>
+    <section>Powered by <a href="//jekyllrb.com">Jekyll</a> | <a href="https://github.com/kaeyleo/jekyll-theme-H2O">Theme H2O</a></section>
+</footer>
+
+<script src="/assets/js/social-share.min.js"></script>
+<script>
+    socialShare('.social-share', {
+        sites: ['wechat','weibo','douban','twitter'],
+        wechatQrcodeTitle: "分享到微信朋友圈",
+        wechatQrcodeHelper: '<p>扫码后点击右上角</p><p>将本文分享至朋友圈</p>'
+    });
+</script>
+<script>
+/**
+*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+/*
+var disqus_config = function () {
+this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+*/
+(function() { // DON'T EDIT BELOW THIS LINE
+//var d = document, s = d.createElement('script');
+/*写入自己的disqus信息*/
+//s.src = 'https://liaokeyu.disqus.com/embed.js';
+//s.setAttribute('data-timestamp', +new Date());
+//(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<script src="/assets/js/jquery.min.js"></script>
+<script src="/assets/js/prism.js"></script>
+<script src="/assets/js/index.min.js"></script>
+</body>
+</html>

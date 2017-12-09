@@ -13,9 +13,39 @@
     } ,
   
     {
+      "title"    : "去除Excel的密码",
+      "tags"     : "excel",
+      "url"      : "/2017/10/25/hack-excel-password.html"
+    } ,
+  
+    {
+      "title"    : "PHP中socket读写的超时设置",
+      "tags"     : "php",
+      "url"      : "/2017/10/11/php-set-socket-timeout.html"
+    } ,
+  
+    {
+      "title"    : "升级到MacOS后，SSH无法自动登录了",
+      "tags"     : "mac ssh",
+      "url"      : "/2017/07/24/mac-ssh-cant-login.html"
+    } ,
+  
+    {
+      "title"    : "PHP的CURL扩展和相关SSL知识点",
+      "tags"     : "php ssl",
+      "url"      : "/2017/06/13/php-curl-qa.html"
+    } ,
+  
+    {
       "title"    : "安装PHP运行环境",
-      "tags"     : "linux php mysql mariadb apahce",
+      "tags"     : "linux php mysql mariadb apache",
       "url"      : "/2016/11/22/install-php.html"
+    } ,
+  
+    {
+      "title"    : "MySQL设置默认编码",
+      "tags"     : "linux mysql mariadb",
+      "url"      : "/2016/11/09/mysql-default-charset.html"
     } ,
   
     {
@@ -25,9 +55,123 @@
     } ,
   
     {
+      "title"    : "MySQL事务隔离级别",
+      "tags"     : "mysql mariadb",
+      "url"      : "/2016/04/29/mysql-transaction.html"
+    } ,
+  
+    {
+      "title"    : "使用flock文件锁解决脚本重复执行问题",
+      "tags"     : "linux flock",
+      "url"      : "/2016/04/28/flock.html"
+    } ,
+  
+    {
+      "title"    : "CentOS最小安装没有crontab命令",
+      "tags"     : "linux centos",
+      "url"      : "/2016/04/14/centos-install-crontab.html"
+    } ,
+  
+    {
+      "title"    : "MySQL常用命令",
+      "tags"     : "mysql mariadb",
+      "url"      : "/2016/04/12/mysql-command.html"
+    } ,
+  
+    {
+      "title"    : "MySQL常用列类型存储要求",
+      "tags"     : "linux mysql",
+      "url"      : "/2016/03/28/mysql-column-type-size.html"
+    } ,
+  
+    {
+      "title"    : "CentOS 安装 Confluence",
+      "tags"     : "linux confluence",
+      "url"      : "/2016/01/27/centos-install-confluence.html"
+    } ,
+  
+    {
+      "title"    : "Mac下的Photoshop CC系列版本另存为png、jpg文件过大的问题分析与解决",
+      "tags"     : "mac photoshop",
+      "url"      : "/2015/12/27/photoshopcc-save-file-size-too-big.html"
+    } ,
+  
+    {
+      "title"    : "iTerm色彩方案",
+      "tags"     : "iterm",
+      "url"      : "/2015/12/15/iterm-color.html"
+    } ,
+  
+    {
+      "title"    : "CentOS安装svn server",
+      "tags"     : "centos svn",
+      "url"      : "/2015/12/03/centos-install-svnserver.html"
+    } ,
+  
+    {
       "title"    : "安装Shadowsocks服务端",
       "tags"     : "linux shadowsocks",
       "url"      : "/2015/11/14/install-shadowsocks.html"
+    } ,
+  
+    {
+      "title"    : "SVN出现Previous operation has not finished",
+      "tags"     : "svn",
+      "url"      : "/2015/11/07/svn-previous-operation-has-not-finished.html"
+    } ,
+  
+    {
+      "title"    : "PHP使用SOAP传参的问题",
+      "tags"     : "php soap",
+      "url"      : "/2015/10/10/php-soap-call-problem.html"
+    } ,
+  
+    {
+      "title"    : "PHP配置DB2(windows)",
+      "tags"     : "windows php db2",
+      "url"      : "/2015/10/08/php-config-db2.html"
+    } ,
+  
+    {
+      "title"    : "Yii2日志",
+      "tags"     : "linux php yii",
+      "url"      : "/2015/09/03/yii-log.html"
+    } ,
+  
+    {
+      "title"    : "恢复MySQL密码",
+      "tags"     : "linux mysql mariadb",
+      "url"      : "/2015/08/12/reset-mysql-password.html"
+    } ,
+  
+    {
+      "title"    : "IE6下载需要这样的格式",
+      "tags"     : "ie6 php",
+      "url"      : "/2015/06/29/ie6-download-head.html"
+    } ,
+  
+    {
+      "title"    : "Object-C中nil, Nil, NULL, NSNull的含义",
+      "tags"     : "object-c",
+      "url"      : "/2015/03/23/oc-nill.html"
+    } ,
+  
+    {
+      "title"    : "Windows server 2008 无法加载php_sqlsrv_54_ts.dll",
+      "tags"     : "windows php sqlserver",
+      "url"      : "/2015/03/16/windows-server-2008-load-php_sqlsrv_54_ts-fail.html"
+    } ,
+  
+    {
+      "title"    : "PHP连接Oracle(Windows)",
+      "tags"     : "windows php oracle",
+      "url"      : "/2015/03/16/php-connec-oracle-for-windows.html"
+    } ,
+  
+    {
+      "title"    : "CSS margin-top 不生效",
+      "tags"     : "css",
+      "url"      : "/2015/03/11/css-margin-invalid.html"
     } 
   
 ]

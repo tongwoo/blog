@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PHP配置DB2(windows) - 武仝的博客</title>
+    <meta name="author"  content="武仝">
+    <meta name="description" content="PHP配置DB2(windows)">
+    <meta name="keywords"  content="windows, php, db2">
+    <!-- Open Graph -->
+    <meta property="og:title" content="PHP配置DB2(windows) - 武仝的博客">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://blog.wutong.me/2015/10/08/php-config-db2.html">
+    <meta property="og:description" content="PHP开发者，热爱技术&设计。很高兴能在这里分享我对技术的思考。">
+    <meta property="og:site_name" content="武仝的博客">
+    <link rel="stylesheet" href="//cdn.staticfile.org/normalize/6.0.0/normalize.min.css">
+    <link rel="stylesheet" href="//at.alicdn.com/t/font_roc50gemkxpw4s4i.css">
+    <link rel="stylesheet" href="/assets/css/github-markdown.css">
+    <link rel="stylesheet" href="/assets/css/prism.css">
+    <link rel="stylesheet" href="/assets/css/share.min.css">
+    <link rel="stylesheet" href="/assets/css/app.min.css">
+    <link rel="stylesheet" href="/assets/css/common.css">
+</head>
+<body>
+    <!--[if lt IE 10]>
+<div class="alert-danger" role="alert">你的浏览器实在太太太旧了，放学别走，升级完浏览器再说！<a target="_blank" class="alert-link" href="http://browsehappy.com">立即升级</a></div>
+<![endif]-->
+<input id="nm-switch" type="hidden" value="false">
+
+<header class="g-header">
+    <div class="g-logo">
+      <a href="/"></a>
+    </div>
+    <i id="menu-toggle" class="iconfont icon-menu"></i>
+    <nav class="g-nav">
+        <ul>
+            
+            <li><a href="/">首页</a></li>
+            
+            <li><a href="//wutong.me">2017之前文章</a></li>
+            
+            <li><a href="/tags.html">tags</a></li>
+            
+        </ul>
+    </nav>
+</header>
+
+
+<header class="g-banner post-header post-pattern-circuitBoard bgcolor-default post-no-cover" data-theme="default">
+    <div class="post-wrapper">
+        <div class="post-tags">
+            
+            
+            <a href="https://blog.wutong.me/tags.html#windows" class="post-tag">windows</a>
+            
+            <a href="https://blog.wutong.me/tags.html#php" class="post-tag">php</a>
+            
+            <a href="https://blog.wutong.me/tags.html#db2" class="post-tag">db2</a>
+            
+            
+        </div>
+        <h1>PHP配置DB2(windows)</h1>
+        <div class="post-meta">
+            <span class="post-meta-item"><i class="iconfont icon-author"></i><a href="https://blog.wutong.me" target="_blank" rel="author">wutong</a></></span>
+            <time class="post-meta-item" datetime="2015-10-08"><i class="iconfont icon-date"></i>2015-10-08</time>
+        </div>
+    </div>
+    
+</header>
+
+<div class="post-content">
+    
+    <article class="markdown-body">
+        <div class="post-forward-message">本文章地址：https://blog.wutong.me/2015/10/08/php-config-db2.html 转载请注明出处</div>
+        <p>供电局的系统用的DB2，不给接口直接给数据库的操作权限，想想也是醉了，废话不多说，下面是我的配置DB2扩展的过程（仅限windows）</p>
+
+<h3 id="前言">前言</h3>
+
+<p>扩展的使用跟PHP的版本息息相关，下面是我使用的软件或运行库，安装好后重启web服务器并查看phpinfo()是否有db2的扩展选项</p>
+
+<h3 id="php55-vc11-x86-thread-safe">PHP5.5 VC11 x86 Thread Safe</h3>
+
+<p>下载地址： http://windows.php.net/download#php-5.5</p>
+
+<h3 id="使用此php版本需要vc11运行库">使用此PHP版本需要VC11运行库</h3>
+
+<p>下载地址： http://www.microsoft.com/en-us/download/details.aspx?id=30679</p>
+
+<h3 id="下载与php版本对应的db2扩展">下载与PHP版本对应的DB2扩展</h3>
+
+<p>下载地址： http://pecl.php.net/package/ibm_db2</p>
+
+<p>还得需要DB2CLI（ibm_data_server_driver_package）下载与系统对应的版本</p>
+
+<p>下载地址： http://www-01.ibm.com/support/docview.wss?uid=swg24040536</p>
+
+<p>最后在PHP.INI增加扩展选项</p>
+
+<pre><code class="language-code">extension=php_ibm_db2.dll
+</code></pre>
+
+<h3 id="连接测试">连接测试</h3>
+
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">//数据库名
+</span><span class="nv">$dbName</span> <span class="o">=</span> <span class="s2">"PWYWTEST"</span><span class="p">;</span>
+<span class="c1">//数据库用户名
+</span><span class="nv">$dbUser</span> <span class="o">=</span> <span class="s2">"db2admin"</span><span class="p">;</span>
+<span class="c1">//数据库密码
+</span><span class="nv">$dbPassword</span> <span class="o">=</span> <span class="s2">"*****"</span><span class="p">;</span>
+<span class="c1">//连接字符串
+</span><span class="nv">$dbConn</span> <span class="o">=</span> <span class="s2">"DRIVER={IBM DB2 ODBC DRIVER};DATABASE=</span><span class="nv">$dbName</span><span class="s2">;"</span> <span class="o">.</span>
+    <span class="s2">"HOSTNAME=127.0.0.1;PORT=50000;PROTOCOL=TCPIP;UID=</span><span class="nv">$dbUser</span><span class="s2">;PWD=</span><span class="nv">$dbPassword</span><span class="s2">;"</span><span class="p">;</span>
+<span class="c1">//测试连接
+</span><span class="nv">$conn</span> <span class="o">=</span> <span class="nb">db2_connect</span><span class="p">(</span><span class="nv">$dbConn</span><span class="p">,</span> <span class="s2">""</span><span class="p">,</span> <span class="s2">""</span><span class="p">);</span>
+<span class="k">if</span> <span class="p">(</span><span class="nv">$conn</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">echo</span> <span class="s2">"suucess"</span><span class="p">;</span>
+<span class="p">}</span><span class="k">else</span><span class="p">{</span>
+    <span class="k">echo</span> <span class="s2">"fail"</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="c1">//线路重载
+</span><span class="nv">$sql</span> <span class="o">=</span> <span class="s2">"SELECT * FROM userpd.T_PD_YWZHZBB_PWFH"</span><span class="p">;</span>
+<span class="c1">//执行结果
+</span><span class="nv">$executeResult</span><span class="o">=</span><span class="nb">db2_exec</span><span class="p">(</span><span class="nv">$conn</span><span class="p">,</span><span class="nv">$sql</span><span class="p">);</span>
+<span class="c1">//获取当前行的结果集
+</span><span class="nv">$result</span><span class="o">=</span><span class="nb">db2_fetch_assoc</span><span class="p">(</span><span class="nv">$executeResult</span><span class="p">)</span>
+<span class="c1">//输出
+</span><span class="nb">var_dump</span><span class="p">(</span><span class="nv">$result</span><span class="p">);</span>
+</code></pre></div></div>
+
+    </article>
+    
+    <div class="social-share-wrapper">
+        <div class="social-share"></div>
+    </div>
+    
+</div>
+
+<section class="author-detail">
+    <section class="post-footer-item author-card">
+        <div class="avatar">
+            <img src="/assets/img/profile.jpg" alt="">
+        </div>
+        <div class="author-name" rel="author">武仝</div>
+        <div class="bio">
+            <p>PHP开发，热爱技术&设计</p>
+        </div>
+        
+        <ul class="sns-links">
+            
+            <li>
+                <a href="//weibo.com/u/3479312483" target="_blank">
+                    <i class="iconfont icon-weibo"></i>
+                </a>
+            </li>
+            
+            <li>
+                <a href="//github.com/tongwoo" target="_blank">
+                    <i class="iconfont icon-github"></i>
+                </a>
+            </li>
+            
+        </ul>
+        
+    </section>
+    <section class="post-footer-item read-next">
+        
+        <div class="read-next-item">
+            <a href="/2015/10/10/php-soap-call-problem.html" class="read-next-link"></a>
+            <section>
+                <span>PHP使用SOAP传参的问题</span>
+                <p>有时候按照官方文档也有可能出错。</p>
+            </section>
+            
+        </div>
+        
+        
+        <div class="read-next-item">
+            <a href="/2015/09/03/yii-log.html" class="read-next-link"></a>
+            <section>
+                <span>Yii2日志</span>
+                <p>Yii中的日志是比较一个强大的功能。</p>
+            </section>
+            
+        </div>
+        
+    </section>
+    
+</section>
+
+<footer class="g-footer">
+    <section>武仝的博客 © 2017</section>
+    <section>Powered by <a href="//jekyllrb.com">Jekyll</a> | <a href="https://github.com/kaeyleo/jekyll-theme-H2O">Theme H2O</a></section>
+</footer>
+
+<script src="/assets/js/social-share.min.js"></script>
+<script>
+    socialShare('.social-share', {
+        sites: ['wechat','weibo','douban','twitter'],
+        wechatQrcodeTitle: "分享到微信朋友圈",
+        wechatQrcodeHelper: '<p>扫码后点击右上角</p><p>将本文分享至朋友圈</p>'
+    });
+</script>
+<script>
+/**
+*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+/*
+var disqus_config = function () {
+this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+*/
+(function() { // DON'T EDIT BELOW THIS LINE
+//var d = document, s = d.createElement('script');
+/*写入自己的disqus信息*/
+//s.src = 'https://liaokeyu.disqus.com/embed.js';
+//s.setAttribute('data-timestamp', +new Date());
+//(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<script src="/assets/js/jquery.min.js"></script>
+<script src="/assets/js/prism.js"></script>
+<script src="/assets/js/index.min.js"></script>
+</body>
+</html>

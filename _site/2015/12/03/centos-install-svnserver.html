@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CentOS安装svn server - 武仝的博客</title>
+    <meta name="author"  content="武仝">
+    <meta name="description" content="CentOS安装svn server">
+    <meta name="keywords"  content="centos, svn">
+    <!-- Open Graph -->
+    <meta property="og:title" content="CentOS安装svn server - 武仝的博客">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://blog.wutong.me/2015/12/03/centos-install-svnserver.html">
+    <meta property="og:description" content="PHP开发者，热爱技术&设计。很高兴能在这里分享我对技术的思考。">
+    <meta property="og:site_name" content="武仝的博客">
+    <link rel="stylesheet" href="//cdn.staticfile.org/normalize/6.0.0/normalize.min.css">
+    <link rel="stylesheet" href="//at.alicdn.com/t/font_roc50gemkxpw4s4i.css">
+    <link rel="stylesheet" href="/assets/css/github-markdown.css">
+    <link rel="stylesheet" href="/assets/css/prism.css">
+    <link rel="stylesheet" href="/assets/css/share.min.css">
+    <link rel="stylesheet" href="/assets/css/app.min.css">
+    <link rel="stylesheet" href="/assets/css/common.css">
+</head>
+<body>
+    <!--[if lt IE 10]>
+<div class="alert-danger" role="alert">你的浏览器实在太太太旧了，放学别走，升级完浏览器再说！<a target="_blank" class="alert-link" href="http://browsehappy.com">立即升级</a></div>
+<![endif]-->
+<input id="nm-switch" type="hidden" value="false">
+
+<header class="g-header">
+    <div class="g-logo">
+      <a href="/"></a>
+    </div>
+    <i id="menu-toggle" class="iconfont icon-menu"></i>
+    <nav class="g-nav">
+        <ul>
+            
+            <li><a href="/">首页</a></li>
+            
+            <li><a href="//wutong.me">2017之前文章</a></li>
+            
+            <li><a href="/tags.html">tags</a></li>
+            
+        </ul>
+    </nav>
+</header>
+
+
+<header class="g-banner post-header post-pattern-circuitBoard bgcolor-default post-no-cover" data-theme="default">
+    <div class="post-wrapper">
+        <div class="post-tags">
+            
+            
+            <a href="https://blog.wutong.me/tags.html#centos" class="post-tag">centos</a>
+            
+            <a href="https://blog.wutong.me/tags.html#svn" class="post-tag">svn</a>
+            
+            
+        </div>
+        <h1>CentOS安装svn server</h1>
+        <div class="post-meta">
+            <span class="post-meta-item"><i class="iconfont icon-author"></i><a href="https://blog.wutong.me" target="_blank" rel="author">wutong</a></></span>
+            <time class="post-meta-item" datetime="2015-12-03"><i class="iconfont icon-date"></i>2015-12-03</time>
+        </div>
+    </div>
+    
+</header>
+
+<div class="post-content">
+    
+    <article class="markdown-body">
+        <div class="post-forward-message">本文章地址：https://blog.wutong.me/2015/12/03/centos-install-svnserver.html 转载请注明出处</div>
+        <p>搭建一台SVN服务器。</p>
+
+<h3 id="安装">安装</h3>
+
+<p>安装 svn server 使用 httpd 的 mod_dav_svn 模块，所以第一步就是安装 httpd</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>yum install httpd
+</code></pre></div></div>
+
+<p>然后安装 mod_dav_svn</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>yum install mod_dav_svn
+</code></pre></div></div>
+
+<p>安装完成后会在 /etc/httpd/conf.d 目录生成一个 subversion.conf 配置文件，更改里面的配置</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">#用于连接的端口号</span>
+listen 2048
+<span class="c">#用于连接的域名</span>
+ServerName subversion.wutong.me
+<span class="c">#用浏览器浏览的时候不显示目录结构</span>
+Options <span class="nt">-Indexes</span>
+DAV svn
+<span class="c">#SVN仓库目录</span>
+SVNParentPath /mnt/svn_repository
+AuthType Basic
+<span class="c">#连接svn的欢迎信息</span>
+AuthName <span class="s2">"Welcome to Sherlock Wooton's SVN server."</span>
+<span class="c">#svn用户列表</span>
+AuthUserFile /mnt/svn_repository/svn_user
+<span class="c">#svn用户授权列表</span>
+AuthzSVNAccessFile /mnt/svn_repository/svn_user_auth
+Require valid-user
+</code></pre></div></div>
+
+<p>因为我要使用域名，所以使用了这样的配置</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">#代表svn的仓库目录，以后就在这个路径下建立仓库</span>
+SVNParentPath
+
+<span class="c">#代表了svn用户列表</span>
+AuthUserFile 
+
+<span class="c">#代表了svn用户对svn访问的权限，比如只读，可写等</span>
+AuthzSVNAccessFile
+</code></pre></div></div>
+
+<p>这样配置好后下面就要开始创建仓库了</p>
+
+<h3 id="创建仓库">创建仓库</h3>
+
+<p>进入到 /mnt/sv_repository 目录，比如我想创建一个名字为test的仓库，执行下列命令</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">#创建test仓库</span>
+svnadmin create <span class="nb">test</span>
+
+<span class="c">#更改拥有者为apache</span>
+chown <span class="nt">-R</span> apache.apache <span class="nb">test</span>
+</code></pre></div></div>
+
+<p>这样一个仓库就创建好了，然后在创建用户和赋予用户仓库的权限</p>
+
+<h3 id="创建svn用户">创建svn用户</h3>
+
+<p>创建用户需要使用 htpasswd 命令</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>htpasswd <span class="nt">-c</span> /mnt/svn_repository/svn_user 用户名 用户密码
+</code></pre></div></div>
+
+<p>然后打开 /mnt/svn_repository/svn_user 文件，可以看到已经增加了一个用户</p>
+
+<h3 id="对仓库赋予用户访问权限">对仓库赋予用户访问权限</h3>
+
+<p>打开 /mnt/svn_repository/svn_user_auth 文件，比如我想对刚才的test仓库使用wutong用户并赋予读写权限，可以这么设置</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span><span class="nb">test</span>:/]
+<span class="nv">wutong</span><span class="o">=</span>rw
+</code></pre></div></div>
+
+<h3 id="访问svn">访问SVN</h3>
+<p>一切就绪，打开 http://subversion.wutong.me:2048/svn/test 然后输入用户密码就可以访问了</p>
+
+<h3 id="增加用户">增加用户</h3>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>htpasswd <span class="nt">-b</span>  SVN 用户文件 用户名 密码
+</code></pre></div></div>
+
+<p>如：</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>htpasswd <span class="nt">-b</span> /mnt/svn_repository/svn_user zhangsan 123456
+</code></pre></div></div>
+
+    </article>
+    
+    <div class="social-share-wrapper">
+        <div class="social-share"></div>
+    </div>
+    
+</div>
+
+<section class="author-detail">
+    <section class="post-footer-item author-card">
+        <div class="avatar">
+            <img src="/assets/img/profile.jpg" alt="">
+        </div>
+        <div class="author-name" rel="author">武仝</div>
+        <div class="bio">
+            <p>PHP开发，热爱技术&设计</p>
+        </div>
+        
+        <ul class="sns-links">
+            
+            <li>
+                <a href="//weibo.com/u/3479312483" target="_blank">
+                    <i class="iconfont icon-weibo"></i>
+                </a>
+            </li>
+            
+            <li>
+                <a href="//github.com/tongwoo" target="_blank">
+                    <i class="iconfont icon-github"></i>
+                </a>
+            </li>
+            
+        </ul>
+        
+    </section>
+    <section class="post-footer-item read-next">
+        
+        <div class="read-next-item">
+            <a href="/2015/12/15/iterm-color.html" class="read-next-link"></a>
+            <section>
+                <span>iTerm色彩方案</span>
+                <p>默认的一团绿色很丑。</p>
+            </section>
+            
+        </div>
+        
+        
+        <div class="read-next-item">
+            <a href="/2015/11/14/install-shadowsocks.html" class="read-next-link"></a>
+            <section>
+                <span>安装Shadowsocks服务端</span>
+                <p>在不翻墙的情况下访问某些站点无法打开或者很慢，所以只能挂代理。但是，购买的代理不稳定，所以最好的方法就是自己花钱自...</p>
+            </section>
+            
+        </div>
+        
+    </section>
+    
+</section>
+
+<footer class="g-footer">
+    <section>武仝的博客 © 2017</section>
+    <section>Powered by <a href="//jekyllrb.com">Jekyll</a> | <a href="https://github.com/kaeyleo/jekyll-theme-H2O">Theme H2O</a></section>
+</footer>
+
+<script src="/assets/js/social-share.min.js"></script>
+<script>
+    socialShare('.social-share', {
+        sites: ['wechat','weibo','douban','twitter'],
+        wechatQrcodeTitle: "分享到微信朋友圈",
+        wechatQrcodeHelper: '<p>扫码后点击右上角</p><p>将本文分享至朋友圈</p>'
+    });
+</script>
+<script>
+/**
+*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+/*
+var disqus_config = function () {
+this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+*/
+(function() { // DON'T EDIT BELOW THIS LINE
+//var d = document, s = d.createElement('script');
+/*写入自己的disqus信息*/
+//s.src = 'https://liaokeyu.disqus.com/embed.js';
+//s.setAttribute('data-timestamp', +new Date());
+//(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<script src="/assets/js/jquery.min.js"></script>
+<script src="/assets/js/prism.js"></script>
+<script src="/assets/js/index.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>使用flock文件锁解决脚本重复执行问题 - 武仝的博客</title>
+    <meta name="author"  content="武仝">
+    <meta name="description" content="使用flock文件锁解决脚本重复执行问题">
+    <meta name="keywords"  content="linux, flock">
+    <!-- Open Graph -->
+    <meta property="og:title" content="使用flock文件锁解决脚本重复执行问题 - 武仝的博客">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://blog.wutong.me/2016/04/28/flock.html">
+    <meta property="og:description" content="PHP开发者，热爱技术&设计。很高兴能在这里分享我对技术的思考。">
+    <meta property="og:site_name" content="武仝的博客">
+    <link rel="stylesheet" href="//cdn.staticfile.org/normalize/6.0.0/normalize.min.css">
+    <link rel="stylesheet" href="//at.alicdn.com/t/font_roc50gemkxpw4s4i.css">
+    <link rel="stylesheet" href="/assets/css/github-markdown.css">
+    <link rel="stylesheet" href="/assets/css/prism.css">
+    <link rel="stylesheet" href="/assets/css/share.min.css">
+    <link rel="stylesheet" href="/assets/css/app.min.css">
+    <link rel="stylesheet" href="/assets/css/common.css">
+</head>
+<body>
+    <!--[if lt IE 10]>
+<div class="alert-danger" role="alert">你的浏览器实在太太太旧了，放学别走，升级完浏览器再说！<a target="_blank" class="alert-link" href="http://browsehappy.com">立即升级</a></div>
+<![endif]-->
+<input id="nm-switch" type="hidden" value="false">
+
+<header class="g-header">
+    <div class="g-logo">
+      <a href="/"></a>
+    </div>
+    <i id="menu-toggle" class="iconfont icon-menu"></i>
+    <nav class="g-nav">
+        <ul>
+            
+            <li><a href="/">首页</a></li>
+            
+            <li><a href="//wutong.me">2017之前文章</a></li>
+            
+            <li><a href="/tags.html">tags</a></li>
+            
+        </ul>
+    </nav>
+</header>
+
+
+<header class="g-banner post-header post-pattern-circuitBoard bgcolor-default post-no-cover" data-theme="default">
+    <div class="post-wrapper">
+        <div class="post-tags">
+            
+            
+            <a href="https://blog.wutong.me/tags.html#linux" class="post-tag">linux</a>
+            
+            <a href="https://blog.wutong.me/tags.html#flock" class="post-tag">flock</a>
+            
+            
+        </div>
+        <h1>使用flock文件锁解决脚本重复执行问题</h1>
+        <div class="post-meta">
+            <span class="post-meta-item"><i class="iconfont icon-author"></i><a href="https://blog.wutong.me" target="_blank" rel="author">wutong</a></></span>
+            <time class="post-meta-item" datetime="2016-04-28"><i class="iconfont icon-date"></i>2016-04-28</time>
+        </div>
+    </div>
+    
+</header>
+
+<div class="post-content">
+    
+    <article class="markdown-body">
+        <div class="post-forward-message">本文章地址：https://blog.wutong.me/2016/04/28/flock.html 转载请注明出处</div>
+        <p>经常需要cron任务来执行一段脚本，如果在规定时间内无法执行完，就会又一次执行，可以借用flock命令来
+解决这一的情况，即：如果在规定时间内脚本没执行完则不执行。</p>
+
+<h3 id="使用方法">使用方法</h3>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">*</span> <span class="k">*</span> <span class="k">*</span> <span class="k">*</span> <span class="k">*</span> flock <span class="nt">-xn</span> /tmp/my.lock <span class="nt">-c</span> ‘命令’
+</code></pre></div></div>
+
+<h3 id="flock命令格式">flock命令格式</h3>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>flock <span class="o">[</span><span class="nt">-sxun</span><span class="o">][</span><span class="nt">-w</span> <span class="c">#] fd#</span>
+flock <span class="o">[</span><span class="nt">-sxon</span><span class="o">][</span><span class="nt">-w</span> <span class="c">#] file [-c] command</span>
+</code></pre></div></div>
+
+<h3 id="选项">选项</h3>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">-s</span>, <span class="nt">--shared</span>:    获得一个共享锁
+<span class="nt">-x</span>, <span class="nt">--exclusive</span>: 获得一个独占锁
+<span class="nt">-u</span>, <span class="nt">--unlock</span>:    移除一个锁，通常是不需要的，脚本执行完会自动丢弃锁
+<span class="nt">-n</span>, <span class="nt">--nonblock</span>:  如果没有立即获得锁，直接失败而不是等待
+<span class="nt">-w</span>, <span class="nt">--timeout</span>:   如果没有立即获得锁，等待指定时间
+<span class="nt">-o</span>, <span class="nt">--close</span>:     在运行命令前关闭文件的描述符号。用于如果命令产生子进程时会不受锁的管控
+<span class="nt">-c</span>, <span class="nt">--command</span>:   在shell中运行一个单独的命令
+<span class="nt">-h</span>, <span class="nt">--help</span>       显示帮助
+<span class="nt">-V</span>, <span class="nt">--version</span>:   显示版本
+</code></pre></div></div>
+
+    </article>
+    
+    <div class="social-share-wrapper">
+        <div class="social-share"></div>
+    </div>
+    
+</div>
+
+<section class="author-detail">
+    <section class="post-footer-item author-card">
+        <div class="avatar">
+            <img src="/assets/img/profile.jpg" alt="">
+        </div>
+        <div class="author-name" rel="author">武仝</div>
+        <div class="bio">
+            <p>PHP开发，热爱技术&设计</p>
+        </div>
+        
+        <ul class="sns-links">
+            
+            <li>
+                <a href="//weibo.com/u/3479312483" target="_blank">
+                    <i class="iconfont icon-weibo"></i>
+                </a>
+            </li>
+            
+            <li>
+                <a href="//github.com/tongwoo" target="_blank">
+                    <i class="iconfont icon-github"></i>
+                </a>
+            </li>
+            
+        </ul>
+        
+    </section>
+    <section class="post-footer-item read-next">
+        
+        <div class="read-next-item">
+            <a href="/2016/04/29/mysql-transaction.html" class="read-next-link"></a>
+            <section>
+                <span>MySQL事务隔离级别</span>
+                <p>今天有个朋友问了个数据不一致的问题，加强理解并记录一下。</p>
+            </section>
+            
+        </div>
+        
+        
+        <div class="read-next-item">
+            <a href="/2016/04/14/centos-install-crontab.html" class="read-next-link"></a>
+            <section>
+                <span>CentOS最小安装没有crontab命令</span>
+                <p>CentOS最小安装默认不包含“crontab”服务，解决它。</p>
+            </section>
+            
+        </div>
+        
+    </section>
+    
+</section>
+
+<footer class="g-footer">
+    <section>武仝的博客 © 2017</section>
+    <section>Powered by <a href="//jekyllrb.com">Jekyll</a> | <a href="https://github.com/kaeyleo/jekyll-theme-H2O">Theme H2O</a></section>
+</footer>
+
+<script src="/assets/js/social-share.min.js"></script>
+<script>
+    socialShare('.social-share', {
+        sites: ['wechat','weibo','douban','twitter'],
+        wechatQrcodeTitle: "分享到微信朋友圈",
+        wechatQrcodeHelper: '<p>扫码后点击右上角</p><p>将本文分享至朋友圈</p>'
+    });
+</script>
+<script>
+/**
+*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+/*
+var disqus_config = function () {
+this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+*/
+(function() { // DON'T EDIT BELOW THIS LINE
+//var d = document, s = d.createElement('script');
+/*写入自己的disqus信息*/
+//s.src = 'https://liaokeyu.disqus.com/embed.js';
+//s.setAttribute('data-timestamp', +new Date());
+//(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<script src="/assets/js/jquery.min.js"></script>
+<script src="/assets/js/prism.js"></script>
+<script src="/assets/js/index.min.js"></script>
+</body>
+</html>

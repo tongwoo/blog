@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MySQL常用列类型存储要求 - 武仝的博客</title>
+    <meta name="author"  content="武仝">
+    <meta name="description" content="MySQL常用列类型存储要求">
+    <meta name="keywords"  content="linux, mysql">
+    <!-- Open Graph -->
+    <meta property="og:title" content="MySQL常用列类型存储要求 - 武仝的博客">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://blog.wutong.me/2016/03/28/mysql-column-type-size.html">
+    <meta property="og:description" content="PHP开发者，热爱技术&设计。很高兴能在这里分享我对技术的思考。">
+    <meta property="og:site_name" content="武仝的博客">
+    <link rel="stylesheet" href="//cdn.staticfile.org/normalize/6.0.0/normalize.min.css">
+    <link rel="stylesheet" href="//at.alicdn.com/t/font_roc50gemkxpw4s4i.css">
+    <link rel="stylesheet" href="/assets/css/github-markdown.css">
+    <link rel="stylesheet" href="/assets/css/prism.css">
+    <link rel="stylesheet" href="/assets/css/share.min.css">
+    <link rel="stylesheet" href="/assets/css/app.min.css">
+    <link rel="stylesheet" href="/assets/css/common.css">
+</head>
+<body>
+    <!--[if lt IE 10]>
+<div class="alert-danger" role="alert">你的浏览器实在太太太旧了，放学别走，升级完浏览器再说！<a target="_blank" class="alert-link" href="http://browsehappy.com">立即升级</a></div>
+<![endif]-->
+<input id="nm-switch" type="hidden" value="false">
+
+<header class="g-header">
+    <div class="g-logo">
+      <a href="/"></a>
+    </div>
+    <i id="menu-toggle" class="iconfont icon-menu"></i>
+    <nav class="g-nav">
+        <ul>
+            
+            <li><a href="/">首页</a></li>
+            
+            <li><a href="//wutong.me">2017之前文章</a></li>
+            
+            <li><a href="/tags.html">tags</a></li>
+            
+        </ul>
+    </nav>
+</header>
+
+
+<header class="g-banner post-header post-pattern-circuitBoard bgcolor-default post-no-cover" data-theme="default">
+    <div class="post-wrapper">
+        <div class="post-tags">
+            
+            
+            <a href="https://blog.wutong.me/tags.html#linux" class="post-tag">linux</a>
+            
+            <a href="https://blog.wutong.me/tags.html#mysql" class="post-tag">mysql</a>
+            
+            
+        </div>
+        <h1>MySQL常用列类型存储要求</h1>
+        <div class="post-meta">
+            <span class="post-meta-item"><i class="iconfont icon-author"></i><a href="https://blog.wutong.me" target="_blank" rel="author">wutong</a></></span>
+            <time class="post-meta-item" datetime="2016-03-28"><i class="iconfont icon-date"></i>2016-03-28</time>
+        </div>
+    </div>
+    
+</header>
+
+<div class="post-content">
+    
+    <article class="markdown-body">
+        <div class="post-forward-message">本文章地址：https://blog.wutong.me/2016/03/28/mysql-column-type-size.html 转载请注明出处</div>
+        <p>根据类别列出了MySQL支持的每个列类型的存储需求。</p>
+
+<h3 id="数值类型存储需求">数值类型存储需求</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th><strong>列类型</strong></th>
+      <th><strong>存储需求</strong></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>TINYINT</td>
+      <td>1个字节</td>
+    </tr>
+    <tr>
+      <td>SMALLINT</td>
+      <td>2个字节</td>
+    </tr>
+    <tr>
+      <td>MEDIUMINT</td>
+      <td>3个字节</td>
+    </tr>
+    <tr>
+      <td>INT, INTEGER</td>
+      <td>4个字节</td>
+    </tr>
+    <tr>
+      <td>BIGINT</td>
+      <td>8个字节</td>
+    </tr>
+    <tr>
+      <td>FLOAT(<em>p</em>)</td>
+      <td>如果0 &lt;= <em>p</em> &lt;= 24为4个字节, 如果25 &lt;= <em>p</em> &lt;= 53为8个字节</td>
+    </tr>
+    <tr>
+      <td>FLOAT</td>
+      <td>4个字节</td>
+    </tr>
+    <tr>
+      <td>DOUBLE [PRECISION], item REAL</td>
+      <td>8个字节</td>
+    </tr>
+    <tr>
+      <td>DECIMAL(<em>M</em>,<em>D</em>), NUMERIC(<em>M</em>,<em>D</em>)</td>
+      <td>变长；参见下面的讨论</td>
+    </tr>
+    <tr>
+      <td>BIT(<em>M</em>)</td>
+      <td>大约(<em>M</em>+7)/8个字节</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="日期和时间类型的存储需求">日期和时间类型的存储需求</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th><strong>列类型</strong></th>
+      <th><strong>存储需求</strong></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>DATE</td>
+      <td>3个字节</td>
+    </tr>
+    <tr>
+      <td>DATETIME</td>
+      <td>8个字节</td>
+    </tr>
+    <tr>
+      <td>TIMESTAMP</td>
+      <td>4个字节</td>
+    </tr>
+    <tr>
+      <td>TIME</td>
+      <td>3个字节</td>
+    </tr>
+    <tr>
+      <td>YEAR</td>
+      <td>1个字节</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="字符串类型的存储需求">字符串类型的存储需求</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th><strong>列类型</strong></th>
+      <th><strong>存储需求</strong></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>CHAR(<em>M</em>)</td>
+      <td><em>M</em>个字节，0 &lt;= <em>M</em> &lt;= 255</td>
+    </tr>
+    <tr>
+      <td>VARCHAR(<em>M</em>)</td>
+      <td><em>L</em>+1个字节，其中<em>L</em> &lt;= <em>M</em> 且0 &lt;= <em>M</em> &lt;= 65535(参见下面的注释)</td>
+    </tr>
+    <tr>
+      <td>BINARY(<em>M</em>)</td>
+      <td><em>M</em>个字节，0 &lt;= <em>M</em> &lt;= 255</td>
+    </tr>
+    <tr>
+      <td>VARBINARY(<em>M</em>)</td>
+      <td><em>L</em>+1个字节，其中<em>L</em> &lt;= <em>M</em> 且0 &lt;= <em>M</em> &lt;= 255</td>
+    </tr>
+    <tr>
+      <td>TINYBLOB, TINYTEXT</td>
+      <td><em>L</em>+1个字节，其中<em>L</em> &lt; 2<sup>8</sup></td>
+    </tr>
+    <tr>
+      <td>BLOB, TEXT</td>
+      <td><em>L</em>+2个字节，其中<em>L</em> &lt; 2<sup>16</sup></td>
+    </tr>
+    <tr>
+      <td>MEDIUMBLOB, MEDIUMTEXT</td>
+      <td><em>L</em>+3个字节，其中<em>L</em> &lt; 2<sup>24</sup></td>
+    </tr>
+    <tr>
+      <td>LONGBLOB, LONGTEXT</td>
+      <td><em>L</em>+4个字节，其中<em>L</em> &lt; 2<sup>32</sup></td>
+    </tr>
+    <tr>
+      <td>ENUM(‘<em>value1</em>’,’<em>value2</em>‘,…)</td>
+      <td>1或2个字节，取决于枚举值的个数(最多65,535个值)</td>
+    </tr>
+    <tr>
+      <td>SET(‘<em>value1</em>’,’<em>value2</em>‘,…)</td>
+      <td>1、2、3、4或者8个字节，取决于set成员的数目(最多64个成员)</td>
+    </tr>
+  </tbody>
+</table>
+
+    </article>
+    
+    <div class="social-share-wrapper">
+        <div class="social-share"></div>
+    </div>
+    
+</div>
+
+<section class="author-detail">
+    <section class="post-footer-item author-card">
+        <div class="avatar">
+            <img src="/assets/img/profile.jpg" alt="">
+        </div>
+        <div class="author-name" rel="author">武仝</div>
+        <div class="bio">
+            <p>PHP开发，热爱技术&设计</p>
+        </div>
+        
+        <ul class="sns-links">
+            
+            <li>
+                <a href="//weibo.com/u/3479312483" target="_blank">
+                    <i class="iconfont icon-weibo"></i>
+                </a>
+            </li>
+            
+            <li>
+                <a href="//github.com/tongwoo" target="_blank">
+                    <i class="iconfont icon-github"></i>
+                </a>
+            </li>
+            
+        </ul>
+        
+    </section>
+    <section class="post-footer-item read-next">
+        
+        <div class="read-next-item">
+            <a href="/2016/04/12/mysql-command.html" class="read-next-link"></a>
+            <section>
+                <span>MySQL常用命令</span>
+                <p>记录一下经常使用的命令。</p>
+            </section>
+            
+        </div>
+        
+        
+        <div class="read-next-item">
+            <a href="/2016/01/27/centos-install-confluence.html" class="read-next-link"></a>
+            <section>
+                <span>CentOS 安装 Confluence</span>
+                <p>confluence是个功能非常强大的文档、知识库等管理共享工具，下面是安装的步骤。</p>
+            </section>
+            
+        </div>
+        
+    </section>
+    
+</section>
+
+<footer class="g-footer">
+    <section>武仝的博客 © 2017</section>
+    <section>Powered by <a href="//jekyllrb.com">Jekyll</a> | <a href="https://github.com/kaeyleo/jekyll-theme-H2O">Theme H2O</a></section>
+</footer>
+
+<script src="/assets/js/social-share.min.js"></script>
+<script>
+    socialShare('.social-share', {
+        sites: ['wechat','weibo','douban','twitter'],
+        wechatQrcodeTitle: "分享到微信朋友圈",
+        wechatQrcodeHelper: '<p>扫码后点击右上角</p><p>将本文分享至朋友圈</p>'
+    });
+</script>
+<script>
+/**
+*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+/*
+var disqus_config = function () {
+this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+*/
+(function() { // DON'T EDIT BELOW THIS LINE
+//var d = document, s = d.createElement('script');
+/*写入自己的disqus信息*/
+//s.src = 'https://liaokeyu.disqus.com/embed.js';
+//s.setAttribute('data-timestamp', +new Date());
+//(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<script src="/assets/js/jquery.min.js"></script>
+<script src="/assets/js/prism.js"></script>
+<script src="/assets/js/index.min.js"></script>
+</body>
+</html>

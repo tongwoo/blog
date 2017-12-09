@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mac下的Photoshop CC系列版本另存为png、jpg文件过大的问题分析与解决 - 武仝的博客</title>
+    <meta name="author"  content="武仝">
+    <meta name="description" content="Mac下的Photoshop CC系列版本另存为png、jpg文件过大的问题分析与解决">
+    <meta name="keywords"  content="mac, photoshop">
+    <!-- Open Graph -->
+    <meta property="og:title" content="Mac下的Photoshop CC系列版本另存为png、jpg文件过大的问题分析与解决 - 武仝的博客">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://blog.wutong.me/2015/12/27/photoshopcc-save-file-size-too-big.html">
+    <meta property="og:description" content="PHP开发者，热爱技术&设计。很高兴能在这里分享我对技术的思考。">
+    <meta property="og:site_name" content="武仝的博客">
+    <link rel="stylesheet" href="//cdn.staticfile.org/normalize/6.0.0/normalize.min.css">
+    <link rel="stylesheet" href="//at.alicdn.com/t/font_roc50gemkxpw4s4i.css">
+    <link rel="stylesheet" href="/assets/css/github-markdown.css">
+    <link rel="stylesheet" href="/assets/css/prism.css">
+    <link rel="stylesheet" href="/assets/css/share.min.css">
+    <link rel="stylesheet" href="/assets/css/app.min.css">
+    <link rel="stylesheet" href="/assets/css/common.css">
+</head>
+<body>
+    <!--[if lt IE 10]>
+<div class="alert-danger" role="alert">你的浏览器实在太太太旧了，放学别走，升级完浏览器再说！<a target="_blank" class="alert-link" href="http://browsehappy.com">立即升级</a></div>
+<![endif]-->
+<input id="nm-switch" type="hidden" value="false">
+
+<header class="g-header">
+    <div class="g-logo">
+      <a href="/"></a>
+    </div>
+    <i id="menu-toggle" class="iconfont icon-menu"></i>
+    <nav class="g-nav">
+        <ul>
+            
+            <li><a href="/">首页</a></li>
+            
+            <li><a href="//wutong.me">2017之前文章</a></li>
+            
+            <li><a href="/tags.html">tags</a></li>
+            
+        </ul>
+    </nav>
+</header>
+
+
+<header class="g-banner post-header post-pattern-circuitBoard bgcolor-default post-no-cover" data-theme="default">
+    <div class="post-wrapper">
+        <div class="post-tags">
+            
+            
+            <a href="https://blog.wutong.me/tags.html#mac" class="post-tag">mac</a>
+            
+            <a href="https://blog.wutong.me/tags.html#photoshop" class="post-tag">photoshop</a>
+            
+            
+        </div>
+        <h1>Mac下的Photoshop CC系列版本另存为png、jpg文件过大的问题分析与解决</h1>
+        <div class="post-meta">
+            <span class="post-meta-item"><i class="iconfont icon-author"></i><a href="https://blog.wutong.me" target="_blank" rel="author">wutong</a></></span>
+            <time class="post-meta-item" datetime="2015-12-27"><i class="iconfont icon-date"></i>2015-12-27</time>
+        </div>
+    </div>
+    
+</header>
+
+<div class="post-content">
+    
+    <article class="markdown-body">
+        <div class="post-forward-message">本文章地址：https://blog.wutong.me/2015/12/27/photoshopcc-save-file-size-too-big.html 转载请注明出处</div>
+        <p>在使用 Mac 下的 Photoshop CC 版本对文件进行存储的时候，会发现文件体积比CS6之前的版本生成的文件大10倍以上，比如我另存为了一个“icon-progress.png”，执行顺序是：文件 – 存储为 – PNG，出来的文件有6M之多。</p>
+
+<h3 id="分析">分析</h3>
+
+<p>既然文件过大，那肯定是ps对文件的真实内容进行了扩充，用代码编辑器打开了图片，发现了如下内容：</p>
+
+<div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;x:xmpmeta</span> <span class="na">xmlns:x=</span><span class="s">"adobe:ns:meta/"</span> <span class="na">x:xmptk=</span><span class="s">"Adobe XMP Core 5.5-c021 79.155772, 2014/01/13-19:44:00        "</span><span class="nt">&gt;</span>
+   <span class="nt">&lt;rdf:RDF</span> <span class="na">xmlns:rdf=</span><span class="s">"http://www.w3.org/1999/02/22-rdf-syntax-ns#"</span><span class="nt">&gt;</span>
+      <span class="nt">&lt;rdf:Description</span> <span class="na">rdf:about=</span><span class="s">""</span>
+            <span class="na">xmlns:photoshop=</span><span class="s">"http://ns.adobe.com/photoshop/1.0/"</span>
+            <span class="na">xmlns:xmpMM=</span><span class="s">"http://ns.adobe.com/xap/1.0/mm/"</span>
+            <span class="na">xmlns:stEvt=</span><span class="s">"http://ns.adobe.com/xap/1.0/sType/ResourceEvent#"</span>
+            <span class="na">xmlns:stRef=</span><span class="s">"http://ns.adobe.com/xap/1.0/sType/ResourceRef#"</span>
+            <span class="na">xmlns:xmp=</span><span class="s">"http://ns.adobe.com/xap/1.0/"</span>
+            <span class="na">xmlns:dc=</span><span class="s">"http://purl.org/dc/elements/1.1/"</span>
+            <span class="na">xmlns:tiff=</span><span class="s">"http://ns.adobe.com/tiff/1.0/"</span>
+            <span class="na">xmlns:exif=</span><span class="s">"http://ns.adobe.com/exif/1.0/"</span><span class="nt">&gt;</span>
+         <span class="nt">&lt;photoshop:LegacyIPTCDigest&gt;</span>2E3857CCBA7891F73749CE549FF5A7BD<span class="nt">&lt;/photoshop:LegacyIPTCDigest&gt;</span>
+         <span class="nt">&lt;photoshop:ColorMode&gt;</span>3<span class="nt">&lt;/photoshop:ColorMode&gt;</span>
+         <span class="nt">&lt;photoshop:ICCProfile&gt;</span>sRGB IEC61966-2.1<span class="nt">&lt;/photoshop:ICCProfile&gt;</span>
+         <span class="nt">&lt;photoshop:DocumentAncestors&gt;</span>
+            <span class="nt">&lt;rdf:Bag&gt;</span>
+               <span class="nt">&lt;rdf:li&gt;</span>0<span class="nt">&lt;/rdf:li&gt;</span>
+               <span class="nt">&lt;rdf:li&gt;</span>000B0C073A7B9F448D4024568E1D2400<span class="nt">&lt;/rdf:li&gt;</span>
+               <span class="nt">&lt;rdf:li&gt;</span>00156DBEC3FBC67004F74B414AA78804<span class="nt">&lt;/rdf:li&gt;</span>
+               <span class="nt">&lt;rdf:li&gt;</span>001A2BEFBA3041BB03814D05EC879BCE<span class="nt">&lt;/rdf:li&gt;</span>
+               <span class="nt">&lt;rdf:li&gt;</span>001C5C4D9C1FC7A7216FA8737C25460B<span class="nt">&lt;/rdf:li&gt;</span>
+         ................
+         <span class="nt">&lt;exif:PixelXDimension&gt;</span>32<span class="nt">&lt;/exif:PixelXDimension&gt;</span>
+         <span class="nt">&lt;exif:PixelYDimension&gt;</span>32<span class="nt">&lt;/exif:PixelYDimension&gt;</span>
+      <span class="nt">&lt;/rdf:Description&gt;</span>
+   <span class="nt">&lt;/rdf:RDF&gt;</span>
+<span class="nt">&lt;/x:xmpmeta&gt;</span>
+.......
+</code></pre></div></div>
+
+<p>足足10几万行，这个叫 metadata，翻译过来就是 “元数据”，adobe为什么加上这个东东？看xml的描述应该是记录了操作的过程和文件信息。</p>
+
+<h3 id="解决">解决</h3>
+
+<p>既然他加了这个东西那有没有办法让他不加？我使用了如下方式进行解决:</p>
+
+<blockquote>
+  <p>文件 – 存储为web格式 - 元数据(无) – 存储</p>
+</blockquote>
+
+<p><img src="/screenshot/2015-12-27/ps-saveas.png" alt="存储为web格式图片" /></p>
+
+
+    </article>
+    
+    <div class="social-share-wrapper">
+        <div class="social-share"></div>
+    </div>
+    
+</div>
+
+<section class="author-detail">
+    <section class="post-footer-item author-card">
+        <div class="avatar">
+            <img src="/assets/img/profile.jpg" alt="">
+        </div>
+        <div class="author-name" rel="author">武仝</div>
+        <div class="bio">
+            <p>PHP开发，热爱技术&设计</p>
+        </div>
+        
+        <ul class="sns-links">
+            
+            <li>
+                <a href="//weibo.com/u/3479312483" target="_blank">
+                    <i class="iconfont icon-weibo"></i>
+                </a>
+            </li>
+            
+            <li>
+                <a href="//github.com/tongwoo" target="_blank">
+                    <i class="iconfont icon-github"></i>
+                </a>
+            </li>
+            
+        </ul>
+        
+    </section>
+    <section class="post-footer-item read-next">
+        
+        <div class="read-next-item">
+            <a href="/2016/01/27/centos-install-confluence.html" class="read-next-link"></a>
+            <section>
+                <span>CentOS 安装 Confluence</span>
+                <p>confluence是个功能非常强大的文档、知识库等管理共享工具，下面是安装的步骤。</p>
+            </section>
+            
+        </div>
+        
+        
+        <div class="read-next-item">
+            <a href="/2015/12/15/iterm-color.html" class="read-next-link"></a>
+            <section>
+                <span>iTerm色彩方案</span>
+                <p>默认的一团绿色很丑。</p>
+            </section>
+            
+        </div>
+        
+    </section>
+    
+</section>
+
+<footer class="g-footer">
+    <section>武仝的博客 © 2017</section>
+    <section>Powered by <a href="//jekyllrb.com">Jekyll</a> | <a href="https://github.com/kaeyleo/jekyll-theme-H2O">Theme H2O</a></section>
+</footer>
+
+<script src="/assets/js/social-share.min.js"></script>
+<script>
+    socialShare('.social-share', {
+        sites: ['wechat','weibo','douban','twitter'],
+        wechatQrcodeTitle: "分享到微信朋友圈",
+        wechatQrcodeHelper: '<p>扫码后点击右上角</p><p>将本文分享至朋友圈</p>'
+    });
+</script>
+<script>
+/**
+*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+/*
+var disqus_config = function () {
+this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+*/
+(function() { // DON'T EDIT BELOW THIS LINE
+//var d = document, s = d.createElement('script');
+/*写入自己的disqus信息*/
+//s.src = 'https://liaokeyu.disqus.com/embed.js';
+//s.setAttribute('data-timestamp', +new Date());
+//(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<script src="/assets/js/jquery.min.js"></script>
+<script src="/assets/js/prism.js"></script>
+<script src="/assets/js/index.min.js"></script>
+</body>
+</html>

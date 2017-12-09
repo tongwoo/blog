@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Windows server 2008 无法加载php_sqlsrv_54_ts.dll - 武仝的博客</title>
+    <meta name="author"  content="武仝">
+    <meta name="description" content="Windows server 2008 无法加载php_sqlsrv_54_ts.dll">
+    <meta name="keywords"  content="windows, php, sqlserver">
+    <!-- Open Graph -->
+    <meta property="og:title" content="Windows server 2008 无法加载php_sqlsrv_54_ts.dll - 武仝的博客">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://blog.wutong.me/2015/03/16/windows-server-2008-load-php_sqlsrv_54_ts-fail.html">
+    <meta property="og:description" content="PHP开发者，热爱技术&设计。很高兴能在这里分享我对技术的思考。">
+    <meta property="og:site_name" content="武仝的博客">
+    <link rel="stylesheet" href="//cdn.staticfile.org/normalize/6.0.0/normalize.min.css">
+    <link rel="stylesheet" href="//at.alicdn.com/t/font_roc50gemkxpw4s4i.css">
+    <link rel="stylesheet" href="/assets/css/github-markdown.css">
+    <link rel="stylesheet" href="/assets/css/prism.css">
+    <link rel="stylesheet" href="/assets/css/share.min.css">
+    <link rel="stylesheet" href="/assets/css/app.min.css">
+    <link rel="stylesheet" href="/assets/css/common.css">
+</head>
+<body>
+    <!--[if lt IE 10]>
+<div class="alert-danger" role="alert">你的浏览器实在太太太旧了，放学别走，升级完浏览器再说！<a target="_blank" class="alert-link" href="http://browsehappy.com">立即升级</a></div>
+<![endif]-->
+<input id="nm-switch" type="hidden" value="false">
+
+<header class="g-header">
+    <div class="g-logo">
+      <a href="/"></a>
+    </div>
+    <i id="menu-toggle" class="iconfont icon-menu"></i>
+    <nav class="g-nav">
+        <ul>
+            
+            <li><a href="/">首页</a></li>
+            
+            <li><a href="//wutong.me">2017之前文章</a></li>
+            
+            <li><a href="/tags.html">tags</a></li>
+            
+        </ul>
+    </nav>
+</header>
+
+
+<header class="g-banner post-header post-pattern-circuitBoard bgcolor-default post-no-cover" data-theme="default">
+    <div class="post-wrapper">
+        <div class="post-tags">
+            
+            
+            <a href="https://blog.wutong.me/tags.html#windows" class="post-tag">windows</a>
+            
+            <a href="https://blog.wutong.me/tags.html#php" class="post-tag">php</a>
+            
+            <a href="https://blog.wutong.me/tags.html#sqlserver" class="post-tag">sqlserver</a>
+            
+            
+        </div>
+        <h1>Windows server 2008 无法加载php_sqlsrv_54_ts.dll</h1>
+        <div class="post-meta">
+            <span class="post-meta-item"><i class="iconfont icon-author"></i><a href="https://blog.wutong.me" target="_blank" rel="author">wutong</a></></span>
+            <time class="post-meta-item" datetime="2015-03-16"><i class="iconfont icon-date"></i>2015-03-16</time>
+        </div>
+    </div>
+    
+</header>
+
+<div class="post-content">
+    
+    <article class="markdown-body">
+        <div class="post-forward-message">本文章地址：https://blog.wutong.me/2015/03/16/windows-server-2008-load-php_sqlsrv_54_ts-fail.html 转载请注明出处</div>
+        <p>sqlsrv是微软的官方扩展，不过在使用的时候可能会遇到无法加载的情况。</p>
+
+<p>首先是在输出的phpinfo()页面中查看，如果没有那么就说明没有加载，确认以下几种情况是否存在</p>
+
+<h3 id="可能情况">可能情况</h3>
+
+<ul>
+  <li>是否在 php.ini 中添加了 extension=php_sqlsrv_54_ts.dll</li>
+  <li>php.ini 中的 extension_dir目录是否正确</li>
+  <li>extension_dir 目录是否有php_sqlsrv_54_ts.dll</li>
+  <li>双击 php.exe 看是否有错误提示，如果有 “缺少msvcp100.dll”，请安装 vc2010运行库，注意：要安装32位版的</li>
+  <li>下载的 sqlsrv 是否符合当前系统，注意甄别！详细条件需要查看手册里面说明</li>
+  <li>以上的更改后是否重启了 apache 或者其他web服务器</li>
+</ul>
+
+<h3 id="php_sqlsrv_54_tsdll扩展下载地址">php_sqlsrv_54_ts.dll扩展下载地址：</h3>
+
+<p><a href="http://sqlsrvphp.codeplex.com/releases/view/85767">http://sqlsrvphp.codeplex.com/releases/view/85767</a></p>
+
+<h3 id="最后">最后</h3>
+
+<p>如果在使用php进行连接的时候，还得需要安装 Microsoft SQL Server Native Client（根据系统选择32或者64位安装）</p>
+
+    </article>
+    
+    <div class="social-share-wrapper">
+        <div class="social-share"></div>
+    </div>
+    
+</div>
+
+<section class="author-detail">
+    <section class="post-footer-item author-card">
+        <div class="avatar">
+            <img src="/assets/img/profile.jpg" alt="">
+        </div>
+        <div class="author-name" rel="author">武仝</div>
+        <div class="bio">
+            <p>PHP开发，热爱技术&设计</p>
+        </div>
+        
+        <ul class="sns-links">
+            
+            <li>
+                <a href="//weibo.com/u/3479312483" target="_blank">
+                    <i class="iconfont icon-weibo"></i>
+                </a>
+            </li>
+            
+            <li>
+                <a href="//github.com/tongwoo" target="_blank">
+                    <i class="iconfont icon-github"></i>
+                </a>
+            </li>
+            
+        </ul>
+        
+    </section>
+    <section class="post-footer-item read-next">
+        
+        <div class="read-next-item">
+            <a href="/2015/03/23/oc-nill.html" class="read-next-link"></a>
+            <section>
+                <span>Object-C中nil, Nil, NULL, NSNull的含义</span>
+                <p>nil指向oc中对象的空指针</p>
+            </section>
+            
+        </div>
+        
+        
+        <div class="read-next-item">
+            <a href="/2015/03/16/php-connec-oracle-for-windows.html" class="read-next-link"></a>
+            <section>
+                <span>PHP连接Oracle(Windows)</span>
+                <p>根据需要开启下列扩展</p>
+            </section>
+            
+        </div>
+        
+    </section>
+    
+</section>
+
+<footer class="g-footer">
+    <section>武仝的博客 © 2017</section>
+    <section>Powered by <a href="//jekyllrb.com">Jekyll</a> | <a href="https://github.com/kaeyleo/jekyll-theme-H2O">Theme H2O</a></section>
+</footer>
+
+<script src="/assets/js/social-share.min.js"></script>
+<script>
+    socialShare('.social-share', {
+        sites: ['wechat','weibo','douban','twitter'],
+        wechatQrcodeTitle: "分享到微信朋友圈",
+        wechatQrcodeHelper: '<p>扫码后点击右上角</p><p>将本文分享至朋友圈</p>'
+    });
+</script>
+<script>
+/**
+*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+/*
+var disqus_config = function () {
+this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+*/
+(function() { // DON'T EDIT BELOW THIS LINE
+//var d = document, s = d.createElement('script');
+/*写入自己的disqus信息*/
+//s.src = 'https://liaokeyu.disqus.com/embed.js';
+//s.setAttribute('data-timestamp', +new Date());
+//(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<script src="/assets/js/jquery.min.js"></script>
+<script src="/assets/js/prism.js"></script>
+<script src="/assets/js/index.min.js"></script>
+</body>
+</html>

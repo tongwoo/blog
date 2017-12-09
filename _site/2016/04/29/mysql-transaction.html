@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MySQL事务隔离级别 - 武仝的博客</title>
+    <meta name="author"  content="武仝">
+    <meta name="description" content="MySQL事务隔离级别">
+    <meta name="keywords"  content="mysql, mariadb">
+    <!-- Open Graph -->
+    <meta property="og:title" content="MySQL事务隔离级别 - 武仝的博客">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://blog.wutong.me/2016/04/29/mysql-transaction.html">
+    <meta property="og:description" content="PHP开发者，热爱技术&设计。很高兴能在这里分享我对技术的思考。">
+    <meta property="og:site_name" content="武仝的博客">
+    <link rel="stylesheet" href="//cdn.staticfile.org/normalize/6.0.0/normalize.min.css">
+    <link rel="stylesheet" href="//at.alicdn.com/t/font_roc50gemkxpw4s4i.css">
+    <link rel="stylesheet" href="/assets/css/github-markdown.css">
+    <link rel="stylesheet" href="/assets/css/prism.css">
+    <link rel="stylesheet" href="/assets/css/share.min.css">
+    <link rel="stylesheet" href="/assets/css/app.min.css">
+    <link rel="stylesheet" href="/assets/css/common.css">
+</head>
+<body>
+    <!--[if lt IE 10]>
+<div class="alert-danger" role="alert">你的浏览器实在太太太旧了，放学别走，升级完浏览器再说！<a target="_blank" class="alert-link" href="http://browsehappy.com">立即升级</a></div>
+<![endif]-->
+<input id="nm-switch" type="hidden" value="false">
+
+<header class="g-header">
+    <div class="g-logo">
+      <a href="/"></a>
+    </div>
+    <i id="menu-toggle" class="iconfont icon-menu"></i>
+    <nav class="g-nav">
+        <ul>
+            
+            <li><a href="/">首页</a></li>
+            
+            <li><a href="//wutong.me">2017之前文章</a></li>
+            
+            <li><a href="/tags.html">tags</a></li>
+            
+        </ul>
+    </nav>
+</header>
+
+
+<header class="g-banner post-header post-pattern-circuitBoard bgcolor-default post-no-cover" data-theme="default">
+    <div class="post-wrapper">
+        <div class="post-tags">
+            
+            
+            <a href="https://blog.wutong.me/tags.html#mysql" class="post-tag">mysql</a>
+            
+            <a href="https://blog.wutong.me/tags.html#mariadb" class="post-tag">mariadb</a>
+            
+            
+        </div>
+        <h1>MySQL事务隔离级别</h1>
+        <div class="post-meta">
+            <span class="post-meta-item"><i class="iconfont icon-author"></i><a href="https://blog.wutong.me" target="_blank" rel="author">wutong</a></></span>
+            <time class="post-meta-item" datetime="2016-04-29"><i class="iconfont icon-date"></i>2016-04-29</time>
+        </div>
+    </div>
+    
+</header>
+
+<div class="post-content">
+    
+    <article class="markdown-body">
+        <div class="post-forward-message">本文章地址：https://blog.wutong.me/2016/04/29/mysql-transaction.html 转载请注明出处</div>
+        <p>今天有个朋友问了个数据不一致的问题，加强理解并记录一下。</p>
+
+<h3 id="read-uncommitted">READ UNCOMMITTED</h3>
+<p>读取未提交的</p>
+
+<p>在当前事务中读取的记录中会出现其他事务未提交的数据，出现脏读现象，如果一个其中一个事务执行了写操作，则另一个事物不能写，除非前一个事务commit;</p>
+
+<h3 id="read-committed">READ COMMITTED</h3>
+<p>读取已提交的</p>
+
+<p>在当前事务中读取的记录中只会出现其他事务已经提交的记录，如果在当前事务中执行多次相同的select，那么有可能会出现不一致的记录，因为其他记录有可能插入了新的记录并提交，如果一个其中一个事务执行了写操作，则另一个事物不能写，除非前一个事务commit;</p>
+
+<h3 id="repeatable-read">REPEATABLE READ</h3>
+<p>可重读</p>
+
+<p>在当前事务中读取记录永远是一样的，无论其他的事务做了增加、删除、修改的改变都是如此</p>
+
+<h3 id="serializable">SERIALIZABLE</h3>
+<p>可序列化的</p>
+
+<p>在当前事务中做出的操作如果没提交的话，其他事务在当前事务提交之后在能执行</p>
+
+    </article>
+    
+    <div class="social-share-wrapper">
+        <div class="social-share"></div>
+    </div>
+    
+</div>
+
+<section class="author-detail">
+    <section class="post-footer-item author-card">
+        <div class="avatar">
+            <img src="/assets/img/profile.jpg" alt="">
+        </div>
+        <div class="author-name" rel="author">武仝</div>
+        <div class="bio">
+            <p>PHP开发，热爱技术&设计</p>
+        </div>
+        
+        <ul class="sns-links">
+            
+            <li>
+                <a href="//weibo.com/u/3479312483" target="_blank">
+                    <i class="iconfont icon-weibo"></i>
+                </a>
+            </li>
+            
+            <li>
+                <a href="//github.com/tongwoo" target="_blank">
+                    <i class="iconfont icon-github"></i>
+                </a>
+            </li>
+            
+        </ul>
+        
+    </section>
+    <section class="post-footer-item read-next">
+        
+        <div class="read-next-item">
+            <a href="/2016/10/27/install-centos7-after.html" class="read-next-link"></a>
+            <section>
+                <span>安装完CentOS7之后出现的相关问题</span>
+                <p>有时候因为次要版本号的不同总会有一些莫名奇妙的问题，以下是常遇到的问题和解决方法。</p>
+            </section>
+            
+        </div>
+        
+        
+        <div class="read-next-item">
+            <a href="/2016/04/28/flock.html" class="read-next-link"></a>
+            <section>
+                <span>使用flock文件锁解决脚本重复执行问题</span>
+                <p>经常需要cron任务来执行一段脚本，如果在规定时间内无法执行完，就会又一次执行，可以借用flock命令来解决这一的...</p>
+            </section>
+            
+        </div>
+        
+    </section>
+    
+</section>
+
+<footer class="g-footer">
+    <section>武仝的博客 © 2017</section>
+    <section>Powered by <a href="//jekyllrb.com">Jekyll</a> | <a href="https://github.com/kaeyleo/jekyll-theme-H2O">Theme H2O</a></section>
+</footer>
+
+<script src="/assets/js/social-share.min.js"></script>
+<script>
+    socialShare('.social-share', {
+        sites: ['wechat','weibo','douban','twitter'],
+        wechatQrcodeTitle: "分享到微信朋友圈",
+        wechatQrcodeHelper: '<p>扫码后点击右上角</p><p>将本文分享至朋友圈</p>'
+    });
+</script>
+<script>
+/**
+*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+/*
+var disqus_config = function () {
+this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+*/
+(function() { // DON'T EDIT BELOW THIS LINE
+//var d = document, s = d.createElement('script');
+/*写入自己的disqus信息*/
+//s.src = 'https://liaokeyu.disqus.com/embed.js';
+//s.setAttribute('data-timestamp', +new Date());
+//(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<script src="/assets/js/jquery.min.js"></script>
+<script src="/assets/js/prism.js"></script>
+<script src="/assets/js/index.min.js"></script>
+</body>
+</html>
