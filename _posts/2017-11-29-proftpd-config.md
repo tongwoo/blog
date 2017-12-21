@@ -30,12 +30,6 @@ yum install proftpd proftpd-mysql
 AuthPAMConfig       proftpd
 AuthOrder           mod_auth_pam.c* mod_auth_unix.c
 ```
-增加一行被动模式端口范围，当用户以被动模式连接的时候，需要服务器提供额外的端口来交互，否则
-客户端无法连接，防火墙要允许这些范围的端口
-
-```apacheconf
-PassivePorts 30000 30050
-```
 
 再取消如下几行的注释并启用
 
@@ -43,6 +37,29 @@ PassivePorts 30000 30050
 LoadModule mod_sql.c
 LoadModule mod_sql_passwd.c
 LoadModule mod_sql_mysql.c
+```
+
+我这里想直接管理web目录，所以最好的方式是使用apache用户和apache的组，输入如下命令查看apache的用户、组的UID、GID得知分别是48、48，记录下来备用
+
+```bash
+[root@wz html]# cat /etc/passwd | grep apache
+apache:x:48:48:Apache:/var/www:/sbin/nologin
+[root@wz html]# cat /etc/group | grep apache
+apache:x:48:
+```
+
+将配置文件的User和Group分别改成apache
+
+```apacheconf
+User       apache
+Group      apache
+```
+
+增加一行被动模式端口范围，当用户以被动模式连接的时候，需要服务器提供额外的端口来交互，否则
+客户端无法连接，防火墙要允许这些范围的端口
+
+```apacheconf
+PassivePorts 30000 30050
 ```
 
 增加MYSQL的认证授权方式
@@ -77,22 +94,6 @@ ServerLog /var/log/proftpd/server.log
 
 ```apacheconf
 VRootOptions allowSymlinks
-```
-
-我这里想直接管理web目录，所以最好的方式是使用apache用户和apache的组，输入如下命令查看apache的用户、组的UID、GID得知分别是48、48，记录下来备用
-
-```bash
-[root@wz html]# cat /etc/passwd | grep apache
-apache:x:48:48:Apache:/var/www:/sbin/nologin
-[root@wz html]# cat /etc/group | grep apache
-apache:x:48:
-```
-
-将配置文件的User和Group分别改成apache
-
-```apacheconf
-User       apache
-Group      apache
 ```
 
 #### 数据库配置

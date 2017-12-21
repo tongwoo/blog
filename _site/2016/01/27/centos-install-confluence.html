@@ -72,21 +72,59 @@
 
 <h3 id="安装-java">安装 Java</h3>
 
-<p>安装confluence之前必须要把安装 Java 好，首先就要到 <a href="http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html">官网下载</a> rpm安装包并使用 “rpm -ivz 下载的文件名” 命令进行安装</p>
+<p>安装confluence之前必须要把安装 Java 好，首先就要到 <a href="http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html">官网下载</a> rpm安装包并使用 “rpm -ivz 下载的文件名” 命令进行安装，或者直接 yum 安装</p>
 
 <h3 id="安装-confluence">安装 confluence</h3>
 
 <h4 id="下载">下载</h4>
 
-<p>进入到 <a href="https://www.atlassian.com/software/confluence/download">官网下载</a> 页面进行下载，这里我选择的是 Confluence 5.9.4 – Linux Installer (32 bit)，下载下来的文件名是以“bin” 结尾的</p>
+<p>进入到 <a href="https://www.atlassian.com/software/confluence/download-archives">官网下载</a> 页面进行下载，这里我选择的是 Confluence 6.1.1 - Standalone (ZIP Archive)，下载下来的文件名是以“zip” 结尾的</p>
 
 <h4 id="安装">安装</h4>
 
-<p>进入到下载目录直接输入</p>
+<h5 id="路径">路径</h5>
 
-<blockquote>
-  <p>未完待续</p>
-</blockquote>
+<p>下载的文件名为：atlassian-confluence-6.1.1.zip，解压后我放到根目录并且重命名为：confluence，此时的路径</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>/confluence
+</code></pre></div></div>
+
+<p>建立存放 confluence 数据目录并赋予写入权限</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mkdir /confluence-data
+chmod +w /confluence-data
+</code></pre></div></div>
+
+<p>修改 /confluence/confluence/WEB-INF/classes/confluence-init.properties 文件，将最后的目录替换成如下目录，注意去掉 # 号</p>
+
+<pre><code class="language-coce">confluence.home=/web/confluence-data
+</code></pre>
+
+<h5 id="mysql驱动">MySQL驱动</h5>
+
+<p>前往下载 <a href="https://dev.mysql.com/downloads/connector/j">MySQL官网</a> 下载 Connector/J 驱动</p>
+
+<p>将解压出来的 mysql-connector-java-5.1.45-bin.jar 文件 复制到如下目录：</p>
+
+<pre><code class="language-code">/confluence/lib
+</code></pre>
+<h5 id="启动confluence">启动Confluence</h5>
+
+<p>执行如下命令进行启动</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>/confluence/bin/start-confluence.sh
+</code></pre></div></div>
+
+<p>访问 http://127.0.0.1:8090 即可按照提示进行安装</p>
+
+<h3 id="问题">问题</h3>
+
+<ul>
+  <li>一开始安装正常，重新启动后无法安装并报错</li>
+</ul>
+
+<p>关闭 confluence 并删除 /confluence-data 目录下的所有数据，然后启动 confluence</p>
+
 
     </article>
     

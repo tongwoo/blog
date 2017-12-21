@@ -90,17 +90,32 @@
 <pre><code class="language-apacheconf">AuthPAMConfig       proftpd
 AuthOrder           mod_auth_pam.c* mod_auth_unix.c
 </code></pre>
-<p>增加一行被动模式端口范围，当用户以被动模式连接的时候，需要服务器提供额外的端口来交互，否则
-客户端无法连接，防火墙要允许这些范围的端口</p>
-
-<pre><code class="language-apacheconf">PassivePorts 30000 30050
-</code></pre>
 
 <p>再取消如下几行的注释并启用</p>
 
 <pre><code class="language-apacheconf">LoadModule mod_sql.c
 LoadModule mod_sql_passwd.c
 LoadModule mod_sql_mysql.c
+</code></pre>
+
+<p>我这里想直接管理web目录，所以最好的方式是使用apache用户和apache的组，输入如下命令查看apache的用户、组的UID、GID得知分别是48、48，记录下来备用</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@wz html]# <span class="nb">cat</span> /etc/passwd | <span class="nb">grep </span>apache
+apache:x:48:48:Apache:/var/www:/sbin/nologin
+<span class="o">[</span>root@wz html]# <span class="nb">cat</span> /etc/group | <span class="nb">grep </span>apache
+apache:x:48:
+</code></pre></div></div>
+
+<p>将配置文件的User和Group分别改成apache</p>
+
+<pre><code class="language-apacheconf">User       apache
+Group      apache
+</code></pre>
+
+<p>增加一行被动模式端口范围，当用户以被动模式连接的时候，需要服务器提供额外的端口来交互，否则
+客户端无法连接，防火墙要允许这些范围的端口</p>
+
+<pre><code class="language-apacheconf">PassivePorts 30000 30050
 </code></pre>
 
 <p>增加MYSQL的认证授权方式</p>
@@ -132,20 +147,6 @@ ServerLog /var/log/proftpd/server.log
 <p>增加虚拟目录的符号链接的支持</p>
 
 <pre><code class="language-apacheconf">VRootOptions allowSymlinks
-</code></pre>
-
-<p>我这里想直接管理web目录，所以最好的方式是使用apache用户和apache的组，输入如下命令查看apache的用户、组的UID、GID得知分别是48、48，记录下来备用</p>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@wz html]# <span class="nb">cat</span> /etc/passwd | <span class="nb">grep </span>apache
-apache:x:48:48:Apache:/var/www:/sbin/nologin
-<span class="o">[</span>root@wz html]# <span class="nb">cat</span> /etc/group | <span class="nb">grep </span>apache
-apache:x:48:
-</code></pre></div></div>
-
-<p>将配置文件的User和Group分别改成apache</p>
-
-<pre><code class="language-apacheconf">User       apache
-Group      apache
 </code></pre>
 
 <h4 id="数据库配置">数据库配置</h4>
