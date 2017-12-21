@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>安装Ngrok服务端和客户端 - 武仝的博客</title>
+    <meta name="author"  content="武仝">
+    <meta name="description" content="安装Ngrok服务端和客户端">
+    <meta name="keywords"  content="linux, ngrok">
+    <!-- Open Graph -->
+    <meta property="og:title" content="安装Ngrok服务端和客户端 - 武仝的博客">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://blog.wutong.me/2017/12/21/install-ngrok-server-client.html">
+    <meta property="og:description" content="PHP开发者，热爱技术&设计。很高兴能在这里分享我对技术的思考。">
+    <meta property="og:site_name" content="武仝的博客">
+    <link rel="stylesheet" href="//cdn.staticfile.org/normalize/6.0.0/normalize.min.css">
+    <link rel="stylesheet" href="//at.alicdn.com/t/font_roc50gemkxpw4s4i.css">
+    <link rel="stylesheet" href="/assets/css/github-markdown.css">
+    <link rel="stylesheet" href="/assets/css/prism.css">
+    <link rel="stylesheet" href="/assets/css/share.min.css">
+    <link rel="stylesheet" href="/assets/css/app.min.css">
+    <link rel="stylesheet" href="/assets/css/common.css">
+</head>
+<body>
+    <!--[if lt IE 10]>
+<div class="alert-danger" role="alert">你的浏览器实在太太太旧了，放学别走，升级完浏览器再说！<a target="_blank" class="alert-link" href="http://browsehappy.com">立即升级</a></div>
+<![endif]-->
+<input id="nm-switch" type="hidden" value="false">
+
+<header class="g-header">
+    <div class="g-logo">
+      <a href="/"></a>
+    </div>
+    <i id="menu-toggle" class="iconfont icon-menu"></i>
+    <nav class="g-nav">
+        <ul>
+            
+            <li><a href="/">Home</a></li>
+            
+            <li><a href="/tags.html">Tags</a></li>
+            
+        </ul>
+    </nav>
+</header>
+
+
+<header class="g-banner post-header post-pattern-circuitBoard bgcolor-default post-no-cover" data-theme="default">
+    <div class="post-wrapper">
+        <div class="post-tags">
+            
+            
+            <a href="https://blog.wutong.me/tags.html#linux" class="post-tag">linux</a>
+            
+            <a href="https://blog.wutong.me/tags.html#ngrok" class="post-tag">ngrok</a>
+            
+            
+        </div>
+        <h1>安装Ngrok服务端和客户端</h1>
+        <div class="post-meta">
+            <span class="post-meta-item"><i class="iconfont icon-author"></i><a href="https://blog.wutong.me" target="_blank" rel="author">wutong</a></></span>
+            <time class="post-meta-item" datetime="2017-12-21"><i class="iconfont icon-date"></i>2017-12-21</time>
+        </div>
+    </div>
+    
+</header>
+
+<div class="post-content">
+    
+    <article class="markdown-body">
+        <div class="post-forward-message">本文章地址：https://blog.wutong.me/2017/12/21/install-ngrok-server-client.html 转载请注明出处</div>
+        <h3 id="安装">安装</h3>
+
+<p>安装Go</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>yum <span class="nt">-y</span> install golang
+</code></pre></div></div>
+
+<p>克隆ngrok git仓库</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git clone <span class="s2">"https://github.com/tongwoo/ngrok.git"</span>
+<span class="nb">cd </span>ngrok
+</code></pre></div></div>
+
+<p>根据环境进行编译</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">#服务端</span>
+make server
+
+<span class="c">#客户端</span>
+make client
+</code></pre></div></div>
+
+<h3 id="配置及启动">配置及启动</h3>
+
+<p>服务端启动</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">#为了方便直接测试，设置成如下端口并启动</span>
+./ngrokd <span class="nt">-domain</span> ngrok.wutong.me <span class="nt">-httpAddr</span> <span class="s2">":2001"</span> <span class="nt">-httpsAddr</span> <span class="s2">":2002"</span> <span class="nt">-tunnelAddr</span> <span class="s2">":2003"</span>
+</code></pre></div></div>
+
+<p>因为默认80端口被nginx使用，所以做个转发，建立如下的 conf 文件并重新启动nginx</p>
+
+<div class="language-nginx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">server</span> <span class="p">{</span>
+    <span class="kn">listen</span> <span class="mi">80</span><span class="p">;</span>
+    <span class="kn">server_name</span> <span class="s">ngrok.wutong.me</span> <span class="s">*.ngrok.wutong.me</span><span class="p">;</span>
+    <span class="kn">error_log</span> <span class="n">/logs/ngrok_error.log</span><span class="p">;</span>
+    <span class="kn">access_log</span> <span class="n">/logs/ngrok_access.log</span> <span class="s">main</span><span class="p">;</span>
+    <span class="kn">location</span> <span class="n">/</span> <span class="p">{</span>
+        <span class="kn">proxy_pass</span> <span class="s">http://127.0.0.1:2001/</span><span class="p">;</span>
+        <span class="kn">proxy_redirect</span> <span class="no">off</span><span class="p">;</span>
+        <span class="kn">proxy_set_header</span> <span class="s">Host</span> <span class="nv">$host</span><span class="p">:</span><span class="mi">2001</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>客户端连接</p>
+
+<p>创建一个 config.yml 文件放到ngrok同目录，并填充如下内容</p>
+
+<div class="language-yml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">#代表服务器的隧道地址和端口</span>
+<span class="na">server_addr</span><span class="pi">:</span> <span class="s2">"</span><span class="s">ngrok.wutong.me:2003"</span>
+</code></pre></div></div>
+
+<p>客户端启动</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 以 lala.ngrok.wutong.me 来作为访问者访问的域名</span>
+ngrok <span class="nt">-config</span><span class="o">=</span>./config.yml <span class="nt">-subdomain</span><span class="o">=</span>lala 80
+</code></pre></div></div>
+
+<p>启动成功</p>
+
+<pre><code class="language-code">Tunnel Status                 online
+Version                       1.7/1.7
+Forwarding                    https://lala.ngrok.wutong.me:2001 -&gt; 127.0.0.1:80
+Forwarding                    http://lala.ngrok.wutong.me:2001 -&gt; 127.0.0.1:80
+Web Interface                 127.0.0.1:4040
+# Conn                        0
+Avg Conn Time                 0.00ms
+</code></pre>
+
+<h3 id="浏览">浏览</h3>
+
+<p>访问 http://lala.ngrok.wutong.me 即可看到网页的内容已经映射到本机上了。</p>
+
+    </article>
+    
+    <div class="social-share-wrapper">
+        <div class="social-share"></div>
+    </div>
+    
+</div>
+
+<section class="author-detail">
+    <section class="post-footer-item author-card">
+        <div class="avatar">
+            <img src="/assets/img/profile.jpg" alt="">
+        </div>
+        <div class="author-name" rel="author">武仝</div>
+        <div class="bio">
+            <p>PHP开发，热爱技术&设计</p>
+        </div>
+        
+        <ul class="sns-links">
+            
+            <li>
+                <a href="//weibo.com/u/3479312483" target="_blank">
+                    <i class="iconfont icon-weibo"></i>
+                </a>
+            </li>
+            
+            <li>
+                <a href="//github.com/tongwoo" target="_blank">
+                    <i class="iconfont icon-github"></i>
+                </a>
+            </li>
+            
+        </ul>
+        
+    </section>
+    <section class="post-footer-item read-next">
+        
+        
+        <div class="read-next-item">
+            <a href="/2017/11/30/pack-unpack-guide.html" class="read-next-link"></a>
+            <section>
+                <span>pack/unpack详解</span>
+                <p>有的时候想把数据打包成按字节传递，比如一些基于TCP/UDP的应用，当接收到的数据包按照规定格式组装的时候，这个时...</p>
+            </section>
+            
+        </div>
+        
+    </section>
+    
+</section>
+
+<footer class="g-footer">
+    <section>武仝的博客 © 2017</section>
+    <section>Powered by <a href="//jekyllrb.com">Jekyll</a> | <a href="https://github.com/kaeyleo/jekyll-theme-H2O">Theme H2O</a></section>
+</footer>
+
+<script src="/assets/js/social-share.min.js"></script>
+<script>
+    socialShare('.social-share', {
+        sites: ['wechat','weibo','douban','twitter'],
+        wechatQrcodeTitle: "分享到微信朋友圈",
+        wechatQrcodeHelper: '<p>扫码后点击右上角</p><p>将本文分享至朋友圈</p>'
+    });
+</script>
+<script>
+/**
+*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+/*
+var disqus_config = function () {
+this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+*/
+(function() { // DON'T EDIT BELOW THIS LINE
+//var d = document, s = d.createElement('script');
+/*写入自己的disqus信息*/
+//s.src = 'https://liaokeyu.disqus.com/embed.js';
+//s.setAttribute('data-timestamp', +new Date());
+//(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<script src="/assets/js/jquery.min.js"></script>
+<script src="/assets/js/prism.js"></script>
+<script src="/assets/js/index.min.js"></script>
+</body>
+</html>
