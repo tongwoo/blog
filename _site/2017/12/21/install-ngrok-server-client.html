@@ -68,7 +68,9 @@
     
     <article class="markdown-body">
         <div class="post-forward-message">本文章地址：https://blog.wutong.me/2017/12/21/install-ngrok-server-client.html 转载请注明出处</div>
-        <h3 id="安装">安装</h3>
+        <p>ngrok是个不错的http内网转发应用。</p>
+
+<h3 id="安装">安装</h3>
 
 <p>安装Go</p>
 
@@ -95,7 +97,7 @@ make client
 <p>服务端启动</p>
 
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">#为了方便直接测试，设置成如下端口并启动</span>
-./ngrokd <span class="nt">-domain</span> ngrok.wutong.me <span class="nt">-httpAddr</span> <span class="s2">":2001"</span> <span class="nt">-httpsAddr</span> <span class="s2">":2002"</span> <span class="nt">-tunnelAddr</span> <span class="s2">":2003"</span>
+./ngrokd <span class="nt">-domain</span> ngrok.wutong.me <span class="nt">-httpAddr</span> <span class="s2">":4001"</span> <span class="nt">-httpsAddr</span> <span class="s2">":4032"</span> <span class="nt">-tunnelAddr</span> <span class="s2">":6023"</span>
 </code></pre></div></div>
 
 <p>因为默认80端口被nginx使用，所以做个转发，建立如下的 conf 文件并重新启动nginx</p>
@@ -179,6 +181,15 @@ Avg Conn Time                 0.00ms
     </section>
     <section class="post-footer-item read-next">
         
+        <div class="read-next-item">
+            <a href="/2017/12/23/nginx-apache-config.html" class="read-next-link"></a>
+            <section>
+                <span>Nginx、Apache的常用功能配置</span>
+                <p>Nginx</p>
+            </section>
+            
+        </div>
+        
         
         <div class="read-next-item">
             <a href="/2017/11/30/pack-unpack-guide.html" class="read-next-link"></a>
@@ -194,7 +205,7 @@ Avg Conn Time                 0.00ms
 </section>
 
 <footer class="g-footer">
-    <section>武仝的博客 © 2017</section>
+    <section>武仝的博客 © 2018</section>
     <section>Powered by <a href="//jekyllrb.com">Jekyll</a> | <a href="https://github.com/kaeyleo/jekyll-theme-H2O">Theme H2O</a></section>
 </footer>
 

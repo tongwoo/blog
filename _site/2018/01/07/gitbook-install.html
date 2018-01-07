@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gitbook 的安装与使用 - 武仝的博客</title>
+    <meta name="author"  content="武仝">
+    <meta name="description" content="Gitbook 的安装与使用">
+    <meta name="keywords"  content="git, gitbook">
+    <!-- Open Graph -->
+    <meta property="og:title" content="Gitbook 的安装与使用 - 武仝的博客">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://blog.wutong.me/2018/01/07/gitbook-install.html">
+    <meta property="og:description" content="PHP开发者，热爱技术&设计。很高兴能在这里分享我对技术的思考。">
+    <meta property="og:site_name" content="武仝的博客">
+    <link rel="stylesheet" href="//cdn.staticfile.org/normalize/6.0.0/normalize.min.css">
+    <link rel="stylesheet" href="//at.alicdn.com/t/font_roc50gemkxpw4s4i.css">
+    <link rel="stylesheet" href="/assets/css/github-markdown.css">
+    <link rel="stylesheet" href="/assets/css/prism.css">
+    <link rel="stylesheet" href="/assets/css/share.min.css">
+    <link rel="stylesheet" href="/assets/css/app.min.css">
+    <link rel="stylesheet" href="/assets/css/common.css">
+</head>
+<body>
+    <!--[if lt IE 10]>
+<div class="alert-danger" role="alert">你的浏览器实在太太太旧了，放学别走，升级完浏览器再说！<a target="_blank" class="alert-link" href="http://browsehappy.com">立即升级</a></div>
+<![endif]-->
+<input id="nm-switch" type="hidden" value="false">
+
+<header class="g-header">
+    <div class="g-logo">
+      <a href="/"></a>
+    </div>
+    <i id="menu-toggle" class="iconfont icon-menu"></i>
+    <nav class="g-nav">
+        <ul>
+            
+            <li><a href="/">Home</a></li>
+            
+            <li><a href="/tags.html">Tags</a></li>
+            
+        </ul>
+    </nav>
+</header>
+
+
+<header class="g-banner post-header post-pattern-circuitBoard bgcolor-default post-no-cover" data-theme="default">
+    <div class="post-wrapper">
+        <div class="post-tags">
+            
+            
+            <a href="https://blog.wutong.me/tags.html#git" class="post-tag">git</a>
+            
+            <a href="https://blog.wutong.me/tags.html#gitbook" class="post-tag">gitbook</a>
+            
+            
+        </div>
+        <h1>Gitbook 的安装与使用</h1>
+        <div class="post-meta">
+            <span class="post-meta-item"><i class="iconfont icon-author"></i><a href="https://blog.wutong.me" target="_blank" rel="author">wutong</a></></span>
+            <time class="post-meta-item" datetime="2018-01-07"><i class="iconfont icon-date"></i>2018-01-07</time>
+        </div>
+    </div>
+    
+</header>
+
+<div class="post-content">
+    
+    <article class="markdown-body">
+        <div class="post-forward-message">本文章地址：https://blog.wutong.me/2018/01/07/gitbook-install.html 转载请注明出处</div>
+        <p>Gitbook是一个可以使用markdown来撰写并利用github存储然后生成一本电子书的应用，不过我们也可以用他来做其他用途，比如开发文档。</p>
+
+<h3 id="安装客户端">安装客户端</h3>
+
+<p>用npm命令来进行安装</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>npm install <span class="nt">-g</span> gitbook-cli
+</code></pre></div></div>
+
+<p>安装完成之后，我们可以用 <code class="highlighter-rouge">gitbook</code> 命令来生成电子书。</p>
+
+<h3 id="写文章">写文章</h3>
+
+<h4 id="初始化">初始化</h4>
+<p>使用 <code class="highlighter-rouge">gitbook init [book]</code> 初始化一个项目，比如：</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>gitbook init booktest
+</code></pre></div></div>
+
+<p>则创建了如下文件：</p>
+
+<pre><code class="language-code">booktest/
+├── README.md
+└── SUMMARY.md
+</code></pre>
+
+<p>其中 <code class="highlighter-rouge">SUMMARY.md</code> 就是目录文件</p>
+
+<h4 id="电子书配置">电子书配置</h4>
+<p>还可以建立一个配置文件 <code class="highlighter-rouge">book.json</code></p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
+    </span><span class="s2">"gitbook"</span><span class="p">:</span><span class="w"> </span><span class="s2">"版本"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"title"</span><span class="p">:</span><span class="w"> </span><span class="s2">"书名"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"介绍"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"language"</span><span class="p">:</span><span class="w"> </span><span class="s2">"zh"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"structure"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"readme"</span><span class="p">:</span><span class="w"> </span><span class="s2">"README.md"</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="s2">"pluginsConfig"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="s2">"fontSettings"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+            </span><span class="s2">"theme"</span><span class="p">:</span><span class="w"> </span><span class="s2">"white"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"family"</span><span class="p">:</span><span class="w"> </span><span class="s2">"msyh"</span><span class="p">,</span><span class="w">
+            </span><span class="s2">"size"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="w">
+        </span><span class="p">},</span><span class="w">
+        </span><span class="s2">"plugins"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+            </span><span class="s2">"插件名称"</span><span class="w">
+        </span><span class="p">]</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+<h4 id="设置文章目录">设置文章目录</h4>
+
+<p>编辑 <code class="highlighter-rouge">SUMMARY.md</code> 文件</p>
+
+<div class="language-markdown highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">*</span> <span class="p">[</span><span class="nv">1.文章标题</span><span class="p">](</span><span class="sx">链接的页面</span><span class="p">)</span>
+<span class="p">*</span> <span class="p">[</span><span class="nv">2.PHP的入门与精通</span><span class="p">](</span><span class="sx">php.md</span><span class="p">)</span>
+<span class="p">    *</span> <span class="p">[</span><span class="nv">2-1.子目录</span><span class="p">](</span><span class="sx">php_child.md</span><span class="p">)</span>
+<span class="p">    *</span> <span class="p">[</span><span class="nv">2-2.第1章</span><span class="p">](</span><span class="sx">chapter1.md</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h4 id="生成电子书">生成电子书</h4>
+
+<p>输入如下代码即可生成默认的HTML格式电子书</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>gitbook build
+</code></pre></div></div>
+<p>生成过程</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>info: 7 plugins are installed
+info: 6 explicitly listed
+info: loading plugin <span class="s2">"highlight"</span>... OK
+info: loading plugin <span class="s2">"search"</span>... OK
+info: loading plugin <span class="s2">"lunr"</span>... OK
+info: loading plugin <span class="s2">"sharing"</span>... OK
+info: loading plugin <span class="s2">"fontsettings"</span>... OK
+info: loading plugin <span class="s2">"theme-default"</span>... OK
+info: found 1 pages
+info: found 0 asset files
+info: <span class="o">&gt;&gt;</span> generation finished with success <span class="k">in </span>0.5s <span class="o">!</span>
+</code></pre></div></div>
+<p>会出现一个 <code class="highlighter-rouge">_book</code> 的目录，打开 <code class="highlighter-rouge">index.html</code> 预览</p>
+
+    </article>
+    
+    <div class="social-share-wrapper">
+        <div class="social-share"></div>
+    </div>
+    
+</div>
+
+<section class="author-detail">
+    <section class="post-footer-item author-card">
+        <div class="avatar">
+            <img src="/assets/img/profile.jpg" alt="">
+        </div>
+        <div class="author-name" rel="author">武仝</div>
+        <div class="bio">
+            <p>PHP开发，热爱技术&设计</p>
+        </div>
+        
+        <ul class="sns-links">
+            
+            <li>
+                <a href="//weibo.com/u/3479312483" target="_blank">
+                    <i class="iconfont icon-weibo"></i>
+                </a>
+            </li>
+            
+            <li>
+                <a href="//github.com/tongwoo" target="_blank">
+                    <i class="iconfont icon-github"></i>
+                </a>
+            </li>
+            
+        </ul>
+        
+    </section>
+    <section class="post-footer-item read-next">
+        
+        
+        <div class="read-next-item">
+            <a href="/2017/12/23/nginx-apache-config.html" class="read-next-link"></a>
+            <section>
+                <span>Nginx、Apache的常用功能配置</span>
+                <p>Nginx</p>
+            </section>
+            
+        </div>
+        
+    </section>
+    
+</section>
+
+<footer class="g-footer">
+    <section>武仝的博客 © 2018</section>
+    <section>Powered by <a href="//jekyllrb.com">Jekyll</a> | <a href="https://github.com/kaeyleo/jekyll-theme-H2O">Theme H2O</a></section>
+</footer>
+
+<script src="/assets/js/social-share.min.js"></script>
+<script>
+    socialShare('.social-share', {
+        sites: ['wechat','weibo','douban','twitter'],
+        wechatQrcodeTitle: "分享到微信朋友圈",
+        wechatQrcodeHelper: '<p>扫码后点击右上角</p><p>将本文分享至朋友圈</p>'
+    });
+</script>
+<script>
+/**
+*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+/*
+var disqus_config = function () {
+this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+*/
+(function() { // DON'T EDIT BELOW THIS LINE
+//var d = document, s = d.createElement('script');
+/*写入自己的disqus信息*/
+//s.src = 'https://liaokeyu.disqus.com/embed.js';
+//s.setAttribute('data-timestamp', +new Date());
+//(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<script src="/assets/js/jquery.min.js"></script>
+<script src="/assets/js/prism.js"></script>
+<script src="/assets/js/index.min.js"></script>
+</body>
+</html>

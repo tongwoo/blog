@@ -6,6 +6,8 @@ author: wutong
 tags:  linux ngrok
 ---
 
+ngrok是个不错的http内网转发应用。
+
 
 ### 安装
 
@@ -38,7 +40,7 @@ make client
 
 ```bash
 #为了方便直接测试，设置成如下端口并启动
-./ngrokd -domain ngrok.wutong.me -httpAddr ":2001" -httpsAddr ":2002" -tunnelAddr ":2003"
+./ngrokd -domain ngrok.wutong.me -httpAddr ":4001" -httpsAddr ":4032" -tunnelAddr ":6023"
 ```
 
 因为默认80端口被nginx使用，所以做个转发，建立如下的 conf 文件并重新启动nginx

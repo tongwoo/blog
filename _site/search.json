@@ -1,6 +1,18 @@
 [
   
     {
+      "title"    : "Gitbook 的安装与使用",
+      "tags"     : "git gitbook",
+      "url"      : "/2018/01/07/gitbook-install.html"
+    } ,
+  
+    {
+      "title"    : "Nginx、Apache的常用功能配置",
+      "tags"     : "nginx apache",
+      "url"      : "/2017/12/23/nginx-apache-config.html"
+    } ,
+  
+    {
       "title"    : "安装Ngrok服务端和客户端",
       "tags"     : "linux ngrok",
       "url"      : "/2017/12/21/install-ngrok-server-client.html"
