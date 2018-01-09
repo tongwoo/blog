@@ -7,7 +7,7 @@ tags:  nginx apache
 ---
 
 
-Nginx
+常用的功能。
 
 ### 访问不存在的图片显示默认图片
 
