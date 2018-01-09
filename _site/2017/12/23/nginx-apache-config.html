@@ -68,20 +68,52 @@
     
     <article class="markdown-body">
         <div class="post-forward-message">本文章地址：https://blog.wutong.me/2017/12/23/nginx-apache-config.html 转载请注明出处</div>
-        <h3 id="nginx">Nginx</h3>
+        <p>Nginx</p>
 
-<p>访问不存在的图片显示默认图片</p>
+<h3 id="访问不存在的图片显示默认图片">访问不存在的图片显示默认图片</h3>
 
+<h4 id="nginx">Nginx</h4>
 <div class="language-nginx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">location</span> <span class="p">~</span><span class="sr">*</span> <span class="err">\</span><span class="s">.(jpg|jpeg|gif|png)</span>$ <span class="p">{</span>
     <span class="kn">try_files</span> <span class="nv">$uri</span> <span class="n">/not-exists.jpg</span> <span class="p">=</span><span class="mi">404</span><span class="p">;</span>
 <span class="p">}</span>
 </code></pre></div></div>
-
-<h3 id="apache">Apache</h3>
-
-<p>访问不存在的图片显示默认图片</p>
-
+<h4 id="apache">Apache</h4>
 <div class="language-apache highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">...</span>
+</code></pre></div></div>
+
+<h4 id="设置指定文件类型过期时间">设置指定文件类型过期时间</h4>
+
+<h4 id="nginx-1">Nginx</h4>
+<div class="language-nginx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">location</span> <span class="p">~</span><span class="sr">*</span> <span class="err">\</span><span class="s">.(jpg|gif|png|ico|gif|css|js|svg)</span>$ <span class="p">{</span>
+    <span class="kn">expires</span> <span class="s">30d</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="c1"># 其时间单位有如下选项
+# ms milliseconds
+# s	seconds
+# m	minutes
+# h	hours
+# d	days
+# w	weeks
+# M	months, 30 days
+# y	years, 365 days
+</span></code></pre></div></div>
+
+<h4 id="apache-1">Apache</h4>
+<div class="language-apache highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">ExpiresActive</span> <span class="ss">on</span>
+<span class="nc">ExpiresByType</span> image/jpg "access 1 years"
+<span class="nc">ExpiresByType</span> image/png "access 1 years"
+<span class="nc">ExpiresByType</span> image/gif "access 1 years"
+<span class="nc">ExpiresByType</span> image/jpeg "access 1 years"
+
+<span class="c"># 其时间单位有如下选项</span>
+<span class="c"># years</span>
+<span class="c"># months</span>
+<span class="c"># weeks</span>
+<span class="c"># days</span>
+<span class="c"># hours</span>
+<span class="c"># minutes</span>
+<span class="c"># seconds</span>
 </code></pre></div></div>
 
     </article>
