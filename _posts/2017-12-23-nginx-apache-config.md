@@ -18,11 +18,11 @@ location ~* \.(jpg|jpeg|gif|png)$ {
 }
 ```
 #### Apache
-```apache
+```apacheconf
 ...
 ```
 
-#### 设置指定文件类型过期时间
+### 设置指定文件类型过期时间
 
 #### Nginx
 ```nginx
@@ -42,7 +42,7 @@ location ~* \.(jpg|gif|png|ico|gif|css|js|svg)$ {
 ```
 
 #### Apache
-```apache
+```apacheconf
 ExpiresActive on
 ExpiresByType image/jpg "access 1 years"
 ExpiresByType image/png "access 1 years"
