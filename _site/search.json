@@ -7,6 +7,12 @@
     } ,
   
     {
+      "title"    : "MySQL每天固定几个时段自动备份数据库并压缩",
+      "tags"     : "linux php mysql mariadb apache",
+      "url"      : "/2018/01/03/mysql-autobackup.html"
+    } ,
+  
+    {
       "title"    : "Nginx、Apache的常用功能配置",
       "tags"     : "nginx apache",
       "url"      : "/2017/12/23/nginx-apache-config.html"

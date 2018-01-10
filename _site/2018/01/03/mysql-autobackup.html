@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MySQL每天固定几个时段自动备份数据库并压缩 - 武仝的博客</title>
+    <meta name="author"  content="武仝">
+    <meta name="description" content="MySQL每天固定几个时段自动备份数据库并压缩">
+    <meta name="keywords"  content="linux, php, mysql, mariadb, apache">
+    <!-- Open Graph -->
+    <meta property="og:title" content="MySQL每天固定几个时段自动备份数据库并压缩 - 武仝的博客">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://blog.wutong.me/2018/01/03/mysql-autobackup.html">
+    <meta property="og:description" content="PHP开发者，热爱技术&设计。很高兴能在这里分享我对技术的思考。">
+    <meta property="og:site_name" content="武仝的博客">
+    <link rel="stylesheet" href="//cdn.staticfile.org/normalize/6.0.0/normalize.min.css">
+    <link rel="stylesheet" href="//at.alicdn.com/t/font_roc50gemkxpw4s4i.css">
+    <link rel="stylesheet" href="/assets/css/github-markdown.css">
+    <link rel="stylesheet" href="/assets/css/prism.css">
+    <link rel="stylesheet" href="/assets/css/share.min.css">
+    <link rel="stylesheet" href="/assets/css/app.min.css">
+    <link rel="stylesheet" href="/assets/css/common.css">
+</head>
+<body>
+    <!--[if lt IE 10]>
+<div class="alert-danger" role="alert">你的浏览器实在太太太旧了，放学别走，升级完浏览器再说！<a target="_blank" class="alert-link" href="http://browsehappy.com">立即升级</a></div>
+<![endif]-->
+<input id="nm-switch" type="hidden" value="false">
+
+<header class="g-header">
+    <div class="g-logo">
+      <a href="/"></a>
+    </div>
+    <i id="menu-toggle" class="iconfont icon-menu"></i>
+    <nav class="g-nav">
+        <ul>
+            
+            <li><a href="/">Home</a></li>
+            
+            <li><a href="/tags.html">Tags</a></li>
+            
+        </ul>
+    </nav>
+</header>
+
+
+<header class="g-banner post-header post-pattern-circuitBoard bgcolor-default " data-theme="default">
+    <div class="post-wrapper">
+        <div class="post-tags">
+            
+            
+            <a href="https://blog.wutong.me/tags.html#linux" class="post-tag">linux</a>
+            
+            <a href="https://blog.wutong.me/tags.html#php" class="post-tag">php</a>
+            
+            <a href="https://blog.wutong.me/tags.html#mysql" class="post-tag">mysql</a>
+            
+            <a href="https://blog.wutong.me/tags.html#mariadb" class="post-tag">mariadb</a>
+            
+            <a href="https://blog.wutong.me/tags.html#apache" class="post-tag">apache</a>
+            
+            
+        </div>
+        <h1>MySQL每天固定几个时段自动备份数据库并压缩</h1>
+        <div class="post-meta">
+            <span class="post-meta-item"><i class="iconfont icon-author"></i><a href="https://blog.wutong.me" target="_blank" rel="author">wutong</a></></span>
+            <time class="post-meta-item" datetime="2018-01-03"><i class="iconfont icon-date"></i>2018-01-03</time>
+        </div>
+    </div>
+    
+    <div class="filter"></div>
+    <div class="post-cover" style="background: url('/assets/img/hero.jpg') center no-repeat; background-size: cover;">
+    
+</header>
+
+<div class="post-content">
+    
+    <article class="markdown-body">
+        <div class="post-forward-message">本文章地址：https://blog.wutong.me/2018/01/03/mysql-autobackup.html 转载请注明出处</div>
+        <p>感觉自己越来越像个运维了，3台服务器公司又不做快照，基于负责任的态度，写个脚本每天自动备份3台业务服务器的数据库并自动同步到备份服务器，然后每天上班自己机器在自动拉取备份数据到硬盘 ^_^</p>
+
+<h3 id="创建要备份的数据库列表">创建要备份的数据库列表</h3>
+
+<p>创建 <code class="highlighter-rouge">databases.txt</code> 并每一行写个数据库名称</p>
+
+<h3 id="创建备份脚本">创建备份脚本</h3>
+
+<p>创建 <code class="highlighter-rouge">mysql-auto-backup</code> 文件，赋予执行权限并填写如下命令</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">#!/usr/bin/env sh</span>
+<span class="c">#author : wutong</span>
+<span class="c">#date : 2018-01-03</span>
+
+<span class="c">#数据库连接的相关信息，需要有导出权限</span>
+<span class="nv">db_user</span><span class="o">=</span><span class="s2">"root"</span>
+<span class="nv">db_password</span><span class="o">=</span><span class="s2">"root"</span>
+<span class="nv">db_host</span><span class="o">=</span><span class="s2">"127.0.0.1"</span>
+<span class="nv">db_port</span><span class="o">=</span><span class="s2">"3306"</span>
+
+<span class="c">#当前时间</span>
+<span class="nv">current_date</span><span class="o">=</span><span class="sb">`</span>date <span class="s2">"+%Y%m%d"</span><span class="sb">`</span>
+<span class="nv">current_time</span><span class="o">=</span><span class="sb">`</span>date <span class="s2">"+%H%M%S"</span><span class="sb">`</span>
+
+<span class="c">#当前目录</span>
+<span class="nv">current_directory</span><span class="o">=</span><span class="sb">`</span>dirname <span class="nv">$0</span><span class="sb">`</span>
+
+<span class="c">#保存目录</span>
+<span class="nv">backup_base</span><span class="o">=</span><span class="s2">"/web/backup/</span><span class="k">${</span><span class="nv">current_date</span><span class="k">}</span><span class="s2">"</span>
+<span class="k">if</span> <span class="o">[[</span> <span class="o">!</span> <span class="nt">-d</span> <span class="k">${</span><span class="nv">backup_base</span><span class="k">}</span> <span class="o">]]</span><span class="p">;</span> <span class="k">then
+    </span>mkdir <span class="nt">-p</span> <span class="k">${</span><span class="nv">backup_base</span><span class="k">}</span>
+<span class="k">fi</span>
+
+<span class="c">#要备份的数据库列表</span>
+<span class="nv">databases</span><span class="o">=</span><span class="sb">`</span><span class="nb">cat</span> <span class="s2">"</span><span class="k">${</span><span class="nv">current_directory</span><span class="k">}</span><span class="s2">/databases.txt"</span> | cut <span class="nt">-f</span> 1<span class="sb">`</span>
+
+<span class="c">#循环备份</span>
+<span class="k">for </span>database <span class="k">in</span> <span class="k">${</span><span class="nv">databases</span><span class="k">}</span>
+<span class="k">do
+    </span><span class="nb">echo</span> <span class="s2">"备份 </span><span class="k">${</span><span class="nv">database</span><span class="k">}</span><span class="s2"> ..."</span>
+    <span class="nv">database_file</span><span class="o">=</span><span class="s2">"</span><span class="k">${</span><span class="nv">backup_base</span><span class="k">}</span><span class="s2">/</span><span class="k">${</span><span class="nv">database</span><span class="k">}</span><span class="s2">-</span><span class="k">${</span><span class="nv">current_time</span><span class="k">}</span><span class="s2">.sql"</span>
+    <span class="nv">database_zip</span><span class="o">=</span><span class="s2">"</span><span class="k">${</span><span class="nv">database_file</span><span class="k">}</span><span class="s2">.zip"</span>
+    <span class="k">if</span> <span class="o">[[</span> <span class="nt">-f</span> <span class="k">${</span><span class="nv">database_zip</span><span class="k">}</span> <span class="o">]]</span><span class="p">;</span> <span class="k">then
+        </span><span class="nb">echo</span> <span class="s2">"数据库 </span><span class="k">${</span><span class="nv">database_zip</span><span class="k">}</span><span class="s2"> 已经存在，导出忽略"</span>
+        <span class="k">continue
+    fi
+    </span>mysqldump <span class="nt">--host</span><span class="o">=</span><span class="k">${</span><span class="nv">db_host</span><span class="k">}</span> <span class="nt">--port</span><span class="o">=</span><span class="k">${</span><span class="nv">db_port</span><span class="k">}</span> <span class="nt">--user</span><span class="o">=</span><span class="k">${</span><span class="nv">db_user</span><span class="k">}</span> <span class="nt">--password</span><span class="o">=</span><span class="k">${</span><span class="nv">db_password</span><span class="k">}</span> <span class="nt">--databases</span> <span class="k">${</span><span class="nv">database</span><span class="k">}</span> <span class="nt">--add-drop-table</span> <span class="nt">--create-options</span> <span class="nt">--hex-blob</span> <span class="nt">--events</span> <span class="nt">--add-locks</span> <span class="nt">--lock-tables</span>  <span class="o">&gt;</span> <span class="k">${</span><span class="nv">database_file</span><span class="k">}</span>
+    zip <span class="nt">-j9</span> <span class="k">${</span><span class="nv">database_zip</span><span class="k">}</span> <span class="k">${</span><span class="nv">database_file</span><span class="k">}</span>
+    <span class="k">if</span> <span class="o">[[</span> <span class="nt">-f</span> <span class="k">${</span><span class="nv">database_zip</span><span class="k">}</span> <span class="o">]]</span><span class="p">;</span> <span class="k">then
+        </span>rm <span class="nt">-rf</span> <span class="k">${</span><span class="nv">database_file</span><span class="k">}</span>
+    <span class="k">fi
+done</span>
+</code></pre></div></div>
+
+<h3 id="创建cron任务">创建cron任务</h3>
+
+<p>敲 <code class="highlighter-rouge">crontab -e</code> 并填写如下命令</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>1 <span class="k">*</span>/6 <span class="k">*</span> <span class="k">*</span> <span class="k">*</span> 备份脚本全路径
+</code></pre></div></div>
+
+<h3 id="备份服务器自动拉取备份">备份服务器自动拉取备份</h3>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>rsync <span class="nt">-aP</span> 账户信息:远程目录 本地目录
+</code></pre></div></div>
+
+    </article>
+    
+    <div class="social-share-wrapper">
+        <div class="social-share"></div>
+    </div>
+    
+</div>
+
+<section class="author-detail">
+    <section class="post-footer-item author-card">
+        <div class="avatar">
+            <img src="/assets/img/profile.jpg" alt="">
+        </div>
+        <div class="author-name" rel="author">武仝</div>
+        <div class="bio">
+            <p>PHP开发，热爱技术&设计</p>
+        </div>
+        
+        <ul class="sns-links">
+            
+            <li>
+                <a href="//weibo.com/u/3479312483" target="_blank">
+                    <i class="iconfont icon-weibo"></i>
+                </a>
+            </li>
+            
+            <li>
+                <a href="//github.com/tongwoo" target="_blank">
+                    <i class="iconfont icon-github"></i>
+                </a>
+            </li>
+            
+        </ul>
+        
+    </section>
+    <section class="post-footer-item read-next">
+        
+        <div class="read-next-item">
+            <a href="/2018/01/07/gitbook-install.html" class="read-next-link"></a>
+            <section>
+                <span>Gitbook 的安装与使用</span>
+                <p>Gitbook是一个可以使用markdown来撰写并利用github存储然后生成一本电子书的应用，不过我们也可以用...</p>
+            </section>
+            
+        </div>
+        
+        
+        <div class="read-next-item">
+            <a href="/2017/12/23/nginx-apache-config.html" class="read-next-link"></a>
+            <section>
+                <span>Nginx、Apache的常用功能配置</span>
+                <p>常用的功能。</p>
+            </section>
+            
+        </div>
+        
+    </section>
+    
+</section>
+
+<footer class="g-footer">
+    <section>武仝的博客 © 2018</section>
+    <section>Powered by <a href="//jekyllrb.com">Jekyll</a> | <a href="https://github.com/kaeyleo/jekyll-theme-H2O">Theme H2O</a></section>
+</footer>
+
+<script src="/assets/js/social-share.min.js"></script>
+<script>
+    socialShare('.social-share', {
+        sites: ['wechat','weibo','douban','twitter'],
+        wechatQrcodeTitle: "分享到微信朋友圈",
+        wechatQrcodeHelper: '<p>扫码后点击右上角</p><p>将本文分享至朋友圈</p>'
+    });
+</script>
+<script>
+/**
+*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+/*
+var disqus_config = function () {
+this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+*/
+(function() { // DON'T EDIT BELOW THIS LINE
+//var d = document, s = d.createElement('script');
+/*写入自己的disqus信息*/
+//s.src = 'https://liaokeyu.disqus.com/embed.js';
+//s.setAttribute('data-timestamp', +new Date());
+//(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<script src="/assets/js/jquery.min.js"></script>
+<script src="/assets/js/prism.js"></script>
+<script src="/assets/js/index.min.js"></script>
+</body>
+</html>
