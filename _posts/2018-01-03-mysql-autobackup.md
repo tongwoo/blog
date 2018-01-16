@@ -4,7 +4,6 @@ title: 'MySQL每天固定几个时段自动备份数据库并压缩'
 date: 2018-01-03
 author: wutong
 tags:  linux php mysql mariadb apache
-cover: '/assets/img/hero.jpg'
 ---
 
 感觉自己越来越像个运维了，3台服务器公司又不做快照，基于负责任的态度，写个脚本每天自动备份3台业务服务器的数据库并自动同步到备份服务器，然后每天上班自己机器在自动拉取备份数据到硬盘 ^_^
