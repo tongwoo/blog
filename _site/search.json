@@ -7,6 +7,12 @@
     } ,
   
     {
+      "title"    : "Mac升级到10.13连接SSH每次都要输入密码",
+      "tags"     : "mac ssh",
+      "url"      : "/2018/01/25/mac-ssh-key-save.html"
+    } ,
+  
+    {
       "title"    : "Gitbook 的安装与使用",
       "tags"     : "git gitbook",
       "url"      : "/2018/01/07/gitbook-install.html"
