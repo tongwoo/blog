@@ -1,6 +1,12 @@
 [
   
     {
+      "title"    : "Yii2的权限检测流程",
+      "tags"     : "php yii",
+      "url"      : "/2018/02/01/yii2-rbac-step.html"
+    } ,
+  
+    {
       "title"    : "Gitbook 的安装与使用",
       "tags"     : "git gitbook",
       "url"      : "/2018/01/07/gitbook-install.html"

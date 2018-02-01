@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yii2的权限检测流程 - 武仝的博客</title>
+    <meta name="author"  content="武仝">
+    <meta name="description" content="Yii2的权限检测流程">
+    <meta name="keywords"  content="php, yii">
+    <!-- Open Graph -->
+    <meta property="og:title" content="Yii2的权限检测流程 - 武仝的博客">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://blog.wutong.me/2018/02/01/yii2-rbac-step.html">
+    <meta property="og:description" content="PHP开发者，热爱技术&设计。很高兴能在这里分享我对技术的思考。">
+    <meta property="og:site_name" content="武仝的博客">
+    <link rel="stylesheet" href="//cdn.staticfile.org/normalize/6.0.0/normalize.min.css">
+    <link rel="stylesheet" href="//at.alicdn.com/t/font_roc50gemkxpw4s4i.css">
+    <link rel="stylesheet" href="/assets/css/github-markdown.css">
+    <link rel="stylesheet" href="/assets/css/prism.css">
+    <link rel="stylesheet" href="/assets/css/share.min.css">
+    <link rel="stylesheet" href="/assets/css/app.min.css">
+    <link rel="stylesheet" href="/assets/css/common.css">
+</head>
+<body>
+    <!--[if lt IE 10]>
+<div class="alert-danger" role="alert">你的浏览器实在太太太旧了，放学别走，升级完浏览器再说！<a target="_blank" class="alert-link" href="http://browsehappy.com">立即升级</a></div>
+<![endif]-->
+<input id="nm-switch" type="hidden" value="false">
+
+<header class="g-header">
+    <div class="g-logo">
+      <a href="/"></a>
+    </div>
+    <i id="menu-toggle" class="iconfont icon-menu"></i>
+    <nav class="g-nav">
+        <ul>
+            
+            <li><a href="/">Home</a></li>
+            
+            <li><a href="/tags.html">Tags</a></li>
+            
+        </ul>
+    </nav>
+</header>
+
+
+<header class="g-banner post-header post-pattern-circuitBoard bgcolor-default post-no-cover" data-theme="default">
+    <div class="post-wrapper">
+        <div class="post-tags">
+            
+            
+            <a href="https://blog.wutong.me/tags.html#php" class="post-tag">php</a>
+            
+            <a href="https://blog.wutong.me/tags.html#yii" class="post-tag">yii</a>
+            
+            
+        </div>
+        <h1>Yii2的权限检测流程</h1>
+        <div class="post-meta">
+            <span class="post-meta-item"><i class="iconfont icon-author"></i><a href="https://blog.wutong.me" target="_blank" rel="author">wutong</a></></span>
+            <time class="post-meta-item" datetime="2018-02-01"><i class="iconfont icon-date"></i>2018-02-01</time>
+        </div>
+    </div>
+    
+</header>
+
+<div class="post-content">
+    
+    <article class="markdown-body">
+        <div class="post-forward-message">本文章地址：https://blog.wutong.me/2018/02/01/yii2-rbac-step.html 转载请注明出处</div>
+        <p>Yii2中的<code class="highlighter-rouge">RBAC</code> 还是比较快捷方便的，支持 PHP、数据库等方式存储权限配置。</p>
+
+<h3 id="检查方式">检查方式</h3>
+
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">\Yii</span><span class="o">::</span><span class="nv">$app</span><span class="o">-&gt;</span><span class="na">authManager</span><span class="o">-&gt;</span><span class="na">checkAccess</span><span class="p">(</span><span class="nx">用户id</span><span class="p">,</span><span class="nx">权限名称</span><span class="p">,</span><span class="nx">提供给Rule的参数</span><span class="p">);</span>
+<span class="c1">//或
+</span><span class="nx">\Yii</span><span class="o">::</span><span class="nv">$app</span><span class="o">-&gt;</span><span class="na">user</span><span class="o">-&gt;</span><span class="na">can</span><span class="p">(</span><span class="nx">权限名称</span><span class="p">,</span><span class="nx">提供给Rule的参数</span><span class="p">);</span>
+</code></pre></div></div>
+<p>返回值为 <code class="highlighter-rouge">bool</code> 类型，<code class="highlighter-rouge">true</code> 为有这个权限，<code class="highlighter-rouge">false</code>为没有这个权限</p>
+
+<h3 id="checkaccess-检查流程">checkAccess 检查流程</h3>
+
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">public</span> <span class="k">function</span> <span class="nf">checkAccess</span><span class="p">(</span><span class="nv">$userId</span><span class="p">,</span> <span class="nv">$permissionName</span><span class="p">,</span> <span class="nv">$params</span> <span class="o">=</span> <span class="p">[])</span>
+<span class="p">{</span>
+    <span class="nv">$assignments</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">getAssignments</span><span class="p">(</span><span class="nv">$userId</span><span class="p">);</span>
+ 
+    <span class="k">if</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">hasNoAssignments</span><span class="p">(</span><span class="nv">$assignments</span><span class="p">))</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">checkAccessRecursive</span><span class="p">(</span><span class="nv">$userId</span><span class="p">,</span> <span class="nv">$permissionName</span><span class="p">,</span> <span class="nv">$params</span><span class="p">,</span> <span class="nv">$assignments</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<p><strong>第一步</strong>，会调用<code class="highlighter-rouge">AuthManager::getAssignments</code> 方法获得该用户所绑定的角色、权限等信息。</p>
+
+<p><strong>第二步</strong>，检查此用户的<code class="highlighter-rouge">角色权限是否为空</code>和<code class="highlighter-rouge">有没有初始化默认角色</code>，如果都没有的话则返回<code class="highlighter-rouge">false</code>并终止权限判断。</p>
+
+<p><strong>第三步</strong>，递归的调用 <code class="highlighter-rouge">AuthManager::checkAccessRecursive</code> 方法来检查有没有此权限。</p>
+
+<h3 id="checkaccessrecursive-检查流程">checkAccessRecursive 检查流程</h3>
+
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">protected</span> <span class="k">function</span> <span class="nf">checkAccessRecursive</span><span class="p">(</span><span class="nv">$user</span><span class="p">,</span> <span class="nv">$itemName</span><span class="p">,</span> <span class="nv">$params</span><span class="p">,</span> <span class="nv">$assignments</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nb">isset</span><span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">items</span><span class="p">[</span><span class="nv">$itemName</span><span class="p">]))</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="cm">/* @var $item Item */</span>
+    <span class="nv">$item</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">items</span><span class="p">[</span><span class="nv">$itemName</span><span class="p">];</span>
+    <span class="nx">Yii</span><span class="o">::</span><span class="na">trace</span><span class="p">(</span><span class="nv">$item</span> <span class="nx">instanceof</span> <span class="nx">Role</span> <span class="o">?</span> <span class="s2">"Checking role: </span><span class="nv">$itemName</span><span class="s2">"</span> <span class="o">:</span> <span class="s2">"Checking permission : </span><span class="nv">$itemName</span><span class="s2">"</span><span class="p">,</span> <span class="nx">__METHOD__</span><span class="p">);</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">executeRule</span><span class="p">(</span><span class="nv">$user</span><span class="p">,</span> <span class="nv">$item</span><span class="p">,</span> <span class="nv">$params</span><span class="p">))</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="nb">isset</span><span class="p">(</span><span class="nv">$assignments</span><span class="p">[</span><span class="nv">$itemName</span><span class="p">])</span> <span class="o">||</span> <span class="nb">in_array</span><span class="p">(</span><span class="nv">$itemName</span><span class="p">,</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">defaultRoles</span><span class="p">))</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">foreach</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">children</span> <span class="k">as</span> <span class="nv">$parentName</span> <span class="o">=&gt;</span> <span class="nv">$children</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nb">isset</span><span class="p">(</span><span class="nv">$children</span><span class="p">[</span><span class="nv">$itemName</span><span class="p">])</span> <span class="o">&amp;&amp;</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">checkAccessRecursive</span><span class="p">(</span><span class="nv">$user</span><span class="p">,</span> <span class="nv">$parentName</span><span class="p">,</span> <span class="nv">$params</span><span class="p">,</span> <span class="nv">$assignments</span><span class="p">))</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<p><strong>第一步</strong>，判断当前 <code class="highlighter-rouge">AuthManger</code> 实例中的 <code class="highlighter-rouge">items</code> 属性中是否存在这个权限，<code class="highlighter-rouge">items</code> 中保存了所有创建的角色、权限，如果没有的话则直接返回 <code class="highlighter-rouge">false</code> 并结束。</p>
+
+<p><strong>第二步</strong>，如果有这个权限的话，则判断这个权限是否绑定了 <code class="highlighter-rouge">Rule</code> 实例（通过的权限的<code class="highlighter-rouge">ruleName</code>属性值是否为<code class="highlighter-rouge">null</code>来判断），如果绑定了<code class="highlighter-rouge">Rule</code>则执行<code class="highlighter-rouge">Rule</code>实例的<code class="highlighter-rouge">execute</code>方法，然后根据<code class="highlighter-rouge">execute</code>方法的返回值觉得是否终止检查。</p>
+
+<p><strong>第三步</strong>，判断用户的当前的<code class="highlighter-rouge">$assignments</code>中是否存在这个权限 或者 当前默认所有角色中是否存在这个权限，满足其中一种的话则返回<code class="highlighter-rouge">true</code>,注意：如果权限实际是角色的话才有意义，因为判断代码为 <code class="highlighter-rouge">in_array($itemName, $this-&gt;defaultRoles)</code></p>
+
+<p><strong>第四步</strong>，循环检查<code class="highlighter-rouge">AuthManager::children</code>属性里面每个项的<code class="highlighter-rouge">value</code>数组中是否包含了要验证的权限并且递归调用<code class="highlighter-rouge">checkAccessRecursive</code>检查当前用户是否有这个项的<code class="highlighter-rouge">key</code>对应的权限，如两者都满足的话则返回<code class="highlighter-rouge">true</code>并终止判断。</p>
+
+
+    </article>
+    
+    <div class="social-share-wrapper">
+        <div class="social-share"></div>
+    </div>
+    
+</div>
+
+<section class="author-detail">
+    <section class="post-footer-item author-card">
+        <div class="avatar">
+            <img src="/assets/img/profile.jpg" alt="">
+        </div>
+        <div class="author-name" rel="author">武仝</div>
+        <div class="bio">
+            <p>PHP开发，热爱技术&设计</p>
+        </div>
+        
+        <ul class="sns-links">
+            
+            <li>
+                <a href="//weibo.com/u/3479312483" target="_blank">
+                    <i class="iconfont icon-weibo"></i>
+                </a>
+            </li>
+            
+            <li>
+                <a href="//github.com/tongwoo" target="_blank">
+                    <i class="iconfont icon-github"></i>
+                </a>
+            </li>
+            
+        </ul>
+        
+    </section>
+    <section class="post-footer-item read-next">
+        
+        
+        <div class="read-next-item">
+            <a href="/2018/01/07/gitbook-install.html" class="read-next-link"></a>
+            <section>
+                <span>Gitbook 的安装与使用</span>
+                <p>Gitbook是一个可以使用markdown来撰写并利用github存储然后生成一本电子书的应用，不过我们也可以用...</p>
+            </section>
+            
+        </div>
+        
+    </section>
+    
+</section>
+
+<footer class="g-footer">
+    <section>武仝的博客 © 2018</section>
+    <section>Powered by <a href="//jekyllrb.com">Jekyll</a> | <a href="https://github.com/kaeyleo/jekyll-theme-H2O">Theme H2O</a></section>
+</footer>
+
+<script src="/assets/js/social-share.min.js"></script>
+<script>
+    socialShare('.social-share', {
+        sites: ['wechat','weibo','douban','twitter'],
+        wechatQrcodeTitle: "分享到微信朋友圈",
+        wechatQrcodeHelper: '<p>扫码后点击右上角</p><p>将本文分享至朋友圈</p>'
+    });
+</script>
+<script>
+/**
+*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+/*
+var disqus_config = function () {
+this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+*/
+(function() { // DON'T EDIT BELOW THIS LINE
+//var d = document, s = d.createElement('script');
+/*写入自己的disqus信息*/
+//s.src = 'https://liaokeyu.disqus.com/embed.js';
+//s.setAttribute('data-timestamp', +new Date());
+//(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<script src="/assets/js/jquery.min.js"></script>
+<script src="/assets/js/prism.js"></script>
+<script src="/assets/js/index.min.js"></script>
+</body>
+</html>
