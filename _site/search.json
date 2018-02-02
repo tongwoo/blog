@@ -1,6 +1,12 @@
 [
   
     {
+      "title"    : "FontAwesome5出了Pro版本",
+      "tags"     : "linux php mysql mariadb apache",
+      "url"      : "/2018/02/02/font-awesome-video.html"
+    } ,
+  
+    {
       "title"    : "Yii2的权限检测流程",
       "tags"     : "php yii",
       "url"      : "/2018/02/01/yii2-rbac-step.html"
