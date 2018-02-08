@@ -169,4 +169,4 @@ Don't forget to run 'make test'.
 ```
 将 `modules/intl.so` 文件拷贝到 php 的扩展目录并启用即可
 
-至此，此更新终于完成
+至此，此更新终于完成，文件也能正常下载了。
