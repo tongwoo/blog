@@ -220,6 +220,12 @@
       "title"    : "CSS margin-top 不生效",
       "tags"     : "css",
       "url"      : "/2015/03/11/css-margin-invalid.html"
+    } ,
+  
+    {
+      "title"    : "隐藏响应头中的敏感信息",
+      "tags"     : "linux php mysql mariadb apache",
+      "url"      : "/2014/08/12/hide-response-header-danger.html"
     } 
   
 ]

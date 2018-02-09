@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CSS margin-top 不生效 - 武仝的博客</title>
+    <title>隐藏响应头中的敏感信息 - 武仝的博客</title>
     <meta name="author"  content="武仝">
-    <meta name="description" content="CSS margin-top 不生效">
-    <meta name="keywords"  content="css">
+    <meta name="description" content="隐藏响应头中的敏感信息">
+    <meta name="keywords"  content="linux, php, mysql, mariadb, apache">
     <!-- Open Graph -->
-    <meta property="og:title" content="CSS margin-top 不生效 - 武仝的博客">
+    <meta property="og:title" content="隐藏响应头中的敏感信息 - 武仝的博客">
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://blog.wutong.me/2015/03/11/css-margin-invalid.html">
+    <meta property="og:url" content="https://blog.wutong.me/2014/08/12/hide-response-header-danger.html">
     <meta property="og:description" content="PHP开发者，热爱技术&设计。很高兴能在这里分享我对技术的思考。">
     <meta property="og:site_name" content="武仝的博客">
     <link rel="stylesheet" href="//cdn.staticfile.org/normalize/6.0.0/normalize.min.css">
@@ -49,14 +49,22 @@
         <div class="post-tags">
             
             
-            <a href="https://blog.wutong.me/tags.html#css" class="post-tag">css</a>
+            <a href="https://blog.wutong.me/tags.html#linux" class="post-tag">linux</a>
+            
+            <a href="https://blog.wutong.me/tags.html#php" class="post-tag">php</a>
+            
+            <a href="https://blog.wutong.me/tags.html#mysql" class="post-tag">mysql</a>
+            
+            <a href="https://blog.wutong.me/tags.html#mariadb" class="post-tag">mariadb</a>
+            
+            <a href="https://blog.wutong.me/tags.html#apache" class="post-tag">apache</a>
             
             
         </div>
-        <h1>CSS margin-top 不生效</h1>
+        <h1>隐藏响应头中的敏感信息</h1>
         <div class="post-meta">
             <span class="post-meta-item"><i class="iconfont icon-author"></i><a href="https://blog.wutong.me" target="_blank" rel="author">wutong</a></></span>
-            <time class="post-meta-item" datetime="2015-03-11"><i class="iconfont icon-date"></i>2015-03-11</time>
+            <time class="post-meta-item" datetime="2014-08-12"><i class="iconfont icon-date"></i>2014-08-12</time>
         </div>
     </div>
     
@@ -65,27 +73,24 @@
 <div class="post-content">
     
     <article class="markdown-body">
-        <div class="post-forward-message">本文章地址：https://blog.wutong.me/2015/03/11/css-margin-invalid.html 转载请注明出处</div>
-        <h3 id="原因">原因</h3>
+        <div class="post-forward-message">本文章地址：https://blog.wutong.me/2014/08/12/hide-response-header-danger.html 转载请注明出处</div>
+        <p>在响应头中暴露出来的web服务器版本、PHP版本有潜在的安全性，隐藏它。</p>
 
-<p>盒子没有获得 haslayout 造成 margin-top无效</p>
+<h3 id="phpini">php.ini</h3>
 
-<h3 id="解决办法">解决办法</h3>
+<div class="language-ini highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="py">expose_php</span> <span class="p">=</span> <span class="s">Off</span>
+</code></pre></div></div>
 
-<ul>
-  <li>在父层div加上 overflow:hidden；</li>
-  <li>把margin-top外边距改成padding-top内边距 ；</li>
-  <li>父元素产生边距重叠的边有不为 0 的 padding 或宽度不为 0 且 style 不为 none 的 border。 父层div加： padding-top: 1px;</li>
-  <li>让父元素生成一个 block formating context</li>
-</ul>
+<h3 id="httpdconf">httpd.conf</h3>
 
-<h3 id="以下属性可以实现-block-formating-context">以下属性可以实现 block formating context</h3>
-
-<pre><code class="language-code">float: left/right
-position: absolute
-isplay: inline-block/table-cell(或其他 table 类型)
-overflow: hidden/auto
+<pre><code class="language-apacheconf">ServerSignature Off
+ServerTokens Prod
 </code></pre>
+
+<h3 id="nginxconf">nginx.conf</h3>
+
+<div class="language-nginx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">server_tokens</span> <span class="no">off</span><span class="p">;</span>
+</code></pre></div></div>
 
     </article>
     
@@ -125,23 +130,14 @@ overflow: hidden/auto
     <section class="post-footer-item read-next">
         
         <div class="read-next-item">
-            <a href="/2015/03/16/php-connec-oracle-for-windows.html" class="read-next-link"></a>
+            <a href="/2015/03/11/css-margin-invalid.html" class="read-next-link"></a>
             <section>
-                <span>PHP连接Oracle(Windows)</span>
-                <p>根据需要开启下列扩展</p>
+                <span>CSS margin-top 不生效</span>
+                <p>原因</p>
             </section>
             
         </div>
         
-        
-        <div class="read-next-item">
-            <a href="/2014/08/12/hide-response-header-danger.html" class="read-next-link"></a>
-            <section>
-                <span>隐藏响应头中的敏感信息</span>
-                <p>在响应头中暴露出来的web服务器版本、PHP版本有潜在的安全性，隐藏它。</p>
-            </section>
-            
-        </div>
         
     </section>
     
