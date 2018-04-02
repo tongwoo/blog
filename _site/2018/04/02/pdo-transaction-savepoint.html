@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MySQL事务隔离级别 - 武仝的博客</title>
+    <title>使用PDO开启事务无法执行SAVEPOINT - 武仝的博客</title>
     <meta name="author"  content="武仝">
-    <meta name="description" content="MySQL事务隔离级别">
-    <meta name="keywords"  content="mysql, mariadb">
+    <meta name="description" content="使用PDO开启事务无法执行SAVEPOINT">
+    <meta name="keywords"  content="php, mysql, pdo">
     <!-- Open Graph -->
-    <meta property="og:title" content="MySQL事务隔离级别 - 武仝的博客">
+    <meta property="og:title" content="使用PDO开启事务无法执行SAVEPOINT - 武仝的博客">
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://blog.wutong.me/2016/04/29/mysql-transaction.html">
+    <meta property="og:url" content="https://blog.wutong.me/2018/04/02/pdo-transaction-savepoint.html">
     <meta property="og:description" content="PHP开发者，热爱技术&设计。很高兴能在这里分享我对技术的思考。">
     <meta property="og:site_name" content="武仝的博客">
     <link rel="stylesheet" href="//cdn.staticfile.org/normalize/6.0.0/normalize.min.css">
@@ -49,16 +49,18 @@
         <div class="post-tags">
             
             
+            <a href="https://blog.wutong.me/tags.html#php" class="post-tag">php</a>
+            
             <a href="https://blog.wutong.me/tags.html#mysql" class="post-tag">mysql</a>
             
-            <a href="https://blog.wutong.me/tags.html#mariadb" class="post-tag">mariadb</a>
+            <a href="https://blog.wutong.me/tags.html#pdo" class="post-tag">pdo</a>
             
             
         </div>
-        <h1>MySQL事务隔离级别</h1>
+        <h1>使用PDO开启事务无法执行SAVEPOINT</h1>
         <div class="post-meta">
             <span class="post-meta-item"><i class="iconfont icon-author"></i><a href="https://blog.wutong.me" target="_blank" rel="author">wutong</a></></span>
-            <time class="post-meta-item" datetime="2016-04-29"><i class="iconfont icon-date"></i>2016-04-29</time>
+            <time class="post-meta-item" datetime="2018-04-02"><i class="iconfont icon-date"></i>2018-04-02</time>
         </div>
     </div>
     
@@ -67,28 +69,32 @@
 <div class="post-content">
     
     <article class="markdown-body">
-        <div class="post-forward-message">本文章地址：https://blog.wutong.me/2016/04/29/mysql-transaction.html 转载请注明出处</div>
-        <p>今天有个朋友问了个数据不一致的问题，加强理解并记录一下。</p>
+        <div class="post-forward-message">本文章地址：https://blog.wutong.me/2018/04/02/pdo-transaction-savepoint.html 转载请注明出处</div>
+        <p>在使用Yii框架事务嵌套的时候出现了错误 <code class="highlighter-rouge">SQLSTATE[HY000]: General error: 2014 Cannot execute queries while other unbuffered queries are active. Consider using PDOStatement::fetchAll(). Alternatively, if your code is only ever going to run against mysql, you may enable query buffering by setting the PDO::MYSQL_ATTR_USE_BUFFERED_QUERY attribute.</code></p>
 
-<h3 id="read-uncommitted">READ UNCOMMITTED</h3>
-<p>读取未提交的</p>
+<h3 id="问题呈现">问题呈现</h3>
 
-<p>在当前事务中读取的记录中会出现其他事务未提交的数据，出现脏读现象，如果一个其中一个事务执行了写操作，则另一个事物不能写，除非前一个事务commit;</p>
+<p>代码中不同位置多次调用了 <code class="highlighter-rouge">Yii:$app-&gt;db-&gt;beginTransaction()</code> 方法，Yii创建了 <code class="highlighter-rouge">SAVEPOINT LEVEL1</code> 的SQL语句，但是执行的时候报错，具体错误信息见上方。</p>
 
-<h3 id="read-committed">READ COMMITTED</h3>
-<p>读取已提交的</p>
+<h3 id="解决过程">解决过程</h3>
 
-<p>在当前事务中读取的记录中只会出现其他事务已经提交的记录，如果在当前事务中执行多次相同的select，那么有可能会出现不一致的记录，因为其他记录有可能插入了新的记录并提交，如果一个其中一个事务执行了写操作，则另一个事物不能写，除非前一个事务commit;</p>
+<p>按照文档上提示的方法 <code class="highlighter-rouge">closeCursor()</code> 和 连接属性 <code class="highlighter-rouge">PDO::MYSQL_ATTR_USE_BUFFERED_QUERY</code> 都没有解决。</p>
 
-<h3 id="repeatable-read">REPEATABLE READ</h3>
-<p>可重复读</p>
+<p>尝试自己写PDO操作代码，运行成功。</p>
 
-<p>在当前事务中自己所做的读、写都可以感知到，但是其他事务所做的写操作感知不到，比如当前事务增加了1条记录可以查询到，但是其他事务增加的记录当前事务中是查不到的</p>
+<p>经过长时间的检查找到在PDO连接数据库的配置中，Yii配置中我多加了一个选项 <code class="highlighter-rouge">PDO::ATTR_EMULATE_PREPARES</code></p>
 
-<h3 id="serializable">SERIALIZABLE</h3>
-<p>可序列化的</p>
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="s1">'db'</span> <span class="o">=&gt;</span> <span class="p">[</span>
+    <span class="s1">'class'</span> <span class="o">=&gt;</span> <span class="s1">'yii\db\Connection'</span><span class="p">,</span>
+    <span class="s1">'charset'</span> <span class="o">=&gt;</span> <span class="s1">'utf8'</span><span class="p">,</span>
+    <span class="o">........</span>
+    <span class="s1">'attributes'</span><span class="o">=&gt;</span><span class="p">[</span>
+        <span class="nx">PDO</span><span class="o">::</span><span class="na">ATTR_EMULATE_PREPARES</span> <span class="o">=&gt;</span> <span class="kc">false</span><span class="p">,</span>
+    <span class="p">],</span>
+<span class="p">],</span>
+</code></pre></div></div>
 
-<p>在当前事务中做出的操作如果没提交的话，其他事务只能在当前事务提交之后才能执行</p>
+<p>将其改为 <code class="highlighter-rouge">true</code> 或者删除即可，但是带来的另外一个问题就是查询返回的数据都是字符串了，所以在需要在合适的地方去手动执行这个参数设置，比如在需要 <code class="highlighter-rouge">SAVEPOINT</code> 的地方前面加上 <code class="highlighter-rouge">PDO::setAttribute(PDO::ATTR_EMULATE_PREPARES,0); </code>，执行完毕后再改回来</p>
 
     </article>
     
@@ -127,22 +133,16 @@
     </section>
     <section class="post-footer-item read-next">
         
+        
         <div class="read-next-item">
-            <a href="/2016/10/27/install-centos7-after.html" class="read-next-link"></a>
+            <a href="/2018/03/06/gitlab-install.html" class="read-next-link"></a>
             <section>
-                <span>安装完CentOS7之后出现的相关问题</span>
-                <p>有时候因为次要版本号的不同总会有一些莫名奇妙的问题，以下是常遇到的问题和解决方法。</p>
+                <span>Gitlab安装</span>
+                <p>看了看办公室的古董服务器放在那里没什么用，就当git仓库来用好了，刚好4G内存。</p>
             </section>
             
-        </div>
-        
-        
-        <div class="read-next-item">
-            <a href="/2016/04/28/flock.html" class="read-next-link"></a>
-            <section>
-                <span>使用flock文件锁解决脚本重复执行问题</span>
-                <p>经常需要cron任务来执行一段脚本，如果在规定时间内无法执行完，就会又一次执行，可以借用flock命令来解决这一的...</p>
-            </section>
+            <div class="filter"></div>
+            <img src="/assets/img/hero.jpg" alt="">
             
         </div>
         
