@@ -4,7 +4,6 @@ title: 'Gitlab安装'
 date: 2018-03-06
 author: wutong
 tags:  linux php mysql mariadb apache
-cover: '/assets/img/hero.jpg'
 ---
 
 看了看办公室的古董服务器放在那里没什么用，就当git仓库来用好了，刚好4G内存。
