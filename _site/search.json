@@ -103,6 +103,12 @@
     } ,
   
     {
+      "title"    : "Yii中报Call to undefined method Imagick::setImageOpacity()",
+      "tags"     : "php yii imagine",
+      "url"      : "/2017/04/10/imagine-alpha.html"
+    } ,
+  
+    {
       "title"    : "安装PHP运行环境",
       "tags"     : "linux php mysql mariadb apache",
       "url"      : "/2016/11/22/install-php.html"
