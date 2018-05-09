@@ -74,7 +74,7 @@
 
 <h4 id="安装telnetserver以便万一原先的ssh无法登录">安装TelnetServer以便万一原先的ssh无法登录</h4>
 
-<p><a href="/install-telnet-server">安装方法</a></p>
+<p><a href="/2018/05/02/install-telnet-server">安装方法</a></p>
 
 <h4 id="安装开发工具">安装开发工具</h4>
 
@@ -83,42 +83,42 @@
 
 <h4 id="获取最新的openssh安装包">获取最新的OpenSSH安装包</h4>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#下载
-wget "https://openbsd.hk/pub/OpenBSD/OpenSSH/portable/openssh-7.7p1.tar.gz"
-#解压
-tar -xzf openssh-7.7p1.tar.gz
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">#下载</span>
+wget <span class="s2">"https://openbsd.hk/pub/OpenBSD/OpenSSH/portable/openssh-7.7p1.tar.gz"</span>
+<span class="c">#解压</span>
+<span class="nb">tar</span> <span class="nt">-xzf</span> openssh-7.7p1.tar.gz
 </code></pre></div></div>
 
 <h4 id="卸载原先的openssh">卸载原先的OpenSSH</h4>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>yum remove openssh
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>yum remove openssh
 </code></pre></div></div>
 
 <h4 id="如果出现有很多不必要的依赖也卸载的话则改为手动卸载">如果出现有很多不必要的依赖也卸载的话，则改为手动卸载</h4>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>rpm -e --nodeps openssh
-rpm -e --nodeps openssh-clients
-rpm -e --nodeps openssh-server
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>rpm <span class="nt">-e</span> <span class="nt">--nodeps</span> openssh
+rpm <span class="nt">-e</span> <span class="nt">--nodeps</span> openssh-clients
+rpm <span class="nt">-e</span> <span class="nt">--nodeps</span> openssh-server
 </code></pre></div></div>
 
 <h2 id="安装工作">安装工作</h2>
 
 <p>进入刚才解压的 openssh-7.7p1 目录，执行如下命令，如果提示相关c文件不存在，则安装相关开发包，如：openssl-devel</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>cd /tmp/openssh-7.7p1
-#指定安装目录为/app/openssh77
-./configure -prefix=/app/openssh77
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">cd</span> /tmp/openssh-7.7p1
+<span class="c">#指定安装目录为/app/openssh77</span>
+./configure <span class="nt">-prefix</span><span class="o">=</span>/app/openssh77
 make
 make install
 </code></pre></div></div>
 
 <p>完善openssh开机脚本</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#拷贝脚本文件
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">#拷贝脚本文件</span>
 cp /tmp/openssh-7.7p1/contrib/redhat/sshd.init /etc/init.d/sshd
-#修改里面的相关路径为 /app/openssh77
+<span class="c">#修改里面的相关路径为 /app/openssh77</span>
 vim /etc/init.d/sshd
-#设置为自启动
+<span class="c">#设置为自启动</span>
 chkconfig sshd on
 </code></pre></div></div>
 
@@ -126,7 +126,7 @@ chkconfig sshd on
 
 <p>重启机器确认开机脚本是否正常启动，如果正常启动则关闭 telnet 服务</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>service xinetd stop
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>service xinetd stop
 </code></pre></div></div>
 
     </article>
