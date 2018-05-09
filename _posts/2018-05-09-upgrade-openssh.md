@@ -11,17 +11,17 @@ tags:  linux openssh
 
 ### 准备工作
 
-安装TelnetServer以便万一原先的ssh无法登录
+#### 安装TelnetServer以便万一原先的ssh无法登录
 
 [安装方法](/install-telnet-server)
 
-安装开发工具
+#### 安装开发工具
 
 ```bash
 yum groupinstall 开发工具
 ```
 
-获取最新的OpenSSH安装包
+#### 获取最新的OpenSSH安装包
 
 ```
 #下载
@@ -30,13 +30,13 @@ wget "https://openbsd.hk/pub/OpenBSD/OpenSSH/portable/openssh-7.7p1.tar.gz"
 tar -xzf openssh-7.7p1.tar.gz
 ```
 
-卸载原先的OpenSSH
+#### 卸载原先的OpenSSH
 
 ```
 yum remove openssh
 ```
 
-如果出现有很多不必要的依赖也卸载的话，则改为手动卸载
+#### 如果出现有很多不必要的依赖也卸载的话，则改为手动卸载
 
 ```
 rpm -e --nodeps openssh

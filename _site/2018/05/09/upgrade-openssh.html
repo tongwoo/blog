@@ -72,16 +72,16 @@
 
 <h3 id="准备工作">准备工作</h3>
 
-<p>安装TelnetServer以便万一原先的ssh无法登录</p>
+<h4 id="安装telnetserver以便万一原先的ssh无法登录">安装TelnetServer以便万一原先的ssh无法登录</h4>
 
 <p><a href="/install-telnet-server">安装方法</a></p>
 
-<p>安装开发工具</p>
+<h4 id="安装开发工具">安装开发工具</h4>
 
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>yum groupinstall 开发工具
 </code></pre></div></div>
 
-<p>获取最新的OpenSSH安装包</p>
+<h4 id="获取最新的openssh安装包">获取最新的OpenSSH安装包</h4>
 
 <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#下载
 wget "https://openbsd.hk/pub/OpenBSD/OpenSSH/portable/openssh-7.7p1.tar.gz"
@@ -89,12 +89,12 @@ wget "https://openbsd.hk/pub/OpenBSD/OpenSSH/portable/openssh-7.7p1.tar.gz"
 tar -xzf openssh-7.7p1.tar.gz
 </code></pre></div></div>
 
-<p>卸载原先的OpenSSH</p>
+<h4 id="卸载原先的openssh">卸载原先的OpenSSH</h4>
 
 <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>yum remove openssh
 </code></pre></div></div>
 
-<p>如果出现有很多不必要的依赖也卸载的话，则改为手动卸载</p>
+<h4 id="如果出现有很多不必要的依赖也卸载的话则改为手动卸载">如果出现有很多不必要的依赖也卸载的话，则改为手动卸载</h4>
 
 <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>rpm -e --nodeps openssh
 rpm -e --nodeps openssh-clients
