@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>使用PDO开启事务无法执行SAVEPOINT - 武仝的博客</title>
+    <title>升级OpenSSH - 武仝的博客</title>
     <meta name="author"  content="武仝">
-    <meta name="description" content="使用PDO开启事务无法执行SAVEPOINT">
-    <meta name="keywords"  content="php, mysql, pdo">
+    <meta name="description" content="升级OpenSSH">
+    <meta name="keywords"  content="linux, openssh">
     <!-- Open Graph -->
-    <meta property="og:title" content="使用PDO开启事务无法执行SAVEPOINT - 武仝的博客">
+    <meta property="og:title" content="升级OpenSSH - 武仝的博客">
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://blog.wutong.me/2018/04/02/pdo-transaction-savepoint.html">
+    <meta property="og:url" content="https://blog.wutong.me/2018/05/09/upgrade-openssh.html">
     <meta property="og:description" content="PHP开发者，热爱技术&设计。很高兴能在这里分享我对技术的思考。">
     <meta property="og:site_name" content="武仝的博客">
     <link rel="stylesheet" href="//cdn.staticfile.org/normalize/6.0.0/normalize.min.css">
@@ -49,18 +49,16 @@
         <div class="post-tags">
             
             
-            <a href="https://blog.wutong.me/tags.html#php" class="post-tag">php</a>
+            <a href="https://blog.wutong.me/tags.html#linux" class="post-tag">linux</a>
             
-            <a href="https://blog.wutong.me/tags.html#mysql" class="post-tag">mysql</a>
-            
-            <a href="https://blog.wutong.me/tags.html#pdo" class="post-tag">pdo</a>
+            <a href="https://blog.wutong.me/tags.html#openssh" class="post-tag">openssh</a>
             
             
         </div>
-        <h1>使用PDO开启事务无法执行SAVEPOINT</h1>
+        <h1>升级OpenSSH</h1>
         <div class="post-meta">
             <span class="post-meta-item"><i class="iconfont icon-author"></i><a href="https://blog.wutong.me" target="_blank" rel="author">wutong</a></></span>
-            <time class="post-meta-item" datetime="2018-04-02"><i class="iconfont icon-date"></i>2018-04-02</time>
+            <time class="post-meta-item" datetime="2018-05-09"><i class="iconfont icon-date"></i>2018-05-09</time>
         </div>
     </div>
     
@@ -69,32 +67,67 @@
 <div class="post-content">
     
     <article class="markdown-body">
-        <div class="post-forward-message">本文章地址：https://blog.wutong.me/2018/04/02/pdo-transaction-savepoint.html 转载请注明出处</div>
-        <p>在使用Yii框架事务嵌套的时候出现了错误 <code class="highlighter-rouge">SQLSTATE[HY000]: General error: 2014 Cannot execute queries while other unbuffered queries are active. Consider using PDOStatement::fetchAll(). Alternatively, if your code is only ever going to run against mysql, you may enable query buffering by setting the PDO::MYSQL_ATTR_USE_BUFFERED_QUERY attribute.</code></p>
+        <div class="post-forward-message">本文章地址：https://blog.wutong.me/2018/05/09/upgrade-openssh.html 转载请注明出处</div>
+        <p>安装过程有点坑</p>
 
-<h3 id="问题呈现">问题呈现</h3>
+<h3 id="准备工作">准备工作</h3>
 
-<p>代码中不同位置多次调用了 <code class="highlighter-rouge">Yii:$app-&gt;db-&gt;beginTransaction()</code> 方法，Yii创建了 <code class="highlighter-rouge">SAVEPOINT LEVEL1</code> 的SQL语句，但是执行的时候报错，具体错误信息见上方。</p>
+<p>安装TelnetServer以便万一原先的ssh无法登录</p>
 
-<h3 id="解决过程">解决过程</h3>
+<p><a href="/install-telnet-server">安装方法</a></p>
 
-<p>按照文档上提示的方法 <code class="highlighter-rouge">closeCursor()</code> 和 连接属性 <code class="highlighter-rouge">PDO::MYSQL_ATTR_USE_BUFFERED_QUERY</code> 都没有解决。</p>
+<p>安装开发工具</p>
 
-<p>尝试自己写PDO操作代码，运行成功。</p>
-
-<p>经过长时间的检查找到在PDO连接数据库的配置中，Yii配置中我多加了一个选项 <code class="highlighter-rouge">PDO::ATTR_EMULATE_PREPARES</code></p>
-
-<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="s1">'db'</span> <span class="o">=&gt;</span> <span class="p">[</span>
-    <span class="s1">'class'</span> <span class="o">=&gt;</span> <span class="s1">'yii\db\Connection'</span><span class="p">,</span>
-    <span class="s1">'charset'</span> <span class="o">=&gt;</span> <span class="s1">'utf8'</span><span class="p">,</span>
-    <span class="o">........</span>
-    <span class="s1">'attributes'</span><span class="o">=&gt;</span><span class="p">[</span>
-        <span class="nx">PDO</span><span class="o">::</span><span class="na">ATTR_EMULATE_PREPARES</span> <span class="o">=&gt;</span> <span class="kc">false</span><span class="p">,</span>
-    <span class="p">],</span>
-<span class="p">],</span>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>yum groupinstall 开发工具
 </code></pre></div></div>
 
-<p>将其改为 <code class="highlighter-rouge">true</code> 或者删除即可，但是带来的另外一个问题就是查询返回的数据都是字符串了，所以在需要在合适的地方去手动执行这个参数设置，比如在需要 <code class="highlighter-rouge">SAVEPOINT</code> 的地方前面加上 <code class="highlighter-rouge">PDO::setAttribute(PDO::ATTR_EMULATE_PREPARES,0); </code>，执行完毕后再改回来</p>
+<p>获取最新的OpenSSH安装包</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#下载
+wget "https://openbsd.hk/pub/OpenBSD/OpenSSH/portable/openssh-7.7p1.tar.gz"
+#解压
+tar -xzf openssh-7.7p1.tar.gz
+</code></pre></div></div>
+
+<p>卸载原先的OpenSSH</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>yum remove openssh
+</code></pre></div></div>
+
+<p>如果出现有很多不必要的依赖也卸载的话，则改为手动卸载</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>rpm -e --nodeps openssh
+rpm -e --nodeps openssh-clients
+rpm -e --nodeps openssh-server
+</code></pre></div></div>
+
+<h2 id="安装工作">安装工作</h2>
+
+<p>进入刚才解压的 openssh-7.7p1 目录，执行如下命令，如果提示相关c文件不存在，则安装相关开发包，如：openssl-devel</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>cd /tmp/openssh-7.7p1
+#指定安装目录为/app/openssh77
+./configure -prefix=/app/openssh77
+make
+make install
+</code></pre></div></div>
+
+<p>完善openssh开机脚本</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#拷贝脚本文件
+cp /tmp/openssh-7.7p1/contrib/redhat/sshd.init /etc/init.d/sshd
+#修改里面的相关路径为 /app/openssh77
+vim /etc/init.d/sshd
+#设置为自启动
+chkconfig sshd on
+</code></pre></div></div>
+
+<h2 id="安装完毕">安装完毕</h2>
+
+<p>重启机器确认开机脚本是否正常启动，如果正常启动则关闭 telnet 服务</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>service xinetd stop
+</code></pre></div></div>
 
     </article>
     
@@ -133,21 +166,12 @@
     </section>
     <section class="post-footer-item read-next">
         
+        
         <div class="read-next-item">
             <a href="/2018/05/09/install-telnet-server.html" class="read-next-link"></a>
             <section>
                 <span>安装TelnetServer</span>
                 <p>升级OpenSSH最好先装下TelnetServer</p>
-            </section>
-            
-        </div>
-        
-        
-        <div class="read-next-item">
-            <a href="/2018/03/06/gitlab-install.html" class="read-next-link"></a>
-            <section>
-                <span>Gitlab安装</span>
-                <p>看了看办公室的古董服务器放在那里没什么用，就当git仓库来用好了，刚好4G内存。</p>
             </section>
             
         </div>
