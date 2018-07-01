@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>升级OpenSSH - 武仝的博客</title>
+    <title>PHP远程调试 - 武仝的博客</title>
     <meta name="author"  content="武仝">
-    <meta name="description" content="升级OpenSSH">
-    <meta name="keywords"  content="linux, openssh">
+    <meta name="description" content="PHP远程调试">
+    <meta name="keywords"  content="linux, php">
     <!-- Open Graph -->
-    <meta property="og:title" content="升级OpenSSH - 武仝的博客">
+    <meta property="og:title" content="PHP远程调试 - 武仝的博客">
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://blog.wutong.me/2018/05/09/upgrade-openssh.html">
+    <meta property="og:url" content="https://blog.wutong.me/2018/07/01/remote-xdebug.html">
     <meta property="og:description" content="PHP开发者，热爱技术&设计。很高兴能在这里分享我对技术的思考。">
     <meta property="og:site_name" content="武仝的博客">
     <link rel="stylesheet" href="//cdn.staticfile.org/normalize/6.0.0/normalize.min.css">
@@ -51,14 +51,14 @@
             
             <a href="https://blog.wutong.me/tags.html#linux" class="post-tag">linux</a>
             
-            <a href="https://blog.wutong.me/tags.html#openssh" class="post-tag">openssh</a>
+            <a href="https://blog.wutong.me/tags.html#php" class="post-tag">php</a>
             
             
         </div>
-        <h1>升级OpenSSH</h1>
+        <h1>PHP远程调试</h1>
         <div class="post-meta">
             <span class="post-meta-item"><i class="iconfont icon-author"></i><a href="https://blog.wutong.me" target="_blank" rel="author">wutong</a></></span>
-            <time class="post-meta-item" datetime="2018-05-09"><i class="iconfont icon-date"></i>2018-05-09</time>
+            <time class="post-meta-item" datetime="2018-07-01"><i class="iconfont icon-date"></i>2018-07-01</time>
         </div>
     </div>
     
@@ -67,67 +67,58 @@
 <div class="post-content">
     
     <article class="markdown-body">
-        <div class="post-forward-message">本文章地址：https://blog.wutong.me/2018/05/09/upgrade-openssh.html 转载请注明出处</div>
-        <p>安装过程有点坑</p>
+        <div class="post-forward-message">本文章地址：https://blog.wutong.me/2018/07/01/remote-xdebug.html 转载请注明出处</div>
+        <p>有时候在线上环境可能出现的bug不能随便的添加代码来处理，利用远程调试可快速定位bug</p>
 
-<h3 id="准备工作">准备工作</h3>
+<h3 id="远程调试">远程调试</h3>
 
-<h4 id="安装telnetserver以便万一原先的ssh无法登录">安装TelnetServer以便万一原先的ssh无法登录</h4>
+<p>调试之前确定如下软件或扩展已装好</p>
 
-<p><a href="/2018/05/02/install-telnet-server">安装方法</a></p>
+<ul>
+  <li>phpStorm</li>
+  <li>xdebug</li>
+  <li>路由器管理权限</li>
+</ul>
 
-<h4 id="安装开发工具">安装开发工具</h4>
+<h3 id="xdebug配置">XDEBUG配置</h3>
 
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>yum groupinstall 开发工具
+<p>注意这里的XDEBUG配置是指服务器上的配置，而不是你本机的配置。</p>
+
+<div class="language-ini highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">;是否启用调试（必须开启）
+</span><span class="py">xdebug.default_enable</span> <span class="p">=</span> <span class="s">On</span>
+<span class="c">;是否将调试请求转发到当前的调试者（访问者，必须开启）
+</span><span class="py">xdebug.remote_connect_back</span> <span class="p">=</span> <span class="s">On</span>
+<span class="c">;调试者的端口（开发人员的本机端口，必须填写）
+</span><span class="py">xdebug.remote_port</span> <span class="p">=</span> <span class="s">5000</span>
+<span class="c">;是否启用远程调试（必须开启）
+</span><span class="py">xdebug.remote_enable</span> <span class="p">=</span> <span class="s">On</span>
+<span class="c">;是否在浏览者访问的时候自动触发调试，如果为0则只有设
+;置了XDEBUG_SESSION给cookie的时候才会触发，视情况
+;而定。如果是自己在浏览器中进行调试的话可以设为0，如
+;果是类似微信回调请求调试的话则设为1，因为微信回调是
+;直接服务器发送给服务器，没法设置XDEBUG_SESSION
+</span><span class="py">xdebug.remote_autostart</span><span class="p">=</span><span class="s">1</span>
+<span class="c">;远程调试人员的机器IP，视情况填写，一般不填写
+</span><span class="py">xdebug.remote_host</span><span class="p">=</span><span class="s">156.35.12.35</span>
 </code></pre></div></div>
 
-<h4 id="获取最新的openssh安装包">获取最新的OpenSSH安装包</h4>
+<h3 id="phpstorm配置">phpStorm配置</h3>
 
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">#下载</span>
-wget <span class="s2">"https://openbsd.hk/pub/OpenBSD/OpenSSH/portable/openssh-7.7p1.tar.gz"</span>
-<span class="c">#解压</span>
-<span class="nb">tar</span> <span class="nt">-xzf</span> openssh-7.7p1.tar.gz
-</code></pre></div></div>
+<p>将phpstorm中的端口填写为xdebug配置中的端口，配置截图：
+<img src="/screenshot/2018-07-01/xdebug-phpstorm.png" alt="端口" />
+在phpstorm中建立一个调试主机并设置本机目录与服务器目录映射，配置截图：
+<img src="/screenshot/2018-07-01/xdebug-phpstorm-server.png" alt="映射" /></p>
 
-<h4 id="卸载原先的openssh">卸载原先的OpenSSH</h4>
+<h3 id="路由器设置">路由器设置</h3>
 
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>yum remove openssh
-</code></pre></div></div>
+<p>当调试的时候xdebug会把调试请求<code class="highlighter-rouge">主动</code> 发送到配置的端口，因为默认路由器不转发外部端口到本机，所以需要在路由器里把端口转发到本机上，设置截图：
+<img src="/screenshot/2018-07-01/xdebug-router.png" alt="路由器" /></p>
 
-<h4 id="如果出现有很多不必要的依赖也卸载的话则改为手动卸载">如果出现有很多不必要的依赖也卸载的话，则改为手动卸载</h4>
+<h3 id="开始调试">开始调试</h3>
 
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>rpm <span class="nt">-e</span> <span class="nt">--nodeps</span> openssh
-rpm <span class="nt">-e</span> <span class="nt">--nodeps</span> openssh-clients
-rpm <span class="nt">-e</span> <span class="nt">--nodeps</span> openssh-server
-</code></pre></div></div>
+<p>如果开启了 <code class="highlighter-rouge">xdebug.remote_autostart</code> 则直接浏览网页即可触发调试请求，如果未开启则手动点击phpstorm上的调试按钮或者安装google插件<a href="https://chrome.google.com/webstore/detail/xdebug-helper/eadndfjplgieldjbigjakmdgkmoaaaoc">xdebug</a>，演示效果：</p>
 
-<h2 id="安装工作">安装工作</h2>
-
-<p>进入刚才解压的 openssh-7.7p1 目录，执行如下命令，如果提示相关c文件不存在，则安装相关开发包，如：openssl-devel</p>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">cd</span> /tmp/openssh-7.7p1
-<span class="c">#指定安装目录为/app/openssh77</span>
-./configure <span class="nt">-prefix</span><span class="o">=</span>/app/openssh77
-make
-make install
-</code></pre></div></div>
-
-<p>完善openssh开机脚本</p>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">#拷贝脚本文件</span>
-cp /tmp/openssh-7.7p1/contrib/redhat/sshd.init /etc/init.d/sshd
-<span class="c">#修改里面的相关路径为 /app/openssh77</span>
-vim /etc/init.d/sshd
-<span class="c">#设置为自启动</span>
-chkconfig sshd on
-</code></pre></div></div>
-
-<h2 id="安装完毕">安装完毕</h2>
-
-<p>重启机器确认开机脚本是否正常启动，如果正常启动则关闭 telnet 服务</p>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>service xinetd stop
-</code></pre></div></div>
+<p><img src="/screenshot/2018-07-01/xdebug-demo.gif" alt="调试效果" /></p>
 
     </article>
     
@@ -166,21 +157,12 @@ chkconfig sshd on
     </section>
     <section class="post-footer-item read-next">
         
-        <div class="read-next-item">
-            <a href="/2018/07/01/remote-xdebug.html" class="read-next-link"></a>
-            <section>
-                <span>PHP远程调试</span>
-                <p>有时候在线上环境可能出现的bug不能随便的添加代码来处理，利用远程调试可快速定位bug</p>
-            </section>
-            
-        </div>
-        
         
         <div class="read-next-item">
-            <a href="/2018/05/09/install-telnet-server.html" class="read-next-link"></a>
+            <a href="/2018/05/09/upgrade-openssh.html" class="read-next-link"></a>
             <section>
-                <span>安装TelnetServer</span>
-                <p>升级OpenSSH最好先装下TelnetServer</p>
+                <span>升级OpenSSH</span>
+                <p>安装过程有点坑</p>
             </section>
             
         </div>

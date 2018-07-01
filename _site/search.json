@@ -1,6 +1,12 @@
 [
   
     {
+      "title"    : "PHP远程调试",
+      "tags"     : "linux php",
+      "url"      : "/2018/07/01/remote-xdebug.html"
+    } ,
+  
+    {
       "title"    : "升级OpenSSH",
       "tags"     : "linux openssh",
       "url"      : "/2018/05/09/upgrade-openssh.html"
