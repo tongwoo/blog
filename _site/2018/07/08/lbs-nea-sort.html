@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>基于位置服务 - 按照远近进行排序(MySQL) - 武仝的博客</title>
+    <meta name="author"  content="武仝">
+    <meta name="description" content="基于位置服务 - 按照远近进行排序(MySQL)">
+    <meta name="keywords"  content="lbs, php, mysql">
+    <!-- Open Graph -->
+    <meta property="og:title" content="基于位置服务 - 按照远近进行排序(MySQL) - 武仝的博客">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://blog.wutong.me/2018/07/08/lbs-nea-sort.html">
+    <meta property="og:description" content="PHP开发者，热爱技术&设计。很高兴能在这里分享我对技术的思考。">
+    <meta property="og:site_name" content="武仝的博客">
+    <link rel="stylesheet" href="//cdn.staticfile.org/normalize/6.0.0/normalize.min.css">
+    <link rel="stylesheet" href="//at.alicdn.com/t/font_roc50gemkxpw4s4i.css">
+    <link rel="stylesheet" href="/assets/css/github-markdown.css">
+    <link rel="stylesheet" href="/assets/css/prism.css">
+    <link rel="stylesheet" href="/assets/css/share.min.css">
+    <link rel="stylesheet" href="/assets/css/app.min.css">
+    <link rel="stylesheet" href="/assets/css/common.css">
+</head>
+<body>
+    <!--[if lt IE 10]>
+<div class="alert-danger" role="alert">你的浏览器实在太太太旧了，放学别走，升级完浏览器再说！<a target="_blank" class="alert-link" href="http://browsehappy.com">立即升级</a></div>
+<![endif]-->
+<input id="nm-switch" type="hidden" value="false">
+
+<header class="g-header">
+    <div class="g-logo">
+      <a href="/"></a>
+    </div>
+    <i id="menu-toggle" class="iconfont icon-menu"></i>
+    <nav class="g-nav">
+        <ul>
+            
+            <li><a href="/">Home</a></li>
+            
+            <li><a href="/tags.html">Tags</a></li>
+            
+        </ul>
+    </nav>
+</header>
+
+
+<header class="g-banner post-header post-pattern-circuitBoard bgcolor-default post-no-cover" data-theme="default">
+    <div class="post-wrapper">
+        <div class="post-tags">
+            
+            
+            <a href="https://blog.wutong.me/tags.html#lbs" class="post-tag">lbs</a>
+            
+            <a href="https://blog.wutong.me/tags.html#php" class="post-tag">php</a>
+            
+            <a href="https://blog.wutong.me/tags.html#mysql" class="post-tag">mysql</a>
+            
+            
+        </div>
+        <h1>基于位置服务 - 按照远近进行排序(MySQL)</h1>
+        <div class="post-meta">
+            <span class="post-meta-item"><i class="iconfont icon-author"></i><a href="https://blog.wutong.me" target="_blank" rel="author">wutong</a></></span>
+            <time class="post-meta-item" datetime="2018-07-08"><i class="iconfont icon-date"></i>2018-07-08</time>
+        </div>
+    </div>
+    
+</header>
+
+<div class="post-content">
+    
+    <article class="markdown-body">
+        <div class="post-forward-message">本文章地址：https://blog.wutong.me/2018/07/08/lbs-nea-sort.html 转载请注明出处</div>
+        <p>在开发中可能会遇到根据经纬度来检索附近的XX情况，范围检索可以直接算出上下左右的边界并进行检索，如果要按照远近程度进行排序，则需要进行换算。</p>
+
+<h2 id="解决方式">解决方式</h2>
+
+<p>创建自定义函数，排序的时候根据自定义函数算出的距离来进行升降排序</p>
+
+<h2 id="创建函数">创建函数</h2>
+
+<p>执行如下SQL来创建一个获取距离的自定义函数。</p>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">DROP</span> <span class="k">FUNCTION</span> <span class="n">IF</span> <span class="k">EXISTS</span> <span class="n">point_distance</span><span class="p">;</span>
+<span class="k">DELIMITER</span> <span class="o">//</span>
+<span class="k">CREATE</span> <span class="k">FUNCTION</span> <span class="nv">`point_distance`</span><span class="p">(</span>
+    <span class="nv">`lng1`</span> <span class="n">float</span><span class="p">(</span><span class="mi">9</span><span class="p">,</span><span class="mi">6</span><span class="p">)</span> <span class="p">,</span>
+    <span class="nv">`lat1`</span> <span class="n">float</span><span class="p">(</span><span class="mi">9</span><span class="p">,</span><span class="mi">6</span><span class="p">),</span>
+    <span class="nv">`lng2`</span> <span class="n">float</span><span class="p">(</span><span class="mi">9</span><span class="p">,</span><span class="mi">6</span><span class="p">)</span> <span class="p">,</span>
+    <span class="nv">`lat2`</span> <span class="n">float</span><span class="p">(</span><span class="mi">9</span><span class="p">,</span><span class="mi">6</span><span class="p">)</span>
+<span class="p">)</span> <span class="k">RETURNS</span> <span class="n">MEDIUMINT</span>
+    <span class="k">COMMENT</span> <span class="s1">'计算两个坐标点之间的距离'</span>
+<span class="k">BEGIN</span>
+    <span class="k">declare</span> <span class="n">distance</span> <span class="n">MEDIUMINT</span><span class="p">;</span>
+    <span class="k">declare</span> <span class="n">radius</span> <span class="n">MEDIUMINT</span><span class="p">;</span>
+    <span class="c1">-- 地球半径</span>
+    <span class="k">set</span> <span class="n">radius</span> <span class="o">=</span> <span class="mi">6370856</span><span class="p">;</span>
+    <span class="c1">-- 距离（米）</span>
+    <span class="k">set</span> <span class="n">distance</span> <span class="o">=</span> <span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">ATAN2</span><span class="p">(</span><span class="n">SQRT</span><span class="p">(</span><span class="n">SIN</span><span class="p">((</span><span class="n">lat1</span><span class="o">-</span><span class="n">lat2</span><span class="p">)</span><span class="o">*</span><span class="n">PI</span><span class="p">()</span><span class="o">/</span><span class="mi">180</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span>
+        <span class="o">*</span><span class="n">SIN</span><span class="p">((</span><span class="n">lat1</span><span class="o">-</span><span class="n">lat2</span><span class="p">)</span><span class="o">*</span><span class="n">PI</span><span class="p">()</span><span class="o">/</span><span class="mi">180</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span><span class="o">+</span>
+        <span class="n">COS</span><span class="p">(</span><span class="n">lat2</span><span class="o">*</span><span class="n">PI</span><span class="p">()</span><span class="o">/</span><span class="mi">180</span><span class="p">)</span><span class="o">*</span><span class="n">COS</span><span class="p">(</span><span class="n">lat1</span><span class="o">*</span><span class="n">PI</span><span class="p">()</span><span class="o">/</span><span class="mi">180</span><span class="p">)</span>
+        <span class="o">*</span><span class="n">SIN</span><span class="p">((</span><span class="n">lng1</span><span class="o">-</span><span class="n">lng2</span><span class="p">)</span><span class="o">*</span><span class="n">PI</span><span class="p">()</span><span class="o">/</span><span class="mi">180</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span>
+        <span class="o">*</span><span class="n">SIN</span><span class="p">((</span><span class="n">lng1</span><span class="o">-</span><span class="n">lng2</span><span class="p">)</span><span class="o">*</span><span class="n">PI</span><span class="p">()</span><span class="o">/</span><span class="mi">180</span><span class="o">/</span><span class="mi">2</span><span class="p">)),</span>
+        <span class="n">SQRT</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">SIN</span><span class="p">((</span><span class="n">lat1</span><span class="o">-</span><span class="n">lat2</span><span class="p">)</span><span class="o">*</span><span class="n">PI</span><span class="p">()</span><span class="o">/</span><span class="mi">180</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span>
+        <span class="o">*</span><span class="n">SIN</span><span class="p">((</span><span class="n">lat1</span><span class="o">-</span><span class="n">lat2</span><span class="p">)</span><span class="o">*</span><span class="n">PI</span><span class="p">()</span><span class="o">/</span><span class="mi">180</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span>
+        <span class="o">+</span><span class="n">COS</span><span class="p">(</span><span class="n">lat2</span><span class="o">*</span><span class="n">PI</span><span class="p">()</span><span class="o">/</span><span class="mi">180</span><span class="p">)</span><span class="o">*</span><span class="n">COS</span><span class="p">(</span><span class="n">lat1</span><span class="o">*</span><span class="n">PI</span><span class="p">()</span><span class="o">/</span><span class="mi">180</span><span class="p">)</span>
+        <span class="o">*</span><span class="n">SIN</span><span class="p">((</span><span class="n">lng1</span><span class="o">-</span><span class="n">lng2</span><span class="p">)</span><span class="o">*</span><span class="n">PI</span><span class="p">()</span><span class="o">/</span><span class="mi">180</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span>
+        <span class="o">*</span><span class="n">SIN</span><span class="p">((</span><span class="n">lng1</span><span class="o">-</span><span class="n">lng2</span><span class="p">)</span><span class="o">*</span><span class="n">PI</span><span class="p">()</span><span class="o">/</span><span class="mi">180</span><span class="o">/</span><span class="mi">2</span><span class="p">))))</span><span class="o">*</span><span class="n">radius</span><span class="p">;</span>
+    <span class="k">return</span> <span class="n">distance</span><span class="p">;</span>
+<span class="k">END</span><span class="o">//</span>
+<span class="k">DELIMITER</span> <span class="p">;</span>
+</code></pre></div></div>
+
+<h2 id="业务实现">业务实现</h2>
+
+<p>查找门店并按照离我的位置由近到远排列</p>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">SELECT</span> 
+    <span class="nv">`name`</span><span class="p">,</span><span class="n">point_distance</span><span class="p">(</span><span class="err">当前经度，当前纬度，表里的经度，表里的纬度</span><span class="p">)</span> <span class="k">AS</span> <span class="n">distance</span>
+<span class="k">FROM</span> <span class="n">shop</span> <span class="k">ORDER</span> <span class="k">BY</span>  <span class="n">distance</span> <span class="k">ASC</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p>结果：</p>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">+</span><span class="c1">----+------------+-----------+-----------------+----------+</span>
+<span class="o">|</span> <span class="n">id</span> <span class="o">|</span> <span class="n">longitude</span>  <span class="o">|</span> <span class="n">latitude</span>  <span class="o">|</span> <span class="n">name</span>            <span class="o">|</span> <span class="n">distance</span> <span class="o">|</span>
+<span class="o">+</span><span class="c1">----+------------+-----------+-----------------+----------+</span>
+<span class="o">|</span>  <span class="mi">1</span> <span class="o">|</span> <span class="mi">120</span><span class="p">.</span><span class="mi">275731</span> <span class="o">|</span> <span class="mi">31</span><span class="p">.</span><span class="mi">548376</span> <span class="o">|</span> <span class="err">体育中心店</span>      <span class="o">|</span>      <span class="mi">795</span> <span class="o">|</span>
+<span class="o">|</span>  <span class="mi">2</span> <span class="o">|</span> <span class="mi">120</span><span class="p">.</span><span class="mi">292145</span> <span class="o">|</span> <span class="mi">31</span><span class="p">.</span><span class="mi">567969</span> <span class="o">|</span> <span class="err">开源大桥</span>        <span class="o">|</span>     <span class="mi">2315</span> <span class="o">|</span>
+<span class="o">|</span>  <span class="mi">3</span> <span class="o">|</span> <span class="mi">120</span><span class="p">.</span><span class="mi">373998</span> <span class="o">|</span> <span class="mi">31</span><span class="p">.</span><span class="mi">507401</span> <span class="o">|</span> <span class="err">创新园</span>          <span class="o">|</span>     <span class="mi">9656</span> <span class="o">|</span>
+<span class="o">+</span><span class="c1">----+------------+-----------+-----------------+----------+</span>
+</code></pre></div></div>
+
+    </article>
+    
+    <div class="social-share-wrapper">
+        <div class="social-share"></div>
+    </div>
+    
+</div>
+
+<section class="author-detail">
+    <section class="post-footer-item author-card">
+        <div class="avatar">
+            <img src="/assets/img/profile.jpg" alt="">
+        </div>
+        <div class="author-name" rel="author">武仝</div>
+        <div class="bio">
+            <p>PHP开发，热爱技术&设计</p>
+        </div>
+        
+        <ul class="sns-links">
+            
+            <li>
+                <a href="//weibo.com/u/3479312483" target="_blank">
+                    <i class="iconfont icon-weibo"></i>
+                </a>
+            </li>
+            
+            <li>
+                <a href="//github.com/tongwoo" target="_blank">
+                    <i class="iconfont icon-github"></i>
+                </a>
+            </li>
+            
+        </ul>
+        
+    </section>
+    <section class="post-footer-item read-next">
+        
+        
+        <div class="read-next-item">
+            <a href="/2018/07/03/china-region.html" class="read-next-link"></a>
+            <section>
+                <span>中国行政区域导入数据库</span>
+                <p>对于开发人员来说经常会使用到行政区相关的数据，比如级联菜单等，但是维护其中的数据比较麻烦，本文则是来解决如何不自己...</p>
+            </section>
+            
+        </div>
+        
+    </section>
+    
+</section>
+
+<footer class="g-footer">
+    <section>武仝的博客 © 2018</section>
+    <section>Powered by <a href="//jekyllrb.com">Jekyll</a> | <a href="https://github.com/kaeyleo/jekyll-theme-H2O">Theme H2O</a></section>
+    <section><a href="http://www.miibeian.gov.cn/">苏ICP备14017143号-1</a></section>
+</footer>
+
+<script src="/assets/js/social-share.min.js"></script>
+<script>
+    socialShare('.social-share', {
+        sites: ['wechat','weibo','douban','twitter'],
+        wechatQrcodeTitle: "分享到微信朋友圈",
+        wechatQrcodeHelper: '<p>扫码后点击右上角</p><p>将本文分享至朋友圈</p>'
+    });
+</script>
+<script>
+/**
+*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+/*
+var disqus_config = function () {
+this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+*/
+(function() { // DON'T EDIT BELOW THIS LINE
+//var d = document, s = d.createElement('script');
+/*写入自己的disqus信息*/
+//s.src = 'https://liaokeyu.disqus.com/embed.js';
+//s.setAttribute('data-timestamp', +new Date());
+//(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<script src="/assets/js/jquery.min.js"></script>
+<script src="/assets/js/prism.js"></script>
+<script src="/assets/js/index.min.js"></script>
+<script type="text/javascript" src="http://tajs.qq.com/stats?sId=43494337" charset="UTF-8"></script>
+</body>
+</html>
