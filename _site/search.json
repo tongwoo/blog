@@ -1,6 +1,12 @@
 [
   
     {
+      "title"    : "PHP类库无法转换PDF的替代方案",
+      "tags"     : "linux php pdf",
+      "url"      : "/2018/07/11/install-mupdf.html"
+    } ,
+  
+    {
       "title"    : "基于位置服务 - 按照远近进行排序(MySQL)",
       "tags"     : "lbs php mysql",
       "url"      : "/2018/07/08/lbs-nea-sort.html"
