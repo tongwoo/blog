@@ -1,6 +1,12 @@
 [
   
     {
+      "title"    : "小程序快速创建page",
+      "tags"     : "linux php",
+      "url"      : "/2018/07/15/mini-programe-create.html"
+    } ,
+  
+    {
       "title"    : "PHP类库无法转换PDF的替代方案",
       "tags"     : "linux php pdf",
       "url"      : "/2018/07/11/install-mupdf.html"
