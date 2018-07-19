@@ -1,6 +1,12 @@
 [
   
     {
+      "title"    : "MySQL字符集",
+      "tags"     : "linux mysql",
+      "url"      : "/2018/07/19/mysql-charset.html"
+    } ,
+  
+    {
       "title"    : "小程序快速创建page",
       "tags"     : "linux php",
       "url"      : "/2018/07/15/mini-programe-create.html"
