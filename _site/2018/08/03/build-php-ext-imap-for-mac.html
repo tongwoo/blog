@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MySQL字符集 - 武仝的博客</title>
+    <title>PHP扩展编译之 - IMAP（MacOS） - 武仝的博客</title>
     <meta name="author"  content="武仝">
-    <meta name="description" content="MySQL字符集">
-    <meta name="keywords"  content="linux, mysql">
+    <meta name="description" content="PHP扩展编译之 - IMAP（MacOS）">
+    <meta name="keywords"  content="mac, php">
     <!-- Open Graph -->
-    <meta property="og:title" content="MySQL字符集 - 武仝的博客">
+    <meta property="og:title" content="PHP扩展编译之 - IMAP（MacOS） - 武仝的博客">
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://blog.wutong.me/2018/07/19/mysql-charset.html">
+    <meta property="og:url" content="https://blog.wutong.me/2018/08/03/build-php-ext-imap-for-mac.html">
     <meta property="og:description" content="PHP开发者，热爱技术&设计。很高兴能在这里分享我对技术的思考。">
     <meta property="og:site_name" content="武仝的博客">
     <link rel="stylesheet" href="//cdn.staticfile.org/normalize/6.0.0/normalize.min.css">
@@ -49,16 +49,16 @@
         <div class="post-tags">
             
             
-            <a href="https://blog.wutong.me/tags.html#linux" class="post-tag">linux</a>
+            <a href="https://blog.wutong.me/tags.html#mac" class="post-tag">mac</a>
             
-            <a href="https://blog.wutong.me/tags.html#mysql" class="post-tag">mysql</a>
+            <a href="https://blog.wutong.me/tags.html#php" class="post-tag">php</a>
             
             
         </div>
-        <h1>MySQL字符集</h1>
+        <h1>PHP扩展编译之 - IMAP（MacOS）</h1>
         <div class="post-meta">
             <span class="post-meta-item"><i class="iconfont icon-author"></i><a href="https://blog.wutong.me" target="_blank" rel="author">wutong</a></></span>
-            <time class="post-meta-item" datetime="2018-07-19"><i class="iconfont icon-date"></i>2018-07-19</time>
+            <time class="post-meta-item" datetime="2018-08-03"><i class="iconfont icon-date"></i>2018-08-03</time>
         </div>
     </div>
     
@@ -67,57 +67,36 @@
 <div class="post-content">
     
     <article class="markdown-body">
-        <div class="post-forward-message">本文章地址：https://blog.wutong.me/2018/07/19/mysql-charset.html 转载请注明出处</div>
-        <p>有时候需要变更字符集还得在敲命令看，记录一下字符集</p>
+        <div class="post-forward-message">本文章地址：https://blog.wutong.me/2018/08/03/build-php-ext-imap-for-mac.html 转载请注明出处</div>
+        <p>Mac下PHP扩展IMAP安装。</p>
 
-<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">show</span> <span class="n">character</span> <span class="k">set</span><span class="p">;</span>
+<h2 id="安装-iamp-uw">安装 <code class="highlighter-rouge">iamp-uw</code></h2>
+
+<p>因为手动编译没成功直接用现成的</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>brew install imap-uw 
 </code></pre></div></div>
 
-<pre><code class="language-code">+----------+-----------------------------+---------------------+--------+
-| Charset  | Description                 | Default collation   | Maxlen |
-+----------+-----------------------------+---------------------+--------+
-| big5     | Big5 Traditional Chinese    | big5_chinese_ci     |      2 |
-| dec8     | DEC West European           | dec8_swedish_ci     |      1 |
-| cp850    | DOS West European           | cp850_general_ci    |      1 |
-| hp8      | HP West European            | hp8_english_ci      |      1 |
-| koi8r    | KOI8-R Relcom Russian       | koi8r_general_ci    |      1 |
-| latin1   | cp1252 West European        | latin1_swedish_ci   |      1 |
-| latin2   | ISO 8859-2 Central European | latin2_general_ci   |      1 |
-| swe7     | 7bit Swedish                | swe7_swedish_ci     |      1 |
-| ascii    | US ASCII                    | ascii_general_ci    |      1 |
-| ujis     | EUC-JP Japanese             | ujis_japanese_ci    |      3 |
-| sjis     | Shift-JIS Japanese          | sjis_japanese_ci    |      2 |
-| hebrew   | ISO 8859-8 Hebrew           | hebrew_general_ci   |      1 |
-| tis620   | TIS620 Thai                 | tis620_thai_ci      |      1 |
-| euckr    | EUC-KR Korean               | euckr_korean_ci     |      2 |
-| koi8u    | KOI8-U Ukrainian            | koi8u_general_ci    |      1 |
-| gb2312   | GB2312 Simplified Chinese   | gb2312_chinese_ci   |      2 |
-| greek    | ISO 8859-7 Greek            | greek_general_ci    |      1 |
-| cp1250   | Windows Central European    | cp1250_general_ci   |      1 |
-| gbk      | GBK Simplified Chinese      | gbk_chinese_ci      |      2 |
-| latin5   | ISO 8859-9 Turkish          | latin5_turkish_ci   |      1 |
-| armscii8 | ARMSCII-8 Armenian          | armscii8_general_ci |      1 |
-| utf8     | UTF-8 Unicode               | utf8_general_ci     |      3 |
-| ucs2     | UCS-2 Unicode               | ucs2_general_ci     |      2 |
-| cp866    | DOS Russian                 | cp866_general_ci    |      1 |
-| keybcs2  | DOS Kamenicky Czech-Slovak  | keybcs2_general_ci  |      1 |
-| macce    | Mac Central European        | macce_general_ci    |      1 |
-| macroman | Mac West European           | macroman_general_ci |      1 |
-| cp852    | DOS Central European        | cp852_general_ci    |      1 |
-| latin7   | ISO 8859-13 Baltic          | latin7_general_ci   |      1 |
-| utf8mb4  | UTF-8 Unicode               | utf8mb4_general_ci  |      4 |
-| cp1251   | Windows Cyrillic            | cp1251_general_ci   |      1 |
-| utf16    | UTF-16 Unicode              | utf16_general_ci    |      4 |
-| utf16le  | UTF-16LE Unicode            | utf16le_general_ci  |      4 |
-| cp1256   | Windows Arabic              | cp1256_general_ci   |      1 |
-| cp1257   | Windows Baltic              | cp1257_general_ci   |      1 |
-| utf32    | UTF-32 Unicode              | utf32_general_ci    |      4 |
-| binary   | Binary pseudo charset       | binary              |      1 |
-| geostd8  | GEOSTD8 Georgian            | geostd8_general_ci  |      1 |
-| cp932    | SJIS for Windows Japanese   | cp932_japanese_ci   |      2 |
-| eucjpms  | UJIS for Windows Japanese   | eucjpms_japanese_ci |      3 |
-+----------+-----------------------------+---------------------+--------+
-</code></pre>
+<h2 id="安装-kerberos">安装 <code class="highlighter-rouge">kerberos</code></h2>
+
+<p>进入网站 <a href="http://web.mit.edu/kerberos/dist/index.html">http://web.mit.edu/kerberos/dist/index.html</a> 下载源码包，解压后进入src目录执行如下命令</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>./configure <span class="nt">--prefix</span><span class="o">=</span>/app/kerberos
+make
+make install
+</code></pre></div></div>
+
+<h2 id="编译-imap-扩展">编译 <code class="highlighter-rouge">imap</code> 扩展</h2>
+
+<p>下载php源码并进入 <code class="highlighter-rouge">ext/imap</code> 目录，执行如下命令</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>./configure <span class="nt">--with-imap-ssl</span><span class="o">=</span>/usr/local/opt/openssl <span class="nt">--with-kerberos</span><span class="o">=</span>/app/kerberos
+make
+</code></pre></div></div>
+
+<h2 id="安装扩展">安装扩展</h2>
+
+<p>将编译后生成的 <code class="highlighter-rouge">ext/imap/modules/imap.so</code> 复制到Php扩展目录并在php.ini中增加 <code class="highlighter-rouge">extension=imap.so</code> 即可</p>
 
     </article>
     
@@ -156,21 +135,12 @@
     </section>
     <section class="post-footer-item read-next">
         
-        <div class="read-next-item">
-            <a href="/2018/08/03/build-php-ext-imap-for-mac.html" class="read-next-link"></a>
-            <section>
-                <span>PHP扩展编译之 - IMAP（MacOS）</span>
-                <p>Mac下PHP扩展IMAP安装。</p>
-            </section>
-            
-        </div>
-        
         
         <div class="read-next-item">
-            <a href="/2018/07/15/mini-programe-create.html" class="read-next-link"></a>
+            <a href="/2018/07/19/mysql-charset.html" class="read-next-link"></a>
             <section>
-                <span>小程序快速创建page</span>
-                <p>在开发小程序中会经常创建 page,创建一个page文件夹不够，还得再创建同名的 js、json、wxml、wxs...</p>
+                <span>MySQL字符集</span>
+                <p>有时候需要变更字符集还得在敲命令看，记录一下字符集</p>
             </section>
             
         </div>
