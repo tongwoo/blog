@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mac下配置Apache的fastcgi扩展与PHP - 武仝的博客</title>
+    <title>Nginx、Apache+PHP 实现图片自动缩略图 - 武仝的博客</title>
     <meta name="author"  content="武仝">
-    <meta name="description" content="Mac下配置Apache的fastcgi扩展与PHP">
-    <meta name="keywords"  content="linux, php, apache">
+    <meta name="description" content="Nginx、Apache+PHP 实现图片自动缩略图">
+    <meta name="keywords"  content="php, nginx, apache">
     <!-- Open Graph -->
-    <meta property="og:title" content="Mac下配置Apache的fastcgi扩展与PHP - 武仝的博客">
+    <meta property="og:title" content="Nginx、Apache+PHP 实现图片自动缩略图 - 武仝的博客">
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://blog.wutong.me/2018/08/22/mac-apache-fastcgi-php.html">
+    <meta property="og:url" content="https://blog.wutong.me/2018/08/23/image-style-for-web-server.html">
     <meta property="og:description" content="PHP开发者，热爱技术&设计。很高兴能在这里分享我对技术的思考。">
     <meta property="og:site_name" content="武仝的博客">
     <link rel="stylesheet" href="//cdn.staticfile.org/normalize/6.0.0/normalize.min.css">
@@ -49,18 +49,18 @@
         <div class="post-tags">
             
             
-            <a href="https://blog.wutong.me/tags.html#linux" class="post-tag">linux</a>
-            
             <a href="https://blog.wutong.me/tags.html#php" class="post-tag">php</a>
+            
+            <a href="https://blog.wutong.me/tags.html#nginx" class="post-tag">nginx</a>
             
             <a href="https://blog.wutong.me/tags.html#apache" class="post-tag">apache</a>
             
             
         </div>
-        <h1>Mac下配置Apache的fastcgi扩展与PHP</h1>
+        <h1>Nginx、Apache+PHP 实现图片自动缩略图</h1>
         <div class="post-meta">
             <span class="post-meta-item"><i class="iconfont icon-author"></i><a href="https://blog.wutong.me" target="_blank" rel="author">wutong</a></></span>
-            <time class="post-meta-item" datetime="2018-08-22"><i class="iconfont icon-date"></i>2018-08-22</time>
+            <time class="post-meta-item" datetime="2018-08-23"><i class="iconfont icon-date"></i>2018-08-23</time>
         </div>
     </div>
     
@@ -69,44 +69,44 @@
 <div class="post-content">
     
     <article class="markdown-body">
-        <div class="post-forward-message">本文章地址：https://blog.wutong.me/2018/08/22/mac-apache-fastcgi-php.html 转载请注明出处</div>
-        <p>同事用的都是apache，我个人用的nginx，某些重写需要搞两种版本，之前用的module方式今天想尝试下fastcgi模式，记录下过程。</p>
+        <div class="post-forward-message">本文章地址：https://blog.wutong.me/2018/08/23/image-style-for-web-server.html 转载请注明出处</div>
+        <p>在使用第三方存储的时候，第三方提供商会提供「图片样式」的功能来实现图片扩展名加上样式名随意改变原始图片的体积，考虑到一开始请求量不是很多，可以自己实现这个功能，等量上来了直接上CDN。</p>
 
-<h3 id="下载fastcgi扩展源码">下载fastcgi扩展源码</h3>
+<h3 id="定义样式规则">定义样式规则</h3>
 
-<p>进入 <a href="http://httpd.apache.org/download.cgi">http://httpd.apache.org/download.cgi</a> 页面找到 「Apache mod_fcgid FastCGI module for Apache HTTP Server」的标题，下载一个源码包。</p>
+<p>假如 <code class="highlighter-rouge">http://img.domain.com/test.jpg</code> 是一张原始图片，我们想要在后面加上 <code class="highlighter-rouge">-small</code> 来实现最小图片的功能，<code class="highlighter-rouge">-medium</code> 来实现图片中等缩放的功能，那么只要重写这些 <code class="highlighter-rouge">URL</code> 并发送给php来处理进行缩放即可。</p>
 
-<h3 id="编译fastcgi扩展">编译fastcgi扩展</h3>
+<h3 id="重写---nginx">重写 - Nginx</h3>
 
-<p>解压后进入源码目录执行如下命令：</p>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>./configure.apxs
-make
-make install
+<div class="language-nginx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">#在 server 区块里加入如下配置代码：
+</span><span class="k">rewrite</span> <span class="s">(.+)</span><span class="err">\</span><span class="s">.(jpg|jpeg|png)</span><span class="err">\</span><span class="s">-(mini|low|medium|high|ultra|extreme)</span>$ <span class="nv">$1</span><span class="s">.</span><span class="nv">$2</span><span class="s">.</span><span class="nv">$3</span><span class="s">.</span><span class="nv">$2</span> <span class="s">last</span><span class="p">;</span>	
+<span class="k">location</span> <span class="p">~</span><span class="sr">*</span> <span class="err">\</span><span class="s">.(jpg|jpeg|png)</span>$ <span class="p">{</span>
+    <span class="kn">if</span> <span class="s">(</span> <span class="s">!-f</span> <span class="nv">$request_filename</span> <span class="s">)</span> <span class="p">{</span>
+        <span class="kn">rewrite</span> <span class="s">.</span> <span class="n">/image-handler.php?path=</span><span class="nv">$document_uri</span> <span class="s">last</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
 </code></pre></div></div>
-<p>如果系统有多个版本的apache httpd的话，保证当前用的是httpd命令是你想要的版本，否则编译后 <code class="highlighter-rouge">mod_fcgid.so</code> 放置的目录不正确。</p>
 
-<h3 id="配置fastcgi">配置fastcgi</h3>
+<h3 id="重写---apache">重写 - Apache</h3>
 
-<p>我直接新建一个 <code class="highlighter-rouge">VirtualHost</code> 来创建新的一个主机，配置如下：</p>
+<pre><code class="language-apacheconfig">#在资源目录新建一个 .htaccess 文件并加入如下代码
 
-<div class="language-apache highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">&lt;</span><span class="nl">VirtualHost</span><span class="sr"> *:8080</span><span class="p">&gt;
-</span>    <span class="nc">DocumentRoot</span> /web/project
-    <span class="nc">ServerName</span> project.local
-    <span class="p">&lt;</span><span class="nl">Directory</span><span class="sr"> "/web/project"</span><span class="p">&gt;
-</span>        <span class="nc">AddHandler</span> fcgid-script .php
-        <span class="c">#FcgidWrapper 参数值为你的php-cgi路径</span>
-        FcgidWrapper /usr/local/Cellar/php@7.1/7.1.20/bin/php-cgi .php
-    		<span class="nc">Options</span> +ExecCGI
-        <span class="nc">Require</span> all granted
-    <span class="p">&lt;/</span><span class="nl">Directory</span><span class="p">&gt;
-&lt;/</span><span class="nl">VirtualHost</span><span class="p">&gt;
-</span></code></pre></div></div>
+RewriteEngine On
 
-<h3 id="重启apache-httpd-服务">重启apache httpd 服务</h3>
+RewriteRule (.+)\.(jpg|jpeg|png)\-(mini|low|medium|high|ultra|extreme)$ $1.$2.$3.$2 [N]
 
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>brew services restart httpd
-</code></pre></div></div>
+RewriteCond %{REQUEST_FILENAME} \.(jpg|jpeg|png)$
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule (.+\.(jpg|jpeg|png))$ /image-handler.php?path=$1 [L]
+</code></pre>
+
+<h3 id="php">PHP</h3>
+
+<p>在上文中的 <code class="highlighter-rouge">image-handler.php</code> 是处理图片缩放用，其代码可自行实现，<code class="highlighter-rouge">path</code> 是请求的图片路径，可以根据这个路径来对原图进行缩放。</p>
+
+<h3 id="后续">后续</h3>
+
+<p>如果不想在资源目录放入这些文件，则可直接加入软连接链接到这个位置。</p>
 
     </article>
     
@@ -145,21 +145,12 @@ make install
     </section>
     <section class="post-footer-item read-next">
         
-        <div class="read-next-item">
-            <a href="/2018/08/23/image-style-for-web-server.html" class="read-next-link"></a>
-            <section>
-                <span>Nginx、Apache+PHP 实现图片自动缩略图</span>
-                <p>在使用第三方存储的时候，第三方提供商会提供「图片样式」的功能来实现图片扩展名加上样式名随意改变原始图片的体积，考虑...</p>
-            </section>
-            
-        </div>
-        
         
         <div class="read-next-item">
-            <a href="/2018/08/03/build-php-ext-imap-for-mac.html" class="read-next-link"></a>
+            <a href="/2018/08/22/mac-apache-fastcgi-php.html" class="read-next-link"></a>
             <section>
-                <span>PHP扩展编译之 - IMAP（MacOS）</span>
-                <p>Mac下PHP扩展IMAP安装。</p>
+                <span>Mac下配置Apache的fastcgi扩展与PHP</span>
+                <p>同事用的都是apache，我个人用的nginx，某些重写需要搞两种版本，之前用的module方式今天想尝试下fas...</p>
             </section>
             
         </div>

@@ -1,6 +1,12 @@
 [
   
     {
+      "title"    : "Nginx、Apache+PHP 实现图片自动缩略图",
+      "tags"     : "php nginx apache",
+      "url"      : "/2018/08/23/image-style-for-web-server.html"
+    } ,
+  
+    {
       "title"    : "Mac下配置Apache的fastcgi扩展与PHP",
       "tags"     : "linux php apache",
       "url"      : "/2018/08/22/mac-apache-fastcgi-php.html"
