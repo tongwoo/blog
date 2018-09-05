@@ -28,10 +28,10 @@ cd ngrok
 
 ```bash
 #服务端
-make server
+make release-server
 
 #客户端
-make client
+make release-client
 ```
 
 ### 配置及启动
@@ -65,7 +65,7 @@ server {
 
 ```yml
 #代表服务器的隧道地址和端口
-server_addr: "ngrok.wutong.me:2003"
+server_addr: "ngrok.wutong.me:6003"
 ```
 
 客户端启动

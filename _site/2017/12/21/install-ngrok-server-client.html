@@ -86,10 +86,10 @@
 <p>根据环境进行编译</p>
 
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">#服务端</span>
-make server
+make release-server
 
 <span class="c">#客户端</span>
-make client
+make release-client
 </code></pre></div></div>
 
 <h3 id="配置及启动">配置及启动</h3>
@@ -120,7 +120,7 @@ make client
 <p>创建一个 config.yml 文件放到ngrok同目录，并填充如下内容</p>
 
 <div class="language-yml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">#代表服务器的隧道地址和端口</span>
-<span class="na">server_addr</span><span class="pi">:</span> <span class="s2">"</span><span class="s">ngrok.wutong.me:2003"</span>
+<span class="na">server_addr</span><span class="pi">:</span> <span class="s2">"</span><span class="s">ngrok.wutong.me:6003"</span>
 </code></pre></div></div>
 
 <p>客户端启动</p>
