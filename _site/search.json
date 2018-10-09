@@ -1,6 +1,12 @@
 [
   
     {
+      "title"    : "快钱商户支付集成",
+      "tags"     : "php",
+      "url"      : "/2018/10/09/kuaiqian-merchant.html"
+    } ,
+  
+    {
       "title"    : "Nginx、Apache+PHP 实现图片自动缩略图",
       "tags"     : "php nginx apache",
       "url"      : "/2018/08/23/image-style-for-web-server.html"

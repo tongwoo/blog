@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nginx、Apache+PHP 实现图片自动缩略图 - 武仝的博客</title>
+    <title>快钱商户支付集成 - 武仝的博客</title>
     <meta name="author"  content="武仝">
-    <meta name="description" content="Nginx、Apache+PHP 实现图片自动缩略图">
-    <meta name="keywords"  content="php, nginx, apache">
+    <meta name="description" content="快钱商户支付集成">
+    <meta name="keywords"  content="php">
     <!-- Open Graph -->
-    <meta property="og:title" content="Nginx、Apache+PHP 实现图片自动缩略图 - 武仝的博客">
+    <meta property="og:title" content="快钱商户支付集成 - 武仝的博客">
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://blog.wutong.me/2018/08/23/image-style-for-web-server.html">
+    <meta property="og:url" content="https://blog.wutong.me/2018/10/09/kuaiqian-merchant.html">
     <meta property="og:description" content="PHP开发者，热爱技术&设计。很高兴能在这里分享我对技术的思考。">
     <meta property="og:site_name" content="武仝的博客">
     <link rel="stylesheet" href="//cdn.staticfile.org/normalize/6.0.0/normalize.min.css">
@@ -51,16 +51,12 @@
             
             <a href="https://blog.wutong.me/tags.html#php" class="post-tag">php</a>
             
-            <a href="https://blog.wutong.me/tags.html#nginx" class="post-tag">nginx</a>
-            
-            <a href="https://blog.wutong.me/tags.html#apache" class="post-tag">apache</a>
-            
             
         </div>
-        <h1>Nginx、Apache+PHP 实现图片自动缩略图</h1>
+        <h1>快钱商户支付集成</h1>
         <div class="post-meta">
             <span class="post-meta-item"><i class="iconfont icon-author"></i><a href="https://blog.wutong.me" target="_blank" rel="author">wutong</a></></span>
-            <time class="post-meta-item" datetime="2018-08-23"><i class="iconfont icon-date"></i>2018-08-23</time>
+            <time class="post-meta-item" datetime="2018-10-09"><i class="iconfont icon-date"></i>2018-10-09</time>
         </div>
     </div>
     
@@ -69,49 +65,64 @@
 <div class="post-content">
     
     <article class="markdown-body">
-        <div class="post-forward-message">本文章地址：https://blog.wutong.me/2018/08/23/image-style-for-web-server.html 转载请注明出处</div>
-        <p>在使用第三方存储的时候，第三方提供商会提供「图片样式」的功能来实现图片扩展名加上样式名随意改变原始图片的体积，考虑到一开始请求量不是很多，可以自己实现这个功能，等量上来了直接上CDN。</p>
+        <div class="post-forward-message">本文章地址：https://blog.wutong.me/2018/10/09/kuaiqian-merchant.html 转载请注明出处</div>
+        <p>想快捷接入各种支付功能需要使用第三方支付服务，因某项目需要这种功能遂记录一下。</p>
 
-<h3 id="定义样式规则">定义样式规则</h3>
+<h2 id="准备工作">准备工作</h2>
 
-<p>假如 <code class="highlighter-rouge">http://img.domain.com/test.jpg</code> 是一张原始图片，我们想要在后面加上 <code class="highlighter-rouge">-small</code> 来实现最小图片的功能，<code class="highlighter-rouge">-medium</code> 来实现图片中等缩放的功能，那么只要重写这些 <code class="highlighter-rouge">URL</code> 并发送给php来处理进行缩放即可。</p>
+<ul>
+  <li>确定开发语言，本项目php</li>
+  <li>与快钱签订合作协议</li>
+  <li>向快钱要开发文档以便了解集成的过程（虽然文档有很多错误）</li>
+  <li>向快钱要php演示代码</li>
+</ul>
 
-<h3 id="重写---nginx">重写 - Nginx</h3>
+<h2 id="支付方式">支付方式</h2>
 
-<div class="language-nginx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">#在 server 区块里加入如下配置代码：
-</span><span class="k">rewrite</span> <span class="s">(.+)</span><span class="err">\</span><span class="s">.(jpg|jpeg|png)</span><span class="err">\</span><span class="s">-(mini|low|medium|high|ultra|extreme)</span>$ <span class="nv">$1</span><span class="s">.</span><span class="nv">$2</span><span class="s">.</span><span class="nv">$3</span><span class="s">.</span><span class="nv">$2</span> <span class="s">last</span><span class="p">;</span>	
-<span class="k">location</span> <span class="p">~</span><span class="sr">*</span> <span class="err">\</span><span class="s">.(jpg|jpeg|png)</span>$ <span class="p">{</span>
-    <span class="kn">if</span> <span class="s">(</span> <span class="s">!-f</span> <span class="nv">$request_filename</span> <span class="s">)</span> <span class="p">{</span>
-        <span class="kn">rewrite</span> <span class="s">.</span> <span class="n">/image-handler.php?path=</span><span class="nv">$document_uri</span> <span class="s">last</span><span class="p">;</span>
-    <span class="p">}</span>
-<span class="p">}</span>
-<span class="k">location</span> <span class="p">~</span> <span class="sr">handler\.php$</span> <span class="p">{</span>
-    <span class="kn">include</span> <span class="s">fastcgi.conf</span><span class="p">;</span>
-    <span class="kn">fastcgi_pass</span> <span class="nf">127.0.0.1</span><span class="p">:</span><span class="mi">9000</span><span class="p">;</span>
-    <span class="kn">try_files</span> <span class="nv">$uri</span> <span class="p">=</span><span class="mi">404</span><span class="p">;</span>
-<span class="p">}</span>
-</code></pre></div></div>
+<p><strong>网关支付</strong>：填写支付参数跳转到快钱支付的一个地址，这个地址显示了各种支付方式</p>
 
-<h3 id="重写---apache">重写 - Apache</h3>
+<p><strong>SDK支付</strong>：在移动端（Android,iOS）中进行支付的一个功能</p>
 
-<pre><code class="language-apacheconfig">#在资源目录新建一个 .htaccess 文件并加入如下代码
+<p><strong>快捷支付</strong>：跟支付宝的快捷支付一样，用户绑定一张银行卡进行支付</p>
 
-RewriteEngine On
+<h2 id="名词解释">名词解释</h2>
 
-RewriteRule (.+)\.(jpg|jpeg|png)\-(mini|low|medium|high|ultra|extreme)$ $1.$2.$3.$2 [N]
+<p><strong>商户私钥</strong>：商户自己生成的私钥，用于在网关支付的时候对发送数据进行签名</p>
 
-RewriteCond %{REQUEST_FILENAME} \.(jpg|jpeg|png)$
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteRule (.+\.(jpg|jpeg|png))$ /image-handler.php?path=$1 [L]
-</code></pre>
+<p><strong>商户公钥</strong>：商户自己生成的公钥，用于在网关支付的时候快钱对商户发送的数据进行签名验证</p>
 
-<h3 id="php">PHP</h3>
+<p><strong>快钱公钥</strong>：商户登录快钱后台下载的公钥，用于在网关支付的时候对快钱发送的数据进行签名验证</p>
 
-<p>在上文中的 <code class="highlighter-rouge">image-handler.php</code> 是处理图片缩放用，其代码可自行实现，<code class="highlighter-rouge">path</code> 是请求的图片路径，可以根据这个路径来对原图进行缩放。</p>
+<p><strong>快捷支付证书</strong>：由快钱提供给商户的证书，用于在快捷支付通讯的时候传递</p>
 
-<h3 id="后续">后续</h3>
+<h2 id="网关支付的实现">网关支付的实现</h2>
 
-<p>如果不想在资源目录放入这些文件，则可直接加入软连接链接到这个位置。</p>
+<p>参照文档进行开发即可，可能会遇到如下问题</p>
+
+<h3 id="签名不正确">签名不正确</h3>
+
+<p>在进行签名的时候一定要按照文档提供的参数顺序进行签名计算，且如果参数为空的话不参与计算</p>
+
+<h3 id="参数值处理">参数值处理</h3>
+
+<p>参数值需要进行 urlencode 处理，计算出来的签名也需要进行 urlencode 处理</p>
+
+<h2 id="快捷支付的实现">快捷支付的实现</h2>
+
+<p>快捷支付的流程如下：</p>
+
+<p>动态鉴权（相当于绑卡） -&gt; 消费（支付）</p>
+
+<h3 id="动态鉴权">动态鉴权</h3>
+
+<p>传递参数并调用动态鉴权接口成功后，快钱在返回的参数用会有个token、payToken，同时会像用户的手机中发送一条验证码。
+token和验证码会用于调用消费接口的时候进行传递，如果在动态鉴权接口中传递了 customerId 字段，则会保存此卡与customerId
+的关联</p>
+
+<h3 id="消费">消费</h3>
+
+<p>支付的时候需要传递银行卡号码、持卡人身份证号码、持卡人姓名、手机号、验证码、token信息，如果之前在鉴权中提供了 customerId 则
+可以传递 payToken 或者 缩略卡号</p>
 
     </article>
     
@@ -150,21 +161,12 @@ RewriteRule (.+\.(jpg|jpeg|png))$ /image-handler.php?path=$1 [L]
     </section>
     <section class="post-footer-item read-next">
         
-        <div class="read-next-item">
-            <a href="/2018/10/09/kuaiqian-merchant.html" class="read-next-link"></a>
-            <section>
-                <span>快钱商户支付集成</span>
-                <p>想快捷接入各种支付功能需要使用第三方支付服务，因某项目需要这种功能遂记录一下。</p>
-            </section>
-            
-        </div>
-        
         
         <div class="read-next-item">
-            <a href="/2018/08/22/mac-apache-fastcgi-php.html" class="read-next-link"></a>
+            <a href="/2018/08/23/image-style-for-web-server.html" class="read-next-link"></a>
             <section>
-                <span>Mac下配置Apache的fastcgi扩展与PHP</span>
-                <p>同事用的都是apache，我个人用的nginx，某些重写需要搞两种版本，之前用的module方式今天想尝试下fas...</p>
+                <span>Nginx、Apache+PHP 实现图片自动缩略图</span>
+                <p>在使用第三方存储的时候，第三方提供商会提供「图片样式」的功能来实现图片扩展名加上样式名随意改变原始图片的体积，考虑...</p>
             </section>
             
         </div>

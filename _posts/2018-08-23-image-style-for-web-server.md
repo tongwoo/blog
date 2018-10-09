@@ -22,6 +22,11 @@ location ~* \.(jpg|jpeg|png)$ {
         rewrite . /image-handler.php?path=$document_uri last;
     }
 }
+location ~ handler\.php$ {
+    include fastcgi.conf;
+    fastcgi_pass 127.0.0.1:9000;
+    try_files $uri =404;
+}
 ```
 
 ### 重写 - Apache
