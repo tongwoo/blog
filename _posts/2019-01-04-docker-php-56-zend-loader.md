@@ -32,7 +32,7 @@ docker run -i -t centos:7
 
 在当前命令行中进行配置Nginx源，建立 `/etc/yum.repos.d/nginx.repo` 并粘贴如下内容
 
-```
+```bash
 [nginx]
 name=nginx repo
 baseurl=http://nginx.org/packages/centos/7/$basearch/
@@ -50,7 +50,7 @@ yum install nginx
 
 因版本不同 `/etc/nginx/` 下的配置文件不太相同，如果没有 `fastcgi.conf` 文件自己建立一个并粘贴如下内容
 
-```
+```bash
 fastcgi_param  SCRIPT_FILENAME    $document_root$fastcgi_script_name;
 fastcgi_param  QUERY_STRING       $query_string;
 fastcgi_param  REQUEST_METHOD     $request_method;
@@ -96,7 +96,7 @@ yum install -y php56w php56w-bcmath php56w-cli php56w-common php56w-dba php56w-d
 
 安装 zend-loader 扩展（注意32位还是64位）
 
-```
+```bash
 #下载扩展包
 wget http://downloads.zend.com/guard/7.0.0/zend-loader-php5.6-linux-x86_64_update1.tar.gz
 #解压
@@ -129,7 +129,7 @@ Zend Engine v2.6.0, Copyright (c) 1998-2016 Zend Technologies
 
 打开 `php.ini` 粘贴如下内容，如果想要有更好的扩展性最好是挂载宿主机的配置文件
 
-```
+```bash
 #商派要求下面的参数为-1
 always_populate_raw_post_data = -1
 #ZendLoader配置
@@ -169,7 +169,7 @@ docker push tongwoo/centos7-nginx-php56-zend-guard-loader
 
 因为容器只能有一个主进程，但是要运行代码需要启动 `php-fpm` 和 `nginx`，所以可以考虑建立一个脚本 `/app/runapp` 并增加执行权限
 
-```
+```bash
 !#/usr/bin/sh
 php-fpm
 nginx

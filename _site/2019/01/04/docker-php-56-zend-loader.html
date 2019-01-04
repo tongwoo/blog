@@ -94,11 +94,11 @@
 
 <p>在当前命令行中进行配置Nginx源，建立 <code class="highlighter-rouge">/etc/yum.repos.d/nginx.repo</code> 并粘贴如下内容</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[nginx]
-name=nginx repo
-baseurl=http://nginx.org/packages/centos/7/$basearch/
-gpgcheck=0
-enabled=1
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>nginx]
+<span class="nv">name</span><span class="o">=</span>nginx repo
+<span class="nv">baseurl</span><span class="o">=</span>http://nginx.org/packages/centos/7/<span class="nv">$basearch</span>/
+<span class="nv">gpgcheck</span><span class="o">=</span>0
+<span class="nv">enabled</span><span class="o">=</span>1
 </code></pre></div></div>
 
 <p>建立后开始安装</p>
@@ -110,31 +110,31 @@ enabled=1
 
 <p>因版本不同 <code class="highlighter-rouge">/etc/nginx/</code> 下的配置文件不太相同，如果没有 <code class="highlighter-rouge">fastcgi.conf</code> 文件自己建立一个并粘贴如下内容</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>fastcgi_param  SCRIPT_FILENAME    $document_root$fastcgi_script_name;
-fastcgi_param  QUERY_STRING       $query_string;
-fastcgi_param  REQUEST_METHOD     $request_method;
-fastcgi_param  CONTENT_TYPE       $content_type;
-fastcgi_param  CONTENT_LENGTH     $content_length;
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>fastcgi_param  SCRIPT_FILENAME    <span class="nv">$document_root$fastcgi_script_name</span><span class="p">;</span>
+fastcgi_param  QUERY_STRING       <span class="nv">$query_string</span><span class="p">;</span>
+fastcgi_param  REQUEST_METHOD     <span class="nv">$request_method</span><span class="p">;</span>
+fastcgi_param  CONTENT_TYPE       <span class="nv">$content_type</span><span class="p">;</span>
+fastcgi_param  CONTENT_LENGTH     <span class="nv">$content_length</span><span class="p">;</span>
 
-fastcgi_param  SCRIPT_NAME        $fastcgi_script_name;
-fastcgi_param  REQUEST_URI        $request_uri;
-fastcgi_param  DOCUMENT_URI       $document_uri;
-fastcgi_param  DOCUMENT_ROOT      $document_root;
-fastcgi_param  SERVER_PROTOCOL    $server_protocol;
-fastcgi_param  REQUEST_SCHEME     $scheme;
-fastcgi_param  HTTPS              $https if_not_empty;
+fastcgi_param  SCRIPT_NAME        <span class="nv">$fastcgi_script_name</span><span class="p">;</span>
+fastcgi_param  REQUEST_URI        <span class="nv">$request_uri</span><span class="p">;</span>
+fastcgi_param  DOCUMENT_URI       <span class="nv">$document_uri</span><span class="p">;</span>
+fastcgi_param  DOCUMENT_ROOT      <span class="nv">$document_root</span><span class="p">;</span>
+fastcgi_param  SERVER_PROTOCOL    <span class="nv">$server_protocol</span><span class="p">;</span>
+fastcgi_param  REQUEST_SCHEME     <span class="nv">$scheme</span><span class="p">;</span>
+fastcgi_param  HTTPS              <span class="nv">$https</span> if_not_empty<span class="p">;</span>
 
-fastcgi_param  GATEWAY_INTERFACE  CGI/1.1;
-fastcgi_param  SERVER_SOFTWARE    nginx/$nginx_version;
+fastcgi_param  GATEWAY_INTERFACE  CGI/1.1<span class="p">;</span>
+fastcgi_param  SERVER_SOFTWARE    nginx/<span class="nv">$nginx_version</span><span class="p">;</span>
 
-fastcgi_param  REMOTE_ADDR        $remote_addr;
-fastcgi_param  REMOTE_PORT        $remote_port;
-fastcgi_param  SERVER_ADDR        $server_addr;
-fastcgi_param  SERVER_PORT        $server_port;
-fastcgi_param  SERVER_NAME        $server_name;
+fastcgi_param  REMOTE_ADDR        <span class="nv">$remote_addr</span><span class="p">;</span>
+fastcgi_param  REMOTE_PORT        <span class="nv">$remote_port</span><span class="p">;</span>
+fastcgi_param  SERVER_ADDR        <span class="nv">$server_addr</span><span class="p">;</span>
+fastcgi_param  SERVER_PORT        <span class="nv">$server_port</span><span class="p">;</span>
+fastcgi_param  SERVER_NAME        <span class="nv">$server_name</span><span class="p">;</span>
 
-# PHP only, required if PHP was built with --enable-force-cgi-redirect
-fastcgi_param  REDIRECT_STATUS    200;
+<span class="c"># PHP only, required if PHP was built with --enable-force-cgi-redirect</span>
+fastcgi_param  REDIRECT_STATUS    200<span class="p">;</span>
 </code></pre></div></div>
 
 <h3 id="安装php56">安装PHP5.6</h3>
@@ -152,12 +152,12 @@ rpm <span class="nt">-Uvh</span> https://mirror.webtatic.com/yum/el7/webtatic-re
 
 <p>安装 zend-loader 扩展（注意32位还是64位）</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#下载扩展包
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">#下载扩展包</span>
 wget http://downloads.zend.com/guard/7.0.0/zend-loader-php5.6-linux-x86_64_update1.tar.gz
-#解压
-tar -xzvf zend-loader-php5.6-linux-x86_64_update1.tar.gz
-#将扩展拷贝到php扩展目录，提示存在请覆盖
-cp *.so /usr/lib64/php/modules/
+<span class="c">#解压</span>
+<span class="nb">tar</span> <span class="nt">-xzvf</span> zend-loader-php5.6-linux-x86_64_update1.tar.gz
+<span class="c">#将扩展拷贝到php扩展目录，提示存在请覆盖</span>
+cp <span class="k">*</span>.so /usr/lib64/php/modules/
 </code></pre></div></div>
 
 <p>查看php是否能正常运行</p>
@@ -183,13 +183,13 @@ Zend Engine v2.6.0, Copyright <span class="o">(</span>c<span class="o">)</span> 
 
 <p>打开 <code class="highlighter-rouge">php.ini</code> 粘贴如下内容，如果想要有更好的扩展性最好是挂载宿主机的配置文件</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#商派要求下面的参数为-1
-always_populate_raw_post_data = -1
-#ZendLoader配置
-zend_loader.enable=1
-zend_loader.disable_licensing=0
-zend_loader.obfuscation_level_support=3
-zend_loader.license_path=商派许可证文件路径
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">#商派要求下面的参数为-1</span>
+always_populate_raw_post_data <span class="o">=</span> <span class="nt">-1</span>
+<span class="c">#ZendLoader配置</span>
+zend_loader.enable<span class="o">=</span>1
+zend_loader.disable_licensing<span class="o">=</span>0
+zend_loader.obfuscation_level_support<span class="o">=</span>3
+zend_loader.license_path<span class="o">=</span>商派许可证文件路径
 </code></pre></div></div>
 
 <h2 id="创建镜像">创建镜像</h2>
@@ -219,7 +219,7 @@ docker push tongwoo/centos7-nginx-php56-zend-guard-loader
 
 <p>因为容器只能有一个主进程，但是要运行代码需要启动 <code class="highlighter-rouge">php-fpm</code> 和 <code class="highlighter-rouge">nginx</code>，所以可以考虑建立一个脚本 <code class="highlighter-rouge">/app/runapp</code> 并增加执行权限</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>!#/usr/bin/sh
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">!</span><span class="c">#/usr/bin/sh</span>
 php-fpm
 nginx
 </code></pre></div></div>
