@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>使用Docker来配置商派产品运行环境 - 武仝的博客</title>
+    <meta name="author"  content="武仝">
+    <meta name="description" content="使用Docker来配置商派产品运行环境">
+    <meta name="keywords"  content="linux, php, nginx, docker">
+    <!-- Open Graph -->
+    <meta property="og:title" content="使用Docker来配置商派产品运行环境 - 武仝的博客">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://blog.wutong.me/2019/01/04/docker-php-56-zend-loader.html">
+    <meta property="og:description" content="PHP开发者，热爱技术&设计。很高兴能在这里分享我对技术的思考。">
+    <meta property="og:site_name" content="武仝的博客">
+    <link rel="stylesheet" href="//cdn.staticfile.org/normalize/6.0.0/normalize.min.css">
+    <link rel="stylesheet" href="//at.alicdn.com/t/font_roc50gemkxpw4s4i.css">
+    <link rel="stylesheet" href="/assets/css/github-markdown.css">
+    <link rel="stylesheet" href="/assets/css/prism.css">
+    <link rel="stylesheet" href="/assets/css/share.min.css">
+    <link rel="stylesheet" href="/assets/css/app.min.css">
+    <link rel="stylesheet" href="/assets/css/common.css">
+</head>
+<body>
+    <!--[if lt IE 10]>
+<div class="alert-danger" role="alert">你的浏览器实在太太太旧了，放学别走，升级完浏览器再说！<a target="_blank" class="alert-link" href="http://browsehappy.com">立即升级</a></div>
+<![endif]-->
+<input id="nm-switch" type="hidden" value="false">
+
+<header class="g-header">
+    <div class="g-logo">
+      <a href="/"></a>
+    </div>
+    <i id="menu-toggle" class="iconfont icon-menu"></i>
+    <nav class="g-nav">
+        <ul>
+            
+            <li><a href="/">Home</a></li>
+            
+            <li><a href="/tags.html">Tags</a></li>
+            
+        </ul>
+    </nav>
+</header>
+
+
+<header class="g-banner post-header post-pattern-circuitBoard bgcolor-default post-no-cover" data-theme="default">
+    <div class="post-wrapper">
+        <div class="post-tags">
+            
+            
+            <a href="https://blog.wutong.me/tags.html#linux" class="post-tag">linux</a>
+            
+            <a href="https://blog.wutong.me/tags.html#php" class="post-tag">php</a>
+            
+            <a href="https://blog.wutong.me/tags.html#nginx" class="post-tag">nginx</a>
+            
+            <a href="https://blog.wutong.me/tags.html#docker" class="post-tag">docker</a>
+            
+            
+        </div>
+        <h1>使用Docker来配置商派产品运行环境</h1>
+        <div class="post-meta">
+            <span class="post-meta-item"><i class="iconfont icon-author"></i><a href="https://blog.wutong.me" target="_blank" rel="author">wutong</a></></span>
+            <time class="post-meta-item" datetime="2019-01-04"><i class="iconfont icon-date"></i>2019-01-04</time>
+        </div>
+    </div>
+    
+</header>
+
+<div class="post-content">
+    
+    <article class="markdown-body">
+        <div class="post-forward-message">本文章地址：https://blog.wutong.me/2019/01/04/docker-php-56-zend-loader.html 转载请注明出处</div>
+        <p>人员流失太多，不得已也要维护2个商城，其中一个是商派的ECStore，自己的机器用的PHP7.1，跑不起来，Zend Guard Loader 5.6 之后Zend不再进行维护，遂自己建个运行商派产品的容器</p>
+
+<h2 id="安装docker">安装Docker</h2>
+
+<p>打开 <a href="https://www.docker.com/products/docker-desktop">https://www.docker.com/products/docker-desktop</a> 选择自己需要的版本安装</p>
+
+<h2 id="安装系统">安装系统</h2>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker pull centos:7
+</code></pre></div></div>
+
+<h2 id="安装运行环境">安装运行环境</h2>
+
+<p>交互式运行CentOS容器</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker run <span class="nt">-i</span> <span class="nt">-t</span> centos:7
+</code></pre></div></div>
+
+<h3 id="安装nginx">安装Nginx</h3>
+
+<p>在当前命令行中进行配置Nginx源，建立 <code class="highlighter-rouge">/etc/yum.repos.d/nginx.repo</code> 并粘贴如下内容</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[nginx]
+name=nginx repo
+baseurl=http://nginx.org/packages/centos/7/$basearch/
+gpgcheck=0
+enabled=1
+</code></pre></div></div>
+
+<p>建立后开始安装</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>yum install nginx
+</code></pre></div></div>
+
+<p>修改 <code class="highlighter-rouge">/etc/nginx/nginx.conf</code> 第一行加入 <code class="highlighter-rouge">daemon off</code></p>
+
+<p>因版本不同 <code class="highlighter-rouge">/etc/nginx/</code> 下的配置文件不太相同，如果没有 <code class="highlighter-rouge">fastcgi.conf</code> 文件自己建立一个并粘贴如下内容</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>fastcgi_param  SCRIPT_FILENAME    $document_root$fastcgi_script_name;
+fastcgi_param  QUERY_STRING       $query_string;
+fastcgi_param  REQUEST_METHOD     $request_method;
+fastcgi_param  CONTENT_TYPE       $content_type;
+fastcgi_param  CONTENT_LENGTH     $content_length;
+
+fastcgi_param  SCRIPT_NAME        $fastcgi_script_name;
+fastcgi_param  REQUEST_URI        $request_uri;
+fastcgi_param  DOCUMENT_URI       $document_uri;
+fastcgi_param  DOCUMENT_ROOT      $document_root;
+fastcgi_param  SERVER_PROTOCOL    $server_protocol;
+fastcgi_param  REQUEST_SCHEME     $scheme;
+fastcgi_param  HTTPS              $https if_not_empty;
+
+fastcgi_param  GATEWAY_INTERFACE  CGI/1.1;
+fastcgi_param  SERVER_SOFTWARE    nginx/$nginx_version;
+
+fastcgi_param  REMOTE_ADDR        $remote_addr;
+fastcgi_param  REMOTE_PORT        $remote_port;
+fastcgi_param  SERVER_ADDR        $server_addr;
+fastcgi_param  SERVER_PORT        $server_port;
+fastcgi_param  SERVER_NAME        $server_name;
+
+# PHP only, required if PHP was built with --enable-force-cgi-redirect
+fastcgi_param  REDIRECT_STATUS    200;
+</code></pre></div></div>
+
+<h3 id="安装php56">安装PHP5.6</h3>
+
+<p>配置 php 的源</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>rpm <span class="nt">-Uvh</span> https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+rpm <span class="nt">-Uvh</span> https://mirror.webtatic.com/yum/el7/webtatic-release.rpm
+</code></pre></div></div>
+
+<p>安装 php</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>yum install <span class="nt">-y</span> php56w php56w-bcmath php56w-cli php56w-common php56w-dba php56w-devel php56w-embedded php56w-enchant php56w-fpm php56w-gd php56w-imap php56w-interbase php56w-intl php56w-ldap php56w-mbstring php56w-mcrypt php56w-mssql php56w-mysqlnd php56w-odbc php56w-opcache php56w-pdo php56w-pear php56w-pecl-apcu php56w-pecl-apcu-devel php56w-pecl-gearman php56w-pecl-geoip php56w-pecl-igbinary php56w-pecl-igbinary-devel php56w-pecl-imagick php56w-pecl-imagick-devel php56w-pecl-memcache php56w-pecl-memcached php56w-pecl-mongodb php56w-pecl-redis php56w-pecl-xdebug php56w-pgsql php56w-phpdbg php56w-process php56w-pspell php56w-recode php56w-snmp php56w-soap php56w-tidy php56w-xml php56w-xmlrpc 
+</code></pre></div></div>
+
+<p>安装 zend-loader 扩展（注意32位还是64位）</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#下载扩展包
+wget http://downloads.zend.com/guard/7.0.0/zend-loader-php5.6-linux-x86_64_update1.tar.gz
+#解压
+tar -xzvf zend-loader-php5.6-linux-x86_64_update1.tar.gz
+#将扩展拷贝到php扩展目录，提示存在请覆盖
+cp *.so /usr/lib64/php/modules/
+</code></pre></div></div>
+
+<p>查看php是否能正常运行</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>php <span class="nt">-v</span>
+
+PHP 5.6.38 <span class="o">(</span>cli<span class="o">)</span> <span class="o">(</span>built: Sep 15 2018 08:16:33<span class="o">)</span>
+Copyright <span class="o">(</span>c<span class="o">)</span> 1997-2016 The PHP Group
+Zend Engine v2.6.0, Copyright <span class="o">(</span>c<span class="o">)</span> 1998-2016 Zend Technologies
+    with Zend Guard Loader v3.3, Copyright <span class="o">(</span>c<span class="o">)</span> 1998-2015, by Zend Technologies
+    with Zend OPcache v7.0.6-dev, Copyright <span class="o">(</span>c<span class="o">)</span> 1999-2016, by Zend Technologies
+    with Xdebug v2.5.5, Copyright <span class="o">(</span>c<span class="o">)</span> 2002-2017, by Derick Rethans
+</code></pre></div></div>
+
+<p>可以看到扩展也都装上去了</p>
+
+<h3 id="杂项配置">杂项配置</h3>
+
+<p>将 <code class="highlighter-rouge">php-fpm</code> 运行的用户和组变更为 <code class="highlighter-rouge">nginx</code>
+将 <code class="highlighter-rouge">/var/lib/php</code> 的用户和组变更为 <code class="highlighter-rouge">nginx</code></p>
+
+<h3 id="配置zendloader">配置ZendLoader</h3>
+
+<p>打开 <code class="highlighter-rouge">php.ini</code> 粘贴如下内容，如果想要有更好的扩展性最好是挂载宿主机的配置文件</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#商派要求下面的参数为-1
+always_populate_raw_post_data = -1
+#ZendLoader配置
+zend_loader.enable=1
+zend_loader.disable_licensing=0
+zend_loader.obfuscation_level_support=3
+zend_loader.license_path=商派许可证文件路径
+</code></pre></div></div>
+
+<h2 id="创建镜像">创建镜像</h2>
+
+<p>在交互式环境下做完上面的事情后，输入 <code class="highlighter-rouge">exit</code> 退出</p>
+
+<p>查看运行过的容器</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker ps <span class="nt">-a</span>
+
+CONTAINER ID   IMAGE        COMMAND       CREATED      STATUS                     PORTS      NAMES
+b1d45882623f   centos:7     <span class="s2">"/bin/bash"</span>   5 hours ago  Exited <span class="o">(</span>0<span class="o">)</span> 5 hours ago                admiring_newton
+</code></pre></div></div>
+
+<p>对刚才使用的centos容器进行扩展并建立镜像，也可以使用 <code class="highlighter-rouge">Dockerfile</code></p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker commit <span class="nt">-m</span> <span class="s2">"CentOS7-Nginx-PHP56-ZendGuardLoader"</span> b1d45882623f tongwoo/centos7-nginx-php56-zend-guard-loader
+</code></pre></div></div>
+
+<p>创建成功后，为了以后更方便在其他机器使用，可以考虑放到 docker hub 仓库中</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker login
+docker push tongwoo/centos7-nginx-php56-zend-guard-loader
+</code></pre></div></div>
+
+<h2 id="运行镜像">运行镜像</h2>
+
+<p>因为容器只能有一个主进程，但是要运行代码需要启动 <code class="highlighter-rouge">php-fpm</code> 和 <code class="highlighter-rouge">nginx</code>，所以可以考虑建立一个脚本 <code class="highlighter-rouge">/app/runapp</code> 并增加执行权限</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>!#/usr/bin/sh
+php-fpm
+nginx
+</code></pre></div></div>
+
+<p>为了能顺利运行宿主机的代码，在运行容器的时候需要挂载宿主机的 <code class="highlighter-rouge">源代码目录、php自定义配置文件、Nginx配置文件</code> ，其中 <code class="highlighter-rouge">php自定义配置文件</code> 我们可能想覆盖 <code class="highlighter-rouge">php.ini</code> 的配置，比如商派的许可证文件路径，<code class="highlighter-rouge">Nginx配置文件</code> 自定义主机配置等</p>
+
+<p>执行下面的命令来运行容器</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker run <span class="nt">-p</span> 3000:80 <span class="nt">-v</span> /web/TianDiShop:/var/www/html/TianDiShop <span class="nt">-v</span> /web/TianDiShop/tiandi.conf:/var/www/html/tiandi.conf <span class="nt">-v</span> /web/TianDiShop/tiandi.ini:/etc/php.d/tiandi.ini tongwoo/centos7-nginx-php56-zend-guard-loader /app/runapp
+</code></pre></div></div>
+
+<p>这个命令做了如下操作：</p>
+
+<ul>
+  <li>将宿主机的3000端口转发到容器的80端口</li>
+  <li>将宿主机的/web/TianDiShop目录映射到容器的/var/www/html/TianDiShop</li>
+  <li>将宿主机的/web/TianDiShop/tiandi.conf配置文件映射到容器的/var/www/html/tiandi.conf</li>
+  <li>将宿主机的/web/TianDiShop/tiandi.ini配置文件映射到容器的/etc/php.d/tiandi.ini</li>
+</ul>
+
+<p>如果想要守护允许则加上 <code class="highlighter-rouge">-d</code> 选项</p>
+
+<p>访问 <code class="highlighter-rouge">http://127.0.0.1:3000</code> 可以看到宿主机的商城显示出来了</p>
+
+
+    </article>
+    
+    <div class="social-share-wrapper">
+        <div class="social-share"></div>
+    </div>
+    
+</div>
+
+<section class="author-detail">
+    <section class="post-footer-item author-card">
+        <div class="avatar">
+            <img src="/assets/img/profile.jpg" alt="">
+        </div>
+        <div class="author-name" rel="author">武仝</div>
+        <div class="bio">
+            <p>PHP开发，热爱技术&设计</p>
+        </div>
+        
+        <ul class="sns-links">
+            
+            <li>
+                <a href="//weibo.com/u/3479312483" target="_blank">
+                    <i class="iconfont icon-weibo"></i>
+                </a>
+            </li>
+            
+            <li>
+                <a href="//github.com/tongwoo" target="_blank">
+                    <i class="iconfont icon-github"></i>
+                </a>
+            </li>
+            
+        </ul>
+        
+    </section>
+    <section class="post-footer-item read-next">
+        
+        
+        <div class="read-next-item">
+            <a href="/2018/10/09/kuaiqian-merchant.html" class="read-next-link"></a>
+            <section>
+                <span>快钱商户支付集成</span>
+                <p>想快捷接入各种支付功能需要使用第三方支付服务，因某项目需要这种功能遂记录一下。</p>
+            </section>
+            
+        </div>
+        
+    </section>
+    
+</section>
+
+<footer class="g-footer">
+    <section>武仝的博客 © 2019</section>
+    <section>Powered by <a href="//jekyllrb.com">Jekyll</a> | <a href="https://github.com/kaeyleo/jekyll-theme-H2O">Theme H2O</a></section>
+    <section><a href="http://www.miibeian.gov.cn/">苏ICP备14017143号-1</a></section>
+</footer>
+
+<script src="/assets/js/social-share.min.js"></script>
+<script>
+    socialShare('.social-share', {
+        sites: ['wechat','weibo','douban','twitter'],
+        wechatQrcodeTitle: "分享到微信朋友圈",
+        wechatQrcodeHelper: '<p>扫码后点击右上角</p><p>将本文分享至朋友圈</p>'
+    });
+</script>
+<script>
+/**
+*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+/*
+var disqus_config = function () {
+this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+*/
+(function() { // DON'T EDIT BELOW THIS LINE
+//var d = document, s = d.createElement('script');
+/*写入自己的disqus信息*/
+//s.src = 'https://liaokeyu.disqus.com/embed.js';
+//s.setAttribute('data-timestamp', +new Date());
+//(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<script src="/assets/js/jquery.min.js"></script>
+<script src="/assets/js/prism.js"></script>
+<script src="/assets/js/index.min.js"></script>
+<script type="text/javascript" src="http://tajs.qq.com/stats?sId=43494337" charset="UTF-8"></script>
+</body>
+</html>
