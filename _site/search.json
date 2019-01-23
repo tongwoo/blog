@@ -1,6 +1,18 @@
 [
   
     {
+      "title"    : "SS新安装",
+      "tags"     : "linux",
+      "url"      : "/2019/01/23/new-ss-install.html"
+    } ,
+  
+    {
+      "title"    : "MySQL的几何类",
+      "tags"     : "mysql mariadb",
+      "url"      : "/2019/01/23/mysql-geometry-classes.html"
+    } ,
+  
+    {
       "title"    : "MySQL空间函数",
       "tags"     : "mysql mariadb",
       "url"      : "/2019/01/22/mysql-geometry-functions.html"
