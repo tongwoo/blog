@@ -1,6 +1,12 @@
 [
   
     {
+      "title"    : "安装官方MySQL(CentOS7)",
+      "tags"     : "linux mysql",
+      "url"      : "/2019/03/01/install-official-mysql.html"
+    } ,
+  
+    {
       "title"    : "SS新安装",
       "tags"     : "linux",
       "url"      : "/2019/01/23/new-ss-install.html"
