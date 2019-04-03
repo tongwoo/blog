@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>安装官方MySQL(CentOS7) - 武仝的博客</title>
+    <title>CentOS7 certbot 出错 - 武仝的博客</title>
     <meta name="author"  content="武仝">
-    <meta name="description" content="安装官方MySQL(CentOS7)">
-    <meta name="keywords"  content="linux, mysql">
+    <meta name="description" content="CentOS7 certbot 出错">
+    <meta name="keywords"  content="linux, certbot">
     <!-- Open Graph -->
-    <meta property="og:title" content="安装官方MySQL(CentOS7) - 武仝的博客">
+    <meta property="og:title" content="CentOS7 certbot 出错 - 武仝的博客">
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://blog.wutong.me/2019/03/01/install-official-mysql.html">
+    <meta property="og:url" content="https://blog.wutong.me/2019/04/03/certbot-error.html">
     <meta property="og:description" content="PHP开发者，热爱技术&设计。很高兴能在这里分享我对技术的思考。">
     <meta property="og:site_name" content="武仝的博客">
     <link rel="stylesheet" href="//cdn.staticfile.org/normalize/6.0.0/normalize.min.css">
@@ -51,14 +51,14 @@
             
             <a href="https://blog.wutong.me/tags.html#linux" class="post-tag">linux</a>
             
-            <a href="https://blog.wutong.me/tags.html#mysql" class="post-tag">mysql</a>
+            <a href="https://blog.wutong.me/tags.html#certbot" class="post-tag">certbot</a>
             
             
         </div>
-        <h1>安装官方MySQL(CentOS7)</h1>
+        <h1>CentOS7 certbot 出错</h1>
         <div class="post-meta">
             <span class="post-meta-item"><i class="iconfont icon-author"></i><a href="https://blog.wutong.me" target="_blank" rel="author">wutong</a></></span>
-            <time class="post-meta-item" datetime="2019-03-01"><i class="iconfont icon-date"></i>2019-03-01</time>
+            <time class="post-meta-item" datetime="2019-04-03"><i class="iconfont icon-date"></i>2019-04-03</time>
         </div>
     </div>
     
@@ -67,56 +67,11 @@
 <div class="post-content">
     
     <article class="markdown-body">
-        <div class="post-forward-message">本文章地址：https://blog.wutong.me/2019/03/01/install-official-mysql.html 转载请注明出处</div>
-        <p>系统自带用的 <code class="highlighter-rouge">mariadb</code> 总感觉是野路子，还是安装官方的吧。</p>
+        <div class="post-forward-message">本文章地址：https://blog.wutong.me/2019/04/03/certbot-error.html 转载请注明出处</div>
+        <p>使用仓库的 <code class="highlighter-rouge">certbot</code> 命令出错，提示无法导入 <code class="highlighter-rouge">ImportError: No module named 'requests.packages.urllib3'</code> ，用如下命令解决：</p>
 
-<h2 id="下载仓库配置文件">下载仓库配置文件</h2>
-
-<p>访问 <a href="https://dev.mysql.com/downloads/repo/yum/">https://dev.mysql.com/downloads/repo/yum/</a> 选择对应的版本并下载保存</p>
-
-<p>安装这个软件包</p>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>yum localinstall 软件包文件路径
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pip install <span class="nt">--upgrade</span> <span class="nt">--force-reinstall</span> <span class="s1">'requests==2.6.0'</span> urllib3
 </code></pre></div></div>
-
-<p>打开仓库配置文件</p>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>vi /etc/yum.repos.d/mysql-community.repo
-</code></pre></div></div>
-
-<p>将需要使用的版本 <code class="highlighter-rouge">enable</code> 设置为 1，不要的设置为0，默认的是当前最高版本为启用状态</p>
-
-<h2 id="安装mysql">安装MySQL</h2>
-
-<p>执行命令安装</p>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>yum install mysql-community-server
-</code></pre></div></div>
-
-<p>启动</p>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>systemctl start mysqld
-</code></pre></div></div>
-
-<p>初始化后下列事情会发生：</p>
-
-<ul>
-  <li>SSL证书秘钥会生成到data目录</li>
-  <li>创建了一个 <code class="highlighter-rouge">root</code> 用户，且密码放到了日志文件中</li>
-</ul>
-
-<p>查看密码</p>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">cat</span> /var/log/mysqld.log  | <span class="nb">grep </span>password
-</code></pre></div></div>
-
-<p>登录MySQL并设置密码</p>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mysql <span class="nt">-u</span> root <span class="nt">-p</span>
-</code></pre></div></div>
-
-<pre><code class="language-mysql">ALTER USER 'root'@'localhost' IDENTIFIED BY '新密码';
-</code></pre>
 
     </article>
     
@@ -155,21 +110,12 @@
     </section>
     <section class="post-footer-item read-next">
         
-        <div class="read-next-item">
-            <a href="/2019/04/03/certbot-error.html" class="read-next-link"></a>
-            <section>
-                <span>CentOS7 certbot 出错</span>
-                <p>使用仓库的 certbot 命令出错，提示无法导入 ImportError: No module named 'r...</p>
-            </section>
-            
-        </div>
-        
         
         <div class="read-next-item">
-            <a href="/2019/01/23/new-ss-install.html" class="read-next-link"></a>
+            <a href="/2019/03/01/install-official-mysql.html" class="read-next-link"></a>
             <section>
-                <span>SS新安装</span>
-                <p>安装有变化，记录一下</p>
+                <span>安装官方MySQL(CentOS7)</span>
+                <p>系统自带用的 mariadb 总感觉是野路子，还是安装官方的吧。</p>
             </section>
             
         </div>
