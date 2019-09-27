@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CentOS7 certbot 出错 - 武仝的博客</title>
+    <title>基于一条线做垂直平行于此线的新线 - 武仝的博客</title>
     <meta name="author"  content="武仝">
-    <meta name="description" content="CentOS7 certbot 出错">
-    <meta name="keywords"  content="linux, certbot">
+    <meta name="description" content="基于一条线做垂直平行于此线的新线">
+    <meta name="keywords"  content="javascript">
     <!-- Open Graph -->
-    <meta property="og:title" content="CentOS7 certbot 出错 - 武仝的博客">
+    <meta property="og:title" content="基于一条线做垂直平行于此线的新线 - 武仝的博客">
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://blog.wutong.me/2019/04/03/certbot-error.html">
+    <meta property="og:url" content="https://blog.wutong.me/2019/09/10/parallel-line.html">
     <meta property="og:description" content="PHP开发者，热爱技术&设计。很高兴能在这里分享我对技术的思考。">
     <meta property="og:site_name" content="武仝的博客">
     <link rel="stylesheet" href="//cdn.staticfile.org/normalize/6.0.0/normalize.min.css">
@@ -49,16 +49,14 @@
         <div class="post-tags">
             
             
-            <a href="https://blog.wutong.me/tags.html#linux" class="post-tag">linux</a>
-            
-            <a href="https://blog.wutong.me/tags.html#certbot" class="post-tag">certbot</a>
+            <a href="https://blog.wutong.me/tags.html#javascript" class="post-tag">javascript</a>
             
             
         </div>
-        <h1>CentOS7 certbot 出错</h1>
+        <h1>基于一条线做垂直平行于此线的新线</h1>
         <div class="post-meta">
             <span class="post-meta-item"><i class="iconfont icon-author"></i><a href="https://blog.wutong.me" target="_blank" rel="author">wutong</a></></span>
-            <time class="post-meta-item" datetime="2019-04-03"><i class="iconfont icon-date"></i>2019-04-03</time>
+            <time class="post-meta-item" datetime="2019-09-10"><i class="iconfont icon-date"></i>2019-09-10</time>
         </div>
     </div>
     
@@ -67,11 +65,34 @@
 <div class="post-content">
     
     <article class="markdown-body">
-        <div class="post-forward-message">本文章地址：https://blog.wutong.me/2019/04/03/certbot-error.html 转载请注明出处</div>
-        <p>使用仓库的 <code class="highlighter-rouge">certbot</code> 命令出错，提示无法导入 <code class="highlighter-rouge">ImportError: No module named 'requests.packages.urllib3'</code> ，用如下命令解决：</p>
+        <div class="post-forward-message">本文章地址：https://blog.wutong.me/2019/09/10/parallel-line.html 转载请注明出处</div>
+        <p>最近遇到一个功能，给一条线，给一个离线的距离，再做一条线，新的线要垂直平行于之前的线，且距离为给的距离，复习了几何知识，最终解决了这一问题</p>
 
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pip install <span class="nt">--upgrade</span> <span class="nt">--force-reinstall</span> <span class="s1">'requests==2.6.0'</span> urllib3
-</code></pre></div></div>
+<h2 id="效果示例">效果示例</h2>
+
+<iframe src="http://codedemo.org/point-parallel" style="width:100%;height:600px;border:0;"></iframe>
+
+<h2 id="计算方式">计算方式</h2>
+
+<p>假如有如下 AB 线段，做 CD 线段</p>
+
+<p><img src="/screenshot/2019-09-10/point-1.png" alt="图1" /></p>
+
+<p>先根据AB点做一个直角三角形</p>
+
+<p><img src="/screenshot/2019-09-10/point-4.png" alt="图2" /></p>
+
+<p>根据 A点 和 B点 的位置，可以得知 AF、BF 的距离，根据三角公式得知 AB距离和角b的角度</p>
+
+<p><img src="/screenshot/2019-09-10/point-3.png" alt="图3" /></p>
+
+<p>根据给定的距离，再做一个垂直于A点的直角三角形，因为是垂直关系，可以得知 ∠a = 90°- ∠b</p>
+
+<p>因为AC距离是已知的，所以根据三角公式得知 sin∠a = EC / AC，则偏移后的y点为 A.y+EC</p>
+
+<p>再根据三角公式得知 AE<sup>2</sup> = AC<sup>2</sup> - EC<sup>2</sup> 算出 AE 距离，则偏移后的x点为 A.x+AE</p>
+
+<p>因为同等大小的关系，所以可以直接得出 D点坐标</p>
 
     </article>
     
@@ -111,20 +132,20 @@
     <section class="post-footer-item read-next">
         
         <div class="read-next-item">
-            <a href="/2019/09/10/parallel-line.html" class="read-next-link"></a>
+            <a href="/2019/09/27/arcgis-offline-map.html" class="read-next-link"></a>
             <section>
-                <span>基于一条线做垂直平行于此线的新线</span>
-                <p>最近遇到一个功能，给一条线，给一个离线的距离，再做一条线，新的线要垂直平行于之前的线，且距离为给的距离，复习了几何...</p>
+                <span>使用ArcGIS开发内网离线WEB地图应用（上）</span>
+                <p>在工作中可能会遇到客户想要一个与外界隔绝仅且供内网使用的web地图应用，本文介绍如何进行内网离线地图开发</p>
             </section>
             
         </div>
         
         
         <div class="read-next-item">
-            <a href="/2019/03/01/install-official-mysql.html" class="read-next-link"></a>
+            <a href="/2019/04/03/certbot-error.html" class="read-next-link"></a>
             <section>
-                <span>安装官方MySQL(CentOS7)</span>
-                <p>系统自带用的 mariadb 总感觉是野路子，还是安装官方的吧。</p>
+                <span>CentOS7 certbot 出错</span>
+                <p>使用仓库的 certbot 命令出错，提示无法导入 ImportError: No module named 'r...</p>
             </section>
             
         </div>

@@ -7,6 +7,12 @@
     } ,
   
     {
+      "title"    : "基于一条线做垂直平行于此线的新线",
+      "tags"     : "javascript",
+      "url"      : "/2019/09/10/parallel-line.html"
+    } ,
+  
+    {
       "title"    : "CentOS7 certbot 出错",
       "tags"     : "linux certbot",
       "url"      : "/2019/04/03/certbot-error.html"
