@@ -10,7 +10,7 @@ tags:  javascript
 
 ## 效果示例
 
-<iframe src="http://codedemo.org/point-parallel" style="width:100%;height:600px;border:0;"></iframe>
+<iframe src="//codedemo.org/point-parallel" style="width:100%;height:600px;border:0;"></iframe>
 
 
 ## 计算方式
