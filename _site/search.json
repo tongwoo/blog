@@ -1,6 +1,12 @@
 [
   
     {
+      "title"    : "使用ArcGIS开发内网离线WEB地图应用（上）",
+      "tags"     : "arcgis map javascript",
+      "url"      : "/2019/09/27/arcgis-offline-map.html"
+    } ,
+  
+    {
       "title"    : "CentOS7 certbot 出错",
       "tags"     : "linux certbot",
       "url"      : "/2019/04/03/certbot-error.html"
