@@ -60,3 +60,4 @@ mysql -u root -p
 ```mysql
 ALTER USER 'root'@'localhost' IDENTIFIED BY '新密码';
 ```
+
