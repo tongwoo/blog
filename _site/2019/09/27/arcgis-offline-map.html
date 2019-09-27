@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>使用ArcGIS开发内网离线WEB地图应用（上） - 武仝的博客</title>
+    <meta name="author"  content="武仝">
+    <meta name="description" content="使用ArcGIS开发内网离线WEB地图应用（上）">
+    <meta name="keywords"  content="arcgis, map, javascript">
+    <!-- Open Graph -->
+    <meta property="og:title" content="使用ArcGIS开发内网离线WEB地图应用（上） - 武仝的博客">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://blog.wutong.me/2019/09/27/arcgis-offline-map.html">
+    <meta property="og:description" content="PHP开发者，热爱技术&设计。很高兴能在这里分享我对技术的思考。">
+    <meta property="og:site_name" content="武仝的博客">
+    <link rel="stylesheet" href="//cdn.staticfile.org/normalize/6.0.0/normalize.min.css">
+    <link rel="stylesheet" href="//at.alicdn.com/t/font_roc50gemkxpw4s4i.css">
+    <link rel="stylesheet" href="/assets/css/github-markdown.css">
+    <link rel="stylesheet" href="/assets/css/prism.css">
+    <link rel="stylesheet" href="/assets/css/share.min.css">
+    <link rel="stylesheet" href="/assets/css/app.min.css">
+    <link rel="stylesheet" href="/assets/css/common.css">
+</head>
+<body>
+    <!--[if lt IE 10]>
+<div class="alert-danger" role="alert">你的浏览器实在太太太旧了，放学别走，升级完浏览器再说！<a target="_blank" class="alert-link" href="http://browsehappy.com">立即升级</a></div>
+<![endif]-->
+<input id="nm-switch" type="hidden" value="false">
+
+<header class="g-header">
+    <div class="g-logo">
+      <a href="/"></a>
+    </div>
+    <i id="menu-toggle" class="iconfont icon-menu"></i>
+    <nav class="g-nav">
+        <ul>
+            
+            <li><a href="/">Home</a></li>
+            
+            <li><a href="/tags.html">Tags</a></li>
+            
+        </ul>
+    </nav>
+</header>
+
+
+<header class="g-banner post-header post-pattern-circuitBoard bgcolor-default post-no-cover" data-theme="default">
+    <div class="post-wrapper">
+        <div class="post-tags">
+            
+            
+            <a href="https://blog.wutong.me/tags.html#arcgis" class="post-tag">arcgis</a>
+            
+            <a href="https://blog.wutong.me/tags.html#map" class="post-tag">map</a>
+            
+            <a href="https://blog.wutong.me/tags.html#javascript" class="post-tag">javascript</a>
+            
+            
+        </div>
+        <h1>使用ArcGIS开发内网离线WEB地图应用（上）</h1>
+        <div class="post-meta">
+            <span class="post-meta-item"><i class="iconfont icon-author"></i><a href="https://blog.wutong.me" target="_blank" rel="author">wutong</a></></span>
+            <time class="post-meta-item" datetime="2019-09-27"><i class="iconfont icon-date"></i>2019-09-27</time>
+        </div>
+    </div>
+    
+</header>
+
+<div class="post-content">
+    
+    <article class="markdown-body">
+        <div class="post-forward-message">本文章地址：https://blog.wutong.me/2019/09/27/arcgis-offline-map.html 转载请注明出处</div>
+        <p>在工作中可能会遇到客户想要一个与外界隔绝仅且供内网使用的web地图应用，本文介绍如何进行内网离线地图开发</p>
+
+<h2 id="开发前的思考">开发前的思考</h2>
+
+<ul>
+  <li>地图数据从哪里来？</li>
+  <li>如果有地图数据之后怎么切分地图为切片？</li>
+  <li>有了切片时候如何进行加载，什么东西来输出切片？</li>
+  <li>向地图创建Point、Polygon等覆盖物用什么库？</li>
+</ul>
+
+<h2 id="准备工作">准备工作</h2>
+
+<ul>
+  <li>ArcGIS Server</li>
+  <li>ArcMap</li>
+  <li>ArcGIS API for JavaScript</li>
+</ul>
+
+<p><strong>ArcGIS Server</strong></p>
+
+<p>因为用于web，所以最好是切分成同等大小的图片，再进行地图拖动的时候进行动态加载，此软件提供地图服务，比如要素查询，输出地图切片</p>
+
+<p><strong>ArcMap</strong></p>
+
+<p>地图数据可以从测绘部门购买也可以网上找一些，一般购买比较贵，在我目前的一个项目中仅一个区价格就要12万元。此软件用于创建编辑地图并发布地图服务到 <code class="highlighter-rouge">ArcGIS Server</code> ，比如上面所说的切片工作就是 <code class="highlighter-rouge">ArcMap</code> 来处理</p>
+
+<p><strong>ArcGIS API for JavaScript</strong></p>
+
+<p>最重要的开发库，没有它我们无法进行地图应用的前端开发</p>
+
+<h2 id="软件安装">软件安装</h2>
+
+<h3 id="arcgis-server">ArcGIS Server</h3>
+
+<p>自行百度破解版安装即可，安装完成后需要将 <code class="highlighter-rouge">https</code> 改成 <code class="highlighter-rouge">http</code></p>
+
+<p><strong>修改方式</strong></p>
+
+<p>找到 <code class="highlighter-rouge">ArcGIS Server Manager</code> 图标打开后出现 <code class="highlighter-rouge">https://localhost:6080/arcgis/manager/</code></p>
+
+<p>将地址栏中的 <code class="highlighter-rouge">manager</code> 换成 <code class="highlighter-rouge">admin</code> 出现下图画面</p>
+
+<p><img src="/screenshot/2019-09-27/arcgis-server-admin.png" alt="ArcGIS Server Manager" /></p>
+
+<p>输入之前配置的用户名和密码登录后，进行如下操作：</p>
+
+<ul>
+  <li>在页面下找到 <code class="highlighter-rouge">Resources</code> 段，并点击 <code class="highlighter-rouge">security</code> 链接</li>
+  <li>在 <code class="highlighter-rouge">security</code> 页面下找到 <code class="highlighter-rouge">Resources</code> 段，并点击 <code class="highlighter-rouge">config</code> 链接</li>
+  <li>在 <code class="highlighter-rouge">config</code> 页面下找到 <code class="highlighter-rouge">Supported Operations</code> 段，并点击 <code class="highlighter-rouge">update</code> 链接</li>
+  <li>在 <code class="highlighter-rouge">update</code> 页面下找到 <code class="highlighter-rouge">Security Configuration</code> 选区，并点击 <code class="highlighter-rouge">Protocol</code> 右边的下拉框，将其改为 <code class="highlighter-rouge">Http Only</code>，然后点击 <code class="highlighter-rouge">Update</code> 按钮完成修改（需要等一会时间生效）</li>
+</ul>
+
+<h3 id="arcgis-map">ArcGIS Map</h3>
+
+<p>自行百度破解版安装即可</p>
+
+<h3 id="arcgis-api-for-javascript">ArcGIS API for JavaScript</h3>
+
+<p>访问 <a href="https://developers.arcgis.com/downloads/apis-and-sdks?product=javascript">https://developers.arcgis.com/downloads/apis-and-sdks?product=javascript</a> 页面下载所需要的JS库备用</p>
+
+<h2 id="地图切片">地图切片</h2>
+
+<p>打开 <code class="highlighter-rouge">ArcGIS Map</code> 应用之后打开地图数据，我这里用到的数据是 <code class="highlighter-rouge">gdb</code> 格式，执行如下相关操作进行切片并发布为服务</p>
+
+<p><img src="/screenshot/2019-09-27/arcgis-map.png" alt="概览" /></p>
+
+<p>1、打开菜单栏中的 <code class="highlighter-rouge">File</code> - <code class="highlighter-rouge">Share As</code> - <code class="highlighter-rouge">Service...</code></p>
+
+<p><img src="/screenshot/2019-09-27/arcgis-step-1.png" alt="第一步" /></p>
+
+<p>2、如果没有 <code class="highlighter-rouge">Server</code>，直接新建一个，然后按照如下图示继续</p>
+
+<p><img src="/screenshot/2019-09-27/arcgis-step-2.png" alt="第二步" /></p>
+
+<p><img src="/screenshot/2019-09-27/arcgis-step-3.png" alt="第三步" /></p>
+
+<p><img src="/screenshot/2019-09-27/arcgis-step-4.png" alt="第四步" /></p>
+
+<p><img src="/screenshot/2019-09-27/arcgis-step-5.png" alt="第五步" /></p>
+
+<p>3、以上步骤完成之后，静待切片完成，可以在 <code class="highlighter-rouge">Catalog</code> 窗口中右击创建的服务选择 <code class="highlighter-rouge">View Cache Status...</code> 查看当前进度</p>
+
+<p><img src="/screenshot/2019-09-27/arcgis-step-6.png" alt="第六步" /></p>
+
+<p>4、打开 <code class="highlighter-rouge">ArcGIS Server Manager</code> 进入首页查看发布服务情况</p>
+
+<p><img src="/screenshot/2019-09-27/arcgis-step-7.png" alt="第七步" /></p>
+
+<p>5、点击服务标题后再进入<code class="highlighter-rouge">功能</code> 页面查看服务接口地址并记录下来，后面将用于地图加载</p>
+
+<p><img src="/screenshot/2019-09-27/arcgis-step-8.png" alt="第八步" /></p>
+
+    </article>
+    
+    <div class="social-share-wrapper">
+        <div class="social-share"></div>
+    </div>
+    
+</div>
+
+<section class="author-detail">
+    <section class="post-footer-item author-card">
+        <div class="avatar">
+            <img src="/assets/img/profile.jpg" alt="">
+        </div>
+        <div class="author-name" rel="author">武仝</div>
+        <div class="bio">
+            <p>PHP开发，热爱技术&设计</p>
+        </div>
+        
+        <ul class="sns-links">
+            
+            <li>
+                <a href="//weibo.com/u/3479312483" target="_blank">
+                    <i class="iconfont icon-weibo"></i>
+                </a>
+            </li>
+            
+            <li>
+                <a href="//github.com/tongwoo" target="_blank">
+                    <i class="iconfont icon-github"></i>
+                </a>
+            </li>
+            
+        </ul>
+        
+    </section>
+    <section class="post-footer-item read-next">
+        
+        
+        <div class="read-next-item">
+            <a href="/2019/04/03/certbot-error.html" class="read-next-link"></a>
+            <section>
+                <span>CentOS7 certbot 出错</span>
+                <p>使用仓库的 certbot 命令出错，提示无法导入 ImportError: No module named 'r...</p>
+            </section>
+            
+        </div>
+        
+    </section>
+    
+</section>
+
+<footer class="g-footer">
+    <section>武仝的博客 © 2019</section>
+    <section>Powered by <a href="//jekyllrb.com">Jekyll</a> | <a href="https://github.com/kaeyleo/jekyll-theme-H2O">Theme H2O</a></section>
+    <section><a href="http://www.miibeian.gov.cn/">苏ICP备14017143号-1</a></section>
+</footer>
+
+<script src="/assets/js/social-share.min.js"></script>
+<script>
+    socialShare('.social-share', {
+        sites: ['wechat','weibo','douban','twitter'],
+        wechatQrcodeTitle: "分享到微信朋友圈",
+        wechatQrcodeHelper: '<p>扫码后点击右上角</p><p>将本文分享至朋友圈</p>'
+    });
+</script>
+<script>
+/**
+*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+/*
+var disqus_config = function () {
+this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+*/
+(function() { // DON'T EDIT BELOW THIS LINE
+//var d = document, s = d.createElement('script');
+/*写入自己的disqus信息*/
+//s.src = 'https://liaokeyu.disqus.com/embed.js';
+//s.setAttribute('data-timestamp', +new Date());
+//(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<script src="/assets/js/jquery.min.js"></script>
+<script src="/assets/js/prism.js"></script>
+<script src="/assets/js/index.min.js"></script>
+<script type="text/javascript" src="http://tajs.qq.com/stats?sId=43494337" charset="UTF-8"></script>
+</body>
+</html>
