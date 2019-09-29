@@ -1,6 +1,12 @@
 [
   
     {
+      "title"    : "Webmin安装",
+      "tags"     : "webmin linux centos",
+      "url"      : "/2019/09/29/webmin-install.html"
+    } ,
+  
+    {
       "title"    : "使用ArcGIS开发内网离线WEB地图应用（上）",
       "tags"     : "arcgis map javascript",
       "url"      : "/2019/09/27/arcgis-offline-map.html"
