@@ -76,12 +76,12 @@
 
 <p>使用日志需要在components中配置</p>
 
-<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">//配置
-</span><span class="nv">$config</span> <span class="o">=</span> <span class="p">[</span>
-	<span class="c1">//组件配置
-</span>	<span class="s1">'components'</span> <span class="o">=&gt;</span> <span class="p">[</span>
-		<span class="c1">//日志
-</span>		<span class="s1">'log'</span> <span class="o">=&gt;</span> <span class="p">[</span>
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">//配置</span>
+<span class="nv">$config</span> <span class="o">=</span> <span class="p">[</span>
+	<span class="c1">//组件配置</span>
+	<span class="s1">'components'</span> <span class="o">=&gt;</span> <span class="p">[</span>
+		<span class="c1">//日志</span>
+		<span class="s1">'log'</span> <span class="o">=&gt;</span> <span class="p">[</span>
 			<span class="s1">'flushInterval'</span><span class="o">=&gt;</span><span class="mi">500</span><span class="p">,</span>
 			<span class="s1">'traceLevel'</span> <span class="o">=&gt;</span> <span class="nx">YII_DEBUG</span> <span class="o">?</span> <span class="mi">3</span> <span class="o">:</span> <span class="mi">0</span><span class="p">,</span>
 			<span class="s1">'targets'</span> <span class="o">=&gt;</span> <span class="p">[</span>
@@ -89,8 +89,8 @@
 					<span class="s1">'class'</span> <span class="o">=&gt;</span> <span class="s1">'yii\log\FileTarget'</span><span class="p">,</span>
 					<span class="s1">'levels'</span> <span class="o">=&gt;</span> <span class="p">[</span><span class="s1">'error'</span><span class="p">,</span> <span class="s1">'warning'</span><span class="p">],</span>
 				<span class="p">],</span>
-				<span class="c1">//记录数据库相关操作的日志并保存到数据库中
-</span>				<span class="p">[</span>
+				<span class="c1">//记录数据库相关操作的日志并保存到数据库中</span>
+				<span class="p">[</span>
 					<span class="s1">'class'</span> <span class="o">=&gt;</span> <span class="s1">'yii\log\DbTarget'</span><span class="p">,</span>
 					<span class="s1">'levels'</span> <span class="o">=&gt;</span> <span class="p">[</span><span class="s1">'error'</span><span class="p">,</span> <span class="s1">'warning'</span><span class="p">,</span><span class="s1">'info'</span><span class="p">],</span>
 					<span class="s1">'logTable'</span><span class="o">=&gt;</span><span class="s1">'log'</span><span class="p">,</span>
@@ -196,10 +196,10 @@
 <p>假如通过Yii::$app-&gt;log-&gt;getLoger()-&gt;messages输出了下列的日志信息</p>
 
 <div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="k">array</span> <span class="p">(</span><span class="nx">size</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
-      <span class="mi">0</span> <span class="o">=&gt;</span> <span class="nx">string</span> <span class="s1">'Bootstrap with yiidebugModule::bootstrap()'</span> <span class="p">(</span><span class="nx">length</span><span class="o">=</span><span class="mi">44</span><span class="p">)</span>
-      <span class="mi">1</span> <span class="o">=&gt;</span> <span class="nx">int</span> <span class="mi">8</span>
-      <span class="mi">2</span> <span class="o">=&gt;</span> <span class="nx">string</span> <span class="s1">'yiibaseApplication::bootstrap'</span> <span class="p">(</span><span class="nx">length</span><span class="o">=</span><span class="mi">31</span><span class="p">)</span>
-      <span class="mi">3</span> <span class="o">=&gt;</span> <span class="nx">float</span> <span class="mf">1441289991.0516</span>
+      <span class="mi">0</span> <span class="o">=&gt;</span> <span class="kt">string</span> <span class="s1">'Bootstrap with yiidebugModule::bootstrap()'</span> <span class="p">(</span><span class="nx">length</span><span class="o">=</span><span class="mi">44</span><span class="p">)</span>
+      <span class="mi">1</span> <span class="o">=&gt;</span> <span class="kt">int</span> <span class="mi">8</span>
+      <span class="mi">2</span> <span class="o">=&gt;</span> <span class="kt">string</span> <span class="s1">'yiibaseApplication::bootstrap'</span> <span class="p">(</span><span class="nx">length</span><span class="o">=</span><span class="mi">31</span><span class="p">)</span>
+      <span class="mi">3</span> <span class="o">=&gt;</span> <span class="kt">float</span> <span class="mf">1441289991.0516</span>
       <span class="mi">4</span> <span class="o">=&gt;</span> 
         <span class="k">array</span> <span class="p">(</span><span class="nx">size</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 </code></pre></div></div>
@@ -275,7 +275,7 @@
 </section>
 
 <footer class="g-footer">
-    <section>武仝的博客 © 2019</section>
+    <section>武仝的博客 © 2020</section>
     <section>Powered by <a href="//jekyllrb.com">Jekyll</a> | <a href="https://github.com/kaeyleo/jekyll-theme-H2O">Theme H2O</a></section>
 </footer>
 

@@ -80,7 +80,7 @@
 <span class="nb">tar</span> <span class="nt">-xzvf</span> mupdf-1.13.0-source.tar.gz
 
 <span class="c">#编译，编译之前确保相关编译工具已安装</span>
-make <span class="nv">HAVE_X11</span><span class="o">=</span>no <span class="nv">HAVE_GLUT</span><span class="o">=</span>no <span class="nv">prefix</span><span class="o">=</span>/usr/local install
+make <span class="nv">HAVE_X11</span><span class="o">=</span>no <span class="nv">HAVE_GLUT</span><span class="o">=</span>no <span class="nv">prefix</span><span class="o">=</span>/usr/local <span class="nb">install</span>
 
 <span class="c">#测试转换</span>
 mutool convert <span class="nt">-F</span> png <span class="nt">-o</span> test.png test.pdf
@@ -156,7 +156,7 @@ mutool convert <span class="nt">-F</span> png <span class="nt">-O</span> <span c
 </section>
 
 <footer class="g-footer">
-    <section>武仝的博客 © 2019</section>
+    <section>武仝的博客 © 2020</section>
     <section>Powered by <a href="//jekyllrb.com">Jekyll</a> | <a href="https://github.com/kaeyleo/jekyll-theme-H2O">Theme H2O</a></section>
 </footer>
 

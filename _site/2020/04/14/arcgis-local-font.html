@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SS新安装 - 武仝的博客</title>
+    <title>ArcGIS使用本地字体 - 武仝的博客</title>
     <meta name="author"  content="武仝">
-    <meta name="description" content="SS新安装">
-    <meta name="keywords"  content="linux">
+    <meta name="description" content="ArcGIS使用本地字体">
+    <meta name="keywords"  content="arcgis, javascript">
     <!-- Open Graph -->
-    <meta property="og:title" content="SS新安装 - 武仝的博客">
+    <meta property="og:title" content="ArcGIS使用本地字体 - 武仝的博客">
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://wutong.me/2019/01/23/new-ss-install.html">
+    <meta property="og:url" content="https://wutong.me/2020/04/14/arcgis-local-font.html">
     <meta property="og:description" content="PHP开发者，热爱技术&设计。很高兴能在这里分享我对技术的思考。">
     <meta property="og:site_name" content="武仝的博客">
     <link rel="stylesheet" href="//cdn.staticfile.org/normalize/6.0.0/normalize.min.css">
@@ -49,14 +49,16 @@
         <div class="post-tags">
             
             
-            <a href="https://wutong.me/tags.html#linux" class="post-tag">linux</a>
+            <a href="https://wutong.me/tags.html#arcgis" class="post-tag">arcgis</a>
+            
+            <a href="https://wutong.me/tags.html#javascript" class="post-tag">javascript</a>
             
             
         </div>
-        <h1>SS新安装</h1>
+        <h1>ArcGIS使用本地字体</h1>
         <div class="post-meta">
             <span class="post-meta-item"><i class="iconfont icon-author"></i><a href="https://wutong.me" target="_blank" rel="author">wutong</a></></span>
-            <time class="post-meta-item" datetime="2019-01-23"><i class="iconfont icon-date"></i>2019-01-23</time>
+            <time class="post-meta-item" datetime="2020-04-14"><i class="iconfont icon-date"></i>2020-04-14</time>
         </div>
     </div>
     
@@ -65,38 +67,41 @@
 <div class="post-content">
     
     <article class="markdown-body">
-        <div class="post-forward-message">本文章地址：https://wutong.me/2019/01/23/new-ss-install.html 转载请注明出处</div>
-        <p>安装有变化，记录一下</p>
+        <div class="post-forward-message">本文章地址：https://wutong.me/2020/04/14/arcgis-local-font.html 转载请注明出处</div>
+        <p>如果在离线环境下使用<code class="language-plaintext highlighter-rouge">TextSymbol</code>会出现找不到字体的问题，本文记录一下如何解决这个问题</p>
 
-<h2 id="mbedtls">MbedTLS</h2>
+<h1 id="原因">原因</h1>
 
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>wget https://dl.fedoraproject.org/pub/epel/7/x86_64/Packages/m/mbedtls-2.7.9-1.el7.x86_64.rpm
-rpm <span class="nt">-Uvh</span> mbedtls-2.7.9-1.el7.x86_64.rpm
-wget https://dl.fedoraproject.org/pub/epel/7/x86_64/Packages/m/mbedtls-devel-2.7.9-1.el7.x86_64.rpm
-rpm <span class="nt">-Uvh</span> mbedtls-devel-2.7.9-1.el7.x86_64.rpm
+<p>默认加载的是网页字体，所以会出现地图上的文字显示不了且控制台报错</p>
+
+<h1 id="解决办法">解决办法</h1>
+
+<h2 id="第一步">第一步</h2>
+
+<p>使用本地字体，且格式得是 pbf 格式，在网上找个转换好的字体下载下来,并部署到一个能web访问的地址，比如：http://test.com/msyh/msyh-regular</p>
+
+<p>链接: https://pan.baidu.com/s/15gD7DJ7Ajctb4fJQoEccWQ 提取码: ieq7</p>
+
+<h2 id="第二步">第二步</h2>
+
+<p>在入口处修改加载字体文件的配置</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>require(["esri/config"], function(esriConfig) {
+    esriConfig.fontsUrl = "https://myserver.com/fonts";
+});
 </code></pre></div></div>
 
-<h2 id="libsodium">libsodium</h2>
+<h2 id="第三步">第三步</h2>
 
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git clone https://github.com/jedisct1/libsodium.git
-<span class="nb">cd </span>libsodium
-./autogen.sh
-make
-make <span class="nb">install</span>
-</code></pre></div></div>
+<p>设置字体</p>
 
-<h2 id="sslibev">sslibev</h2>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git clone https://github.com/tongwoo/shadowsocks-libev.git
-<span class="nb">cd </span>shadowsocks-libev
-./autogen.sh
-make
-make <span class="nb">install</span>
-</code></pre></div></div>
-
-<h2 id="run">run</h2>
-
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ss-server <span class="nt">-s</span> 0.0.0.0 <span class="nt">-p</span> 12345 <span class="nt">-k</span> suijimima <span class="nt">-a</span> ss <span class="nt">-m</span> aes-256-cfb
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>let textSymbol = {
+    type: "text",
+    font: {
+        family:'msyh',
+        size: 12,
+    }
+};
 </code></pre></div></div>
 
     </article>
@@ -137,20 +142,20 @@ make <span class="nb">install</span>
     <section class="post-footer-item read-next">
         
         <div class="read-next-item">
-            <a href="/2019/03/01/install-official-mysql.html" class="read-next-link"></a>
+            <a href="/2020/07/09/mac-oracle-extension-install.html" class="read-next-link"></a>
             <section>
-                <span>安装官方MySQL(CentOS7)</span>
-                <p>系统自带用的 mariadb 总感觉是野路子，还是安装官方的吧。</p>
+                <span>MacOS安装Oracle驱动与PHP oci8扩展</span>
+                <p>项目需要进行Oracle数据使用，本文记录了如何在MacOS系统下进行Oracle驱动和PHP oci8的扩展</p>
             </section>
             
         </div>
         
         
         <div class="read-next-item">
-            <a href="/2019/01/23/mysql-geometry-classes.html" class="read-next-link"></a>
+            <a href="/2019/09/29/webmin-install.html" class="read-next-link"></a>
             <section>
-                <span>MySQL的几何类</span>
-                <p>整理了MySQL的几何类对应的图示和说明</p>
+                <span>Webmin安装</span>
+                <p>Webmin是一个网页端的图形化的Linux管理，在CentOS上安装它</p>
             </section>
             
         </div>

@@ -82,11 +82,11 @@
 
 <h3 id="环境准备">环境准备</h3>
 
-<p>古董装的是 <code class="highlighter-rouge">CentOS7</code>，先把准备工作做好，如果下方的操作已经之前做过了则忽略即可，另外 gitlab 安装包集成了 nginx、postsql、redis之类的工具，所以也要确保端口没被占用，如果占用了则安装gitlab之后修改配置文件。</p>
+<p>古董装的是 <code class="language-plaintext highlighter-rouge">CentOS7</code>，先把准备工作做好，如果下方的操作已经之前做过了则忽略即可，另外 gitlab 安装包集成了 nginx、postsql、redis之类的工具，所以也要确保端口没被占用，如果占用了则安装gitlab之后修改配置文件。</p>
 
 <p>**允许防火墙开放http协议、启用SSH之类的操作</p>
 
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>yum install <span class="nt">-y</span> curl policycoreutils-python openssh-server
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>yum <span class="nb">install</span> <span class="nt">-y</span> curl policycoreutils-python openssh-server
 <span class="nb">sudo </span>systemctl <span class="nb">enable </span>sshd
 <span class="nb">sudo </span>systemctl start sshd
 <span class="nb">sudo </span>firewall-cmd <span class="nt">--permanent</span> <span class="nt">--add-service</span><span class="o">=</span>http
@@ -95,7 +95,7 @@
 
 <p>继续</p>
 
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>yum install postfix
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>yum <span class="nb">install </span>postfix
 <span class="nb">sudo </span>systemctl <span class="nb">enable </span>postfix
 <span class="nb">sudo </span>systemctl start postfix
 </code></pre></div></div>
@@ -107,8 +107,8 @@
 
 <h3 id="绑定域名">绑定域名</h3>
 
-<p>将下方的域名换成自己的域名，或者编辑 <code class="highlighter-rouge">/etc/gitlab/gitlab.rb</code> 文件，找到</p>
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span><span class="nv">EXTERNAL_URL</span><span class="o">=</span><span class="s2">"http://gitlab.example.com"</span> yum install <span class="nt">-y</span> gitlab-ee
+<p>将下方的域名换成自己的域名，或者编辑 <code class="language-plaintext highlighter-rouge">/etc/gitlab/gitlab.rb</code> 文件，找到</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span><span class="nv">EXTERNAL_URL</span><span class="o">=</span><span class="s2">"http://gitlab.example.com"</span> yum <span class="nb">install</span> <span class="nt">-y</span> gitlab-ee
 </code></pre></div></div>
 
 <p>未完待续</p>
@@ -174,7 +174,7 @@
 </section>
 
 <footer class="g-footer">
-    <section>武仝的博客 © 2019</section>
+    <section>武仝的博客 © 2020</section>
     <section>Powered by <a href="//jekyllrb.com">Jekyll</a> | <a href="https://github.com/kaeyleo/jekyll-theme-H2O">Theme H2O</a></section>
 </footer>
 

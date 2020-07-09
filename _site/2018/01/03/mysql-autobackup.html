@@ -78,11 +78,11 @@
 
 <h3 id="创建要备份的数据库列表">创建要备份的数据库列表</h3>
 
-<p>创建 <code class="highlighter-rouge">databases.txt</code> 并每一行写个数据库名称</p>
+<p>创建 <code class="language-plaintext highlighter-rouge">databases.txt</code> 并每一行写个数据库名称</p>
 
 <h3 id="创建备份脚本">创建备份脚本</h3>
 
-<p>创建 <code class="highlighter-rouge">mysql-auto-backup</code> 文件，赋予执行权限并填写如下命令</p>
+<p>创建 <code class="language-plaintext highlighter-rouge">mysql-auto-backup</code> 文件，赋予执行权限并填写如下命令</p>
 
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">#!/usr/bin/env sh</span>
 <span class="c">#author : wutong</span>
@@ -95,20 +95,20 @@
 <span class="nv">db_port</span><span class="o">=</span><span class="s2">"3306"</span>
 
 <span class="c">#当前时间</span>
-<span class="nv">current_date</span><span class="o">=</span><span class="sb">`</span>date <span class="s2">"+%Y%m%d"</span><span class="sb">`</span>
-<span class="nv">current_time</span><span class="o">=</span><span class="sb">`</span>date <span class="s2">"+%H%M%S"</span><span class="sb">`</span>
+<span class="nv">current_date</span><span class="o">=</span><span class="sb">`</span><span class="nb">date</span> <span class="s2">"+%Y%m%d"</span><span class="sb">`</span>
+<span class="nv">current_time</span><span class="o">=</span><span class="sb">`</span><span class="nb">date</span> <span class="s2">"+%H%M%S"</span><span class="sb">`</span>
 
 <span class="c">#当前目录</span>
-<span class="nv">current_directory</span><span class="o">=</span><span class="sb">`</span>dirname <span class="nv">$0</span><span class="sb">`</span>
+<span class="nv">current_directory</span><span class="o">=</span><span class="sb">`</span><span class="nb">dirname</span> <span class="nv">$0</span><span class="sb">`</span>
 
 <span class="c">#保存目录</span>
 <span class="nv">backup_base</span><span class="o">=</span><span class="s2">"/web/backup/</span><span class="k">${</span><span class="nv">current_date</span><span class="k">}</span><span class="s2">"</span>
 <span class="k">if</span> <span class="o">[[</span> <span class="o">!</span> <span class="nt">-d</span> <span class="k">${</span><span class="nv">backup_base</span><span class="k">}</span> <span class="o">]]</span><span class="p">;</span> <span class="k">then
-    </span>mkdir <span class="nt">-p</span> <span class="k">${</span><span class="nv">backup_base</span><span class="k">}</span>
+    </span><span class="nb">mkdir</span> <span class="nt">-p</span> <span class="k">${</span><span class="nv">backup_base</span><span class="k">}</span>
 <span class="k">fi</span>
 
 <span class="c">#要备份的数据库列表</span>
-<span class="nv">databases</span><span class="o">=</span><span class="sb">`</span><span class="nb">cat</span> <span class="s2">"</span><span class="k">${</span><span class="nv">current_directory</span><span class="k">}</span><span class="s2">/databases.txt"</span> | cut <span class="nt">-f</span> 1<span class="sb">`</span>
+<span class="nv">databases</span><span class="o">=</span><span class="sb">`</span><span class="nb">cat</span> <span class="s2">"</span><span class="k">${</span><span class="nv">current_directory</span><span class="k">}</span><span class="s2">/databases.txt"</span> | <span class="nb">cut</span> <span class="nt">-f</span> 1<span class="sb">`</span>
 
 <span class="c">#循环备份</span>
 <span class="k">for </span>database <span class="k">in</span> <span class="k">${</span><span class="nv">databases</span><span class="k">}</span>
@@ -123,14 +123,14 @@
     </span>mysqldump <span class="nt">--host</span><span class="o">=</span><span class="k">${</span><span class="nv">db_host</span><span class="k">}</span> <span class="nt">--port</span><span class="o">=</span><span class="k">${</span><span class="nv">db_port</span><span class="k">}</span> <span class="nt">--user</span><span class="o">=</span><span class="k">${</span><span class="nv">db_user</span><span class="k">}</span> <span class="nt">--password</span><span class="o">=</span><span class="k">${</span><span class="nv">db_password</span><span class="k">}</span> <span class="nt">--databases</span> <span class="k">${</span><span class="nv">database</span><span class="k">}</span> <span class="nt">--add-drop-table</span> <span class="nt">--create-options</span> <span class="nt">--hex-blob</span> <span class="nt">--events</span> <span class="nt">--add-locks</span> <span class="nt">--lock-tables</span>  <span class="o">&gt;</span> <span class="k">${</span><span class="nv">database_file</span><span class="k">}</span>
     zip <span class="nt">-j9</span> <span class="k">${</span><span class="nv">database_zip</span><span class="k">}</span> <span class="k">${</span><span class="nv">database_file</span><span class="k">}</span>
     <span class="k">if</span> <span class="o">[[</span> <span class="nt">-f</span> <span class="k">${</span><span class="nv">database_zip</span><span class="k">}</span> <span class="o">]]</span><span class="p">;</span> <span class="k">then
-        </span>rm <span class="nt">-rf</span> <span class="k">${</span><span class="nv">database_file</span><span class="k">}</span>
+        </span><span class="nb">rm</span> <span class="nt">-rf</span> <span class="k">${</span><span class="nv">database_file</span><span class="k">}</span>
     <span class="k">fi
 done</span>
 </code></pre></div></div>
 
 <h3 id="创建cron任务">创建cron任务</h3>
 
-<p>敲 <code class="highlighter-rouge">crontab -e</code> 并填写如下命令</p>
+<p>敲 <code class="language-plaintext highlighter-rouge">crontab -e</code> 并填写如下命令</p>
 
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>1 <span class="k">*</span>/6 <span class="k">*</span> <span class="k">*</span> <span class="k">*</span> 备份脚本全路径
 </code></pre></div></div>
@@ -201,7 +201,7 @@ done</span>
 </section>
 
 <footer class="g-footer">
-    <section>武仝的博客 © 2019</section>
+    <section>武仝的博客 © 2020</section>
     <section>Powered by <a href="//jekyllrb.com">Jekyll</a> | <a href="https://github.com/kaeyleo/jekyll-theme-H2O">Theme H2O</a></section>
 </footer>
 

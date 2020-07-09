@@ -83,15 +83,15 @@
 <div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">DROP</span> <span class="k">FUNCTION</span> <span class="n">IF</span> <span class="k">EXISTS</span> <span class="n">point_distance</span><span class="p">;</span>
 <span class="k">DELIMITER</span> <span class="o">//</span>
 <span class="k">CREATE</span> <span class="k">FUNCTION</span> <span class="nv">`point_distance`</span><span class="p">(</span>
-    <span class="nv">`lng1`</span> <span class="n">float</span><span class="p">(</span><span class="mi">9</span><span class="p">,</span><span class="mi">6</span><span class="p">)</span> <span class="p">,</span>
-    <span class="nv">`lat1`</span> <span class="n">float</span><span class="p">(</span><span class="mi">9</span><span class="p">,</span><span class="mi">6</span><span class="p">),</span>
-    <span class="nv">`lng2`</span> <span class="n">float</span><span class="p">(</span><span class="mi">9</span><span class="p">,</span><span class="mi">6</span><span class="p">)</span> <span class="p">,</span>
-    <span class="nv">`lat2`</span> <span class="n">float</span><span class="p">(</span><span class="mi">9</span><span class="p">,</span><span class="mi">6</span><span class="p">)</span>
-<span class="p">)</span> <span class="k">RETURNS</span> <span class="n">MEDIUMINT</span>
+    <span class="nv">`lng1`</span> <span class="nb">float</span><span class="p">(</span><span class="mi">9</span><span class="p">,</span><span class="mi">6</span><span class="p">)</span> <span class="p">,</span>
+    <span class="nv">`lat1`</span> <span class="nb">float</span><span class="p">(</span><span class="mi">9</span><span class="p">,</span><span class="mi">6</span><span class="p">),</span>
+    <span class="nv">`lng2`</span> <span class="nb">float</span><span class="p">(</span><span class="mi">9</span><span class="p">,</span><span class="mi">6</span><span class="p">)</span> <span class="p">,</span>
+    <span class="nv">`lat2`</span> <span class="nb">float</span><span class="p">(</span><span class="mi">9</span><span class="p">,</span><span class="mi">6</span><span class="p">)</span>
+<span class="p">)</span> <span class="k">RETURNS</span> <span class="nb">MEDIUMINT</span>
     <span class="k">COMMENT</span> <span class="s1">'计算两个坐标点之间的距离'</span>
 <span class="k">BEGIN</span>
-    <span class="k">declare</span> <span class="n">distance</span> <span class="n">MEDIUMINT</span><span class="p">;</span>
-    <span class="k">declare</span> <span class="n">radius</span> <span class="n">MEDIUMINT</span><span class="p">;</span>
+    <span class="k">declare</span> <span class="n">distance</span> <span class="nb">MEDIUMINT</span><span class="p">;</span>
+    <span class="k">declare</span> <span class="n">radius</span> <span class="nb">MEDIUMINT</span><span class="p">;</span>
     <span class="c1">-- 地球半径</span>
     <span class="k">set</span> <span class="n">radius</span> <span class="o">=</span> <span class="mi">6370856</span><span class="p">;</span>
     <span class="c1">-- 距离（米）</span>
@@ -191,7 +191,7 @@
 </section>
 
 <footer class="g-footer">
-    <section>武仝的博客 © 2019</section>
+    <section>武仝的博客 © 2020</section>
     <section>Powered by <a href="//jekyllrb.com">Jekyll</a> | <a href="https://github.com/kaeyleo/jekyll-theme-H2O">Theme H2O</a></section>
 </footer>
 

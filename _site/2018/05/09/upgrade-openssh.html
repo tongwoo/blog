@@ -109,13 +109,13 @@ rpm <span class="nt">-e</span> <span class="nt">--nodeps</span> openssh-server
 <span class="c">#指定安装目录为/app/openssh77</span>
 ./configure <span class="nt">-prefix</span><span class="o">=</span>/app/openssh77
 make
-make install
+make <span class="nb">install</span>
 </code></pre></div></div>
 
 <p>完善openssh开机脚本</p>
 
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">#拷贝脚本文件</span>
-cp /tmp/openssh-7.7p1/contrib/redhat/sshd.init /etc/init.d/sshd
+<span class="nb">cp</span> /tmp/openssh-7.7p1/contrib/redhat/sshd.init /etc/init.d/sshd
 <span class="c">#修改里面的相关路径为 /app/openssh77</span>
 vim /etc/init.d/sshd
 <span class="c">#设置为自启动</span>
@@ -190,7 +190,7 @@ chkconfig sshd on
 </section>
 
 <footer class="g-footer">
-    <section>武仝的博客 © 2019</section>
+    <section>武仝的博客 © 2020</section>
     <section>Powered by <a href="//jekyllrb.com">Jekyll</a> | <a href="https://github.com/kaeyleo/jekyll-theme-H2O">Theme H2O</a></section>
 </footer>
 

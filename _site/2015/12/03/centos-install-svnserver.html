@@ -74,12 +74,12 @@
 
 <p>安装 svn server 使用 httpd 的 mod_dav_svn 模块，所以第一步就是安装 httpd</p>
 
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>yum install httpd
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>yum <span class="nb">install </span>httpd
 </code></pre></div></div>
 
 <p>然后安装 mod_dav_svn</p>
 
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>yum install mod_dav_svn
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>yum <span class="nb">install</span> mod_dav_svn
 </code></pre></div></div>
 
 <p>安装完成后会在 /etc/httpd/conf.d 或者 /etc/httpd/conf.modules.d 目录生成一个 subversion.conf 配置文件，更改里面的配置</p>
@@ -116,7 +116,7 @@ Listen 4096
 svnadmin create <span class="nb">test</span>
 
 <span class="c">#更改拥有者为apache</span>
-chown <span class="nt">-R</span> apache.apache <span class="nb">test</span>
+<span class="nb">chown</span> <span class="nt">-R</span> apache.apache <span class="nb">test</span>
 </code></pre></div></div>
 
 <p>这样一个仓库就创建好了，然后在创建用户和赋予用户仓库的权限</p>
@@ -204,7 +204,7 @@ chown <span class="nt">-R</span> apache.apache <span class="nb">test</span>
 </section>
 
 <footer class="g-footer">
-    <section>武仝的博客 © 2019</section>
+    <section>武仝的博客 © 2020</section>
     <section>Powered by <a href="//jekyllrb.com">Jekyll</a> | <a href="https://github.com/kaeyleo/jekyll-theme-H2O">Theme H2O</a></section>
 </footer>
 

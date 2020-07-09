@@ -74,12 +74,12 @@
 
 <h3 id="定义样式规则">定义样式规则</h3>
 
-<p>假如 <code class="highlighter-rouge">http://img.domain.com/test.jpg</code> 是一张原始图片，我们想要在后面加上 <code class="highlighter-rouge">-small</code> 来实现最小图片的功能，<code class="highlighter-rouge">-medium</code> 来实现图片中等缩放的功能，那么只要重写这些 <code class="highlighter-rouge">URL</code> 并发送给php来处理进行缩放即可。</p>
+<p>假如 <code class="language-plaintext highlighter-rouge">http://img.domain.com/test.jpg</code> 是一张原始图片，我们想要在后面加上 <code class="language-plaintext highlighter-rouge">-small</code> 来实现最小图片的功能，<code class="language-plaintext highlighter-rouge">-medium</code> 来实现图片中等缩放的功能，那么只要重写这些 <code class="language-plaintext highlighter-rouge">URL</code> 并发送给php来处理进行缩放即可。</p>
 
 <h3 id="重写---nginx">重写 - Nginx</h3>
 
-<div class="language-nginx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">#在 server 区块里加入如下配置代码：
-</span><span class="k">rewrite</span> <span class="s">(.+)</span><span class="err">\</span><span class="s">.(jpg|jpeg|png)</span><span class="err">\</span><span class="s">-(mini|low|medium|high|ultra|extreme)</span>$ <span class="nv">$1</span><span class="s">.</span><span class="nv">$2</span><span class="s">.</span><span class="nv">$3</span><span class="s">.</span><span class="nv">$2</span> <span class="s">last</span><span class="p">;</span>	
+<div class="language-nginx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">#在 server 区块里加入如下配置代码：</span>
+<span class="k">rewrite</span> <span class="s">(.+)</span><span class="err">\</span><span class="s">.(jpg|jpeg|png)</span><span class="err">\</span><span class="s">-(mini|low|medium|high|ultra|extreme)</span>$ <span class="nv">$1</span><span class="s">.</span><span class="nv">$2</span><span class="s">.</span><span class="nv">$3</span><span class="s">.</span><span class="nv">$2</span> <span class="s">last</span><span class="p">;</span>	
 <span class="k">location</span> <span class="p">~</span><span class="sr">*</span> <span class="err">\</span><span class="s">.(jpg|jpeg|png)</span>$ <span class="p">{</span>
     <span class="kn">if</span> <span class="s">(</span> <span class="s">!-f</span> <span class="nv">$request_filename</span> <span class="s">)</span> <span class="p">{</span>
         <span class="kn">rewrite</span> <span class="s">.</span> <span class="n">/image-handler.php?path=</span><span class="nv">$document_uri</span> <span class="s">last</span><span class="p">;</span>
@@ -107,7 +107,7 @@ RewriteRule (.+\.(jpg|jpeg|png))$ /image-handler.php?path=$1 [L]
 
 <h3 id="php">PHP</h3>
 
-<p>在上文中的 <code class="highlighter-rouge">image-handler.php</code> 是处理图片缩放用，其代码可自行实现，<code class="highlighter-rouge">path</code> 是请求的图片路径，可以根据这个路径来对原图进行缩放。</p>
+<p>在上文中的 <code class="language-plaintext highlighter-rouge">image-handler.php</code> 是处理图片缩放用，其代码可自行实现，<code class="language-plaintext highlighter-rouge">path</code> 是请求的图片路径，可以根据这个路径来对原图进行缩放。</p>
 
 <h3 id="后续">后续</h3>
 
@@ -174,7 +174,7 @@ RewriteRule (.+\.(jpg|jpeg|png))$ /image-handler.php?path=$1 [L]
 </section>
 
 <footer class="g-footer">
-    <section>武仝的博客 © 2019</section>
+    <section>武仝的博客 © 2020</section>
     <section>Powered by <a href="//jekyllrb.com">Jekyll</a> | <a href="https://github.com/kaeyleo/jekyll-theme-H2O">Theme H2O</a></section>
 </footer>
 

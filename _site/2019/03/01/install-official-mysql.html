@@ -68,7 +68,7 @@
     
     <article class="markdown-body">
         <div class="post-forward-message">本文章地址：https://wutong.me/2019/03/01/install-official-mysql.html 转载请注明出处</div>
-        <p>系统自带用的 <code class="highlighter-rouge">mariadb</code> 总感觉是野路子，还是安装官方的吧。</p>
+        <p>系统自带用的 <code class="language-plaintext highlighter-rouge">mariadb</code> 总感觉是野路子，还是安装官方的吧。</p>
 
 <h2 id="下载仓库配置文件">下载仓库配置文件</h2>
 
@@ -84,13 +84,13 @@
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>vi /etc/yum.repos.d/mysql-community.repo
 </code></pre></div></div>
 
-<p>将需要使用的版本 <code class="highlighter-rouge">enable</code> 设置为 1，不要的设置为0，默认的是当前最高版本为启用状态</p>
+<p>将需要使用的版本 <code class="language-plaintext highlighter-rouge">enable</code> 设置为 1，不要的设置为0，默认的是当前最高版本为启用状态</p>
 
 <h2 id="安装mysql">安装MySQL</h2>
 
 <p>执行命令安装</p>
 
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>yum install mysql-community-server
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>yum <span class="nb">install </span>mysql-community-server
 </code></pre></div></div>
 
 <p>启动</p>
@@ -102,7 +102,7 @@
 
 <ul>
   <li>SSL证书秘钥会生成到data目录</li>
-  <li>创建了一个 <code class="highlighter-rouge">root</code> 用户，且密码放到了日志文件中</li>
+  <li>创建了一个 <code class="language-plaintext highlighter-rouge">root</code> 用户，且密码放到了日志文件中</li>
 </ul>
 
 <p>查看密码</p>
@@ -180,7 +180,7 @@
 </section>
 
 <footer class="g-footer">
-    <section>武仝的博客 © 2019</section>
+    <section>武仝的博客 © 2020</section>
     <section>Powered by <a href="//jekyllrb.com">Jekyll</a> | <a href="https://github.com/kaeyleo/jekyll-theme-H2O">Theme H2O</a></section>
 </footer>
 

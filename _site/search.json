@@ -1,6 +1,18 @@
 [
   
     {
+      "title"    : "MacOS安装Oracle驱动与PHP oci8扩展",
+      "tags"     : "oracle",
+      "url"      : "/2020/07/09/mac-oracle-extension-install.html"
+    } ,
+  
+    {
+      "title"    : "ArcGIS使用本地字体",
+      "tags"     : "arcgis javascript",
+      "url"      : "/2020/04/14/arcgis-local-font.html"
+    } ,
+  
+    {
       "title"    : "Webmin安装",
       "tags"     : "webmin linux centos",
       "url"      : "/2019/09/29/webmin-install.html"

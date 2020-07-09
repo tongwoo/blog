@@ -68,13 +68,13 @@
         <div class="post-forward-message">本文章地址：https://wutong.me/2017/10/11/php-set-socket-timeout.html 转载请注明出处</div>
         <p>介绍如何设置超时时间的方法。</p>
 
-<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">//读超时
-</span><span class="nb">socket_set_option</span><span class="p">(</span><span class="nv">$client</span><span class="p">,</span> <span class="nx">SOL_SOCKET</span><span class="p">,</span> <span class="nx">SO_RCVTIMEO</span><span class="p">,</span> <span class="p">[</span>
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">//读超时</span>
+<span class="nb">socket_set_option</span><span class="p">(</span><span class="nv">$client</span><span class="p">,</span> <span class="nx">SOL_SOCKET</span><span class="p">,</span> <span class="nx">SO_RCVTIMEO</span><span class="p">,</span> <span class="p">[</span>
     <span class="s1">'sec'</span><span class="o">=&gt;</span><span class="mi">8</span><span class="p">,</span>
     <span class="s1">'usec'</span><span class="o">=&gt;</span><span class="mi">0</span><span class="p">,</span>
 <span class="p">]);</span>
-<span class="c1">//写超时
-</span><span class="nb">socket_set_option</span><span class="p">(</span><span class="nv">$client</span><span class="p">,</span> <span class="nx">SOL_SOCKET</span><span class="p">,</span> <span class="nx">SO_SNDTIMEO</span><span class="p">,</span> <span class="p">[</span>
+<span class="c1">//写超时</span>
+<span class="nb">socket_set_option</span><span class="p">(</span><span class="nv">$client</span><span class="p">,</span> <span class="nx">SOL_SOCKET</span><span class="p">,</span> <span class="nx">SO_SNDTIMEO</span><span class="p">,</span> <span class="p">[</span>
     <span class="s1">'sec'</span><span class="o">=&gt;</span><span class="mi">8</span><span class="p">,</span>
     <span class="s1">'usec'</span><span class="o">=&gt;</span><span class="mi">0</span><span class="p">,</span>
 <span class="p">]);</span>
@@ -141,7 +141,7 @@
 </section>
 
 <footer class="g-footer">
-    <section>武仝的博客 © 2019</section>
+    <section>武仝的博客 © 2020</section>
     <section>Powered by <a href="//jekyllrb.com">Jekyll</a> | <a href="https://github.com/kaeyleo/jekyll-theme-H2O">Theme H2O</a></section>
 </footer>
 

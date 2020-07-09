@@ -95,7 +95,7 @@
 
 <p><strong>ArcMap</strong></p>
 
-<p>地图数据可以从测绘部门购买也可以网上找一些，一般购买比较贵，在我目前的一个项目中仅一个区价格就要12万元。此软件用于创建编辑地图并发布地图服务到 <code class="highlighter-rouge">ArcGIS Server</code> ，比如上面所说的切片工作就是 <code class="highlighter-rouge">ArcMap</code> 来处理</p>
+<p>地图数据可以从测绘部门购买也可以网上找一些，一般购买比较贵，在我目前的一个项目中仅一个区价格就要12万元。此软件用于创建编辑地图并发布地图服务到 <code class="language-plaintext highlighter-rouge">ArcGIS Server</code> ，比如上面所说的切片工作就是 <code class="language-plaintext highlighter-rouge">ArcMap</code> 来处理</p>
 
 <p><strong>ArcGIS API for JavaScript</strong></p>
 
@@ -105,23 +105,23 @@
 
 <h3 id="arcgis-server">ArcGIS Server</h3>
 
-<p>自行百度破解版安装即可，安装完成后需要将 <code class="highlighter-rouge">https</code> 改成 <code class="highlighter-rouge">http</code></p>
+<p>自行百度破解版安装即可，安装完成后需要将 <code class="language-plaintext highlighter-rouge">https</code> 改成 <code class="language-plaintext highlighter-rouge">http</code></p>
 
 <p><strong>修改方式</strong></p>
 
-<p>找到 <code class="highlighter-rouge">ArcGIS Server Manager</code> 图标打开后出现 <code class="highlighter-rouge">https://localhost:6080/arcgis/manager/</code></p>
+<p>找到 <code class="language-plaintext highlighter-rouge">ArcGIS Server Manager</code> 图标打开后出现 <code class="language-plaintext highlighter-rouge">https://localhost:6080/arcgis/manager/</code></p>
 
-<p>将地址栏中的 <code class="highlighter-rouge">manager</code> 换成 <code class="highlighter-rouge">admin</code> 出现下图画面</p>
+<p>将地址栏中的 <code class="language-plaintext highlighter-rouge">manager</code> 换成 <code class="language-plaintext highlighter-rouge">admin</code> 出现下图画面</p>
 
 <p><img src="/screenshot/2019-09-27/arcgis-server-admin.png" alt="ArcGIS Server Manager" /></p>
 
 <p>输入之前配置的用户名和密码登录后，进行如下操作：</p>
 
 <ul>
-  <li>在页面下找到 <code class="highlighter-rouge">Resources</code> 段，并点击 <code class="highlighter-rouge">security</code> 链接</li>
-  <li>在 <code class="highlighter-rouge">security</code> 页面下找到 <code class="highlighter-rouge">Resources</code> 段，并点击 <code class="highlighter-rouge">config</code> 链接</li>
-  <li>在 <code class="highlighter-rouge">config</code> 页面下找到 <code class="highlighter-rouge">Supported Operations</code> 段，并点击 <code class="highlighter-rouge">update</code> 链接</li>
-  <li>在 <code class="highlighter-rouge">update</code> 页面下找到 <code class="highlighter-rouge">Security Configuration</code> 选区，并点击 <code class="highlighter-rouge">Protocol</code> 右边的下拉框，将其改为 <code class="highlighter-rouge">Http Only</code>，然后点击 <code class="highlighter-rouge">Update</code> 按钮完成修改（需要等一会时间生效）</li>
+  <li>在页面下找到 <code class="language-plaintext highlighter-rouge">Resources</code> 段，并点击 <code class="language-plaintext highlighter-rouge">security</code> 链接</li>
+  <li>在 <code class="language-plaintext highlighter-rouge">security</code> 页面下找到 <code class="language-plaintext highlighter-rouge">Resources</code> 段，并点击 <code class="language-plaintext highlighter-rouge">config</code> 链接</li>
+  <li>在 <code class="language-plaintext highlighter-rouge">config</code> 页面下找到 <code class="language-plaintext highlighter-rouge">Supported Operations</code> 段，并点击 <code class="language-plaintext highlighter-rouge">update</code> 链接</li>
+  <li>在 <code class="language-plaintext highlighter-rouge">update</code> 页面下找到 <code class="language-plaintext highlighter-rouge">Security Configuration</code> 选区，并点击 <code class="language-plaintext highlighter-rouge">Protocol</code> 右边的下拉框，将其改为 <code class="language-plaintext highlighter-rouge">Http Only</code>，然后点击 <code class="language-plaintext highlighter-rouge">Update</code> 按钮完成修改（需要等一会时间生效）</li>
 </ul>
 
 <h3 id="arcgis-map">ArcGIS Map</h3>
@@ -134,15 +134,15 @@
 
 <h2 id="地图切片">地图切片</h2>
 
-<p>打开 <code class="highlighter-rouge">ArcGIS Map</code> 应用之后打开地图数据，我这里用到的数据是 <code class="highlighter-rouge">gdb</code> 格式，执行如下相关操作进行切片并发布为服务</p>
+<p>打开 <code class="language-plaintext highlighter-rouge">ArcGIS Map</code> 应用之后打开地图数据，我这里用到的数据是 <code class="language-plaintext highlighter-rouge">gdb</code> 格式，执行如下相关操作进行切片并发布为服务</p>
 
 <p><img src="/screenshot/2019-09-27/arcgis-map.png" alt="概览" /></p>
 
-<p>1、打开菜单栏中的 <code class="highlighter-rouge">File</code> - <code class="highlighter-rouge">Share As</code> - <code class="highlighter-rouge">Service...</code></p>
+<p>1、打开菜单栏中的 <code class="language-plaintext highlighter-rouge">File</code> - <code class="language-plaintext highlighter-rouge">Share As</code> - <code class="language-plaintext highlighter-rouge">Service...</code></p>
 
 <p><img src="/screenshot/2019-09-27/arcgis-step-1.png" alt="第一步" /></p>
 
-<p>2、如果没有 <code class="highlighter-rouge">Server</code>，直接新建一个，然后按照如下图示继续</p>
+<p>2、如果没有 <code class="language-plaintext highlighter-rouge">Server</code>，直接新建一个，然后按照如下图示继续</p>
 
 <p><img src="/screenshot/2019-09-27/arcgis-step-2.png" alt="第二步" /></p>
 
@@ -152,15 +152,15 @@
 
 <p><img src="/screenshot/2019-09-27/arcgis-step-5.png" alt="第五步" /></p>
 
-<p>3、以上步骤完成之后，静待切片完成，可以在 <code class="highlighter-rouge">Catalog</code> 窗口中右击创建的服务选择 <code class="highlighter-rouge">View Cache Status...</code> 查看当前进度</p>
+<p>3、以上步骤完成之后，静待切片完成，可以在 <code class="language-plaintext highlighter-rouge">Catalog</code> 窗口中右击创建的服务选择 <code class="language-plaintext highlighter-rouge">View Cache Status...</code> 查看当前进度</p>
 
 <p><img src="/screenshot/2019-09-27/arcgis-step-6.png" alt="第六步" /></p>
 
-<p>4、打开 <code class="highlighter-rouge">ArcGIS Server Manager</code> 进入首页查看发布服务情况</p>
+<p>4、打开 <code class="language-plaintext highlighter-rouge">ArcGIS Server Manager</code> 进入首页查看发布服务情况</p>
 
 <p><img src="/screenshot/2019-09-27/arcgis-step-7.png" alt="第七步" /></p>
 
-<p>5、点击服务标题后再进入<code class="highlighter-rouge">功能</code> 页面查看服务接口地址并记录下来，后面将用于地图加载</p>
+<p>5、点击服务标题后再进入<code class="language-plaintext highlighter-rouge">功能</code> 页面查看服务接口地址并记录下来，后面将用于地图加载</p>
 
 <p><img src="/screenshot/2019-09-27/arcgis-step-8.png" alt="第八步" /></p>
 
@@ -225,7 +225,7 @@
 </section>
 
 <footer class="g-footer">
-    <section>武仝的博客 © 2019</section>
+    <section>武仝的博客 © 2020</section>
     <section>Powered by <a href="//jekyllrb.com">Jekyll</a> | <a href="https://github.com/kaeyleo/jekyll-theme-H2O">Theme H2O</a></section>
 </footer>
 

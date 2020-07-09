@@ -70,69 +70,69 @@
         <div class="post-forward-message">本文章地址：https://wutong.me/2018/07/15/mini-programe-create.html 转载请注明出处</div>
         <p>在开发小程序中会经常创建 page,创建一个page文件夹不够，还得再创建同名的 js、json、wxml、wxss，很费事儿，用python写个脚本一劳永逸了。</p>
 
-<p>代码保存为<code class="highlighter-rouge">minitool</code> 并加入到环境变量，输入 ‘minitool create page名称’ 即可创建完成，代码：</p>
+<p>代码保存为<code class="language-plaintext highlighter-rouge">minitool</code> 并加入到环境变量，输入 ‘minitool create page名称’ 即可创建完成，代码：</p>
 
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">#!/usr/bin/env python</span>
-
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">#!/usr/bin/env python
+</span>
 <span class="kn">import</span> <span class="nn">sys</span>
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">from</span> <span class="nn">os</span> <span class="kn">import</span> <span class="n">path</span>
 
-<span class="c"># 参数列表</span>
-<span class="n">args</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
+<span class="c1"># 参数列表
+</span><span class="n">args</span> <span class="o">=</span> <span class="n">sys</span><span class="p">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
 
-<span class="c"># 没有参数</span>
-<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">args</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+<span class="c1"># 没有参数
+</span><span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">args</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
     <span class="k">print</span><span class="p">(</span><span class="s">'need command argument.'</span><span class="p">)</span>
     <span class="nb">exit</span><span class="p">()</span>
 
-<span class="c"># 命令</span>
-<span class="n">cmd</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="c1"># 命令
+</span><span class="n">cmd</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 
-<span class="c"># 命令列表</span>
-<span class="n">commands</span> <span class="o">=</span> <span class="p">[</span><span class="s">'create'</span><span class="p">]</span>
+<span class="c1"># 命令列表
+</span><span class="n">commands</span> <span class="o">=</span> <span class="p">[</span><span class="s">'create'</span><span class="p">]</span>
 <span class="k">if</span> <span class="n">cmd</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">commands</span><span class="p">:</span>
     <span class="k">print</span><span class="p">(</span><span class="s">'the command invalid.'</span><span class="p">)</span>
     <span class="nb">exit</span><span class="p">()</span>
 
 
 <span class="k">def</span> <span class="nf">get_tpl_content</span><span class="p">(</span><span class="n">ext</span><span class="p">):</span>
-    <span class="n">script_path</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">__file__</span><span class="p">)</span>
-    <span class="n">tpl_file</span> <span class="o">=</span> <span class="n">script_path</span> <span class="o">+</span> <span class="n">os</span><span class="o">.</span><span class="n">sep</span> <span class="o">+</span> <span class="s">'templates'</span> <span class="o">+</span> <span class="n">os</span><span class="o">.</span><span class="n">sep</span> <span class="o">+</span> <span class="n">ext</span> <span class="o">+</span> <span class="s">'.'</span> <span class="o">+</span> <span class="n">ext</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">tpl_file</span><span class="p">):</span>
+    <span class="n">script_path</span> <span class="o">=</span> <span class="n">path</span><span class="p">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">__file__</span><span class="p">)</span>
+    <span class="n">tpl_file</span> <span class="o">=</span> <span class="n">script_path</span> <span class="o">+</span> <span class="n">os</span><span class="p">.</span><span class="n">sep</span> <span class="o">+</span> <span class="s">'templates'</span> <span class="o">+</span> <span class="n">os</span><span class="p">.</span><span class="n">sep</span> <span class="o">+</span> <span class="n">ext</span> <span class="o">+</span> <span class="s">'.'</span> <span class="o">+</span> <span class="n">ext</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">path</span><span class="p">.</span><span class="n">exists</span><span class="p">(</span><span class="n">tpl_file</span><span class="p">):</span>
         <span class="k">return</span> <span class="s">''</span>
     <span class="n">fp</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">tpl_file</span><span class="p">,</span> <span class="s">'r'</span><span class="p">)</span>
-    <span class="n">content</span> <span class="o">=</span> <span class="n">fp</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
-    <span class="n">fp</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+    <span class="n">content</span> <span class="o">=</span> <span class="n">fp</span><span class="p">.</span><span class="n">read</span><span class="p">()</span>
+    <span class="n">fp</span><span class="p">.</span><span class="n">close</span><span class="p">()</span>
     <span class="k">return</span> <span class="n">content</span>
 
 
-<span class="c"># 命令 - 创建文件</span>
-<span class="k">if</span> <span class="n">cmd</span> <span class="o">==</span> <span class="s">'create'</span><span class="p">:</span>
+<span class="c1"># 命令 - 创建文件
+</span><span class="k">if</span> <span class="n">cmd</span> <span class="o">==</span> <span class="s">'create'</span><span class="p">:</span>
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">args</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">:</span>
         <span class="k">print</span><span class="p">(</span><span class="s">'the create command argument invalid.'</span><span class="p">)</span>
         <span class="nb">exit</span><span class="p">()</span>
 
-    <span class="c"># 要创建的文件名称</span>
-    <span class="n">fpath</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">relpath</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">fpath</span><span class="p">):</span>
+    <span class="c1"># 要创建的文件名称
+</span>    <span class="n">fpath</span> <span class="o">=</span> <span class="n">path</span><span class="p">.</span><span class="n">relpath</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">path</span><span class="p">.</span><span class="n">exists</span><span class="p">(</span><span class="n">fpath</span><span class="p">):</span>
         <span class="k">try</span><span class="p">:</span>
-            <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">fpath</span><span class="p">)</span>
+            <span class="n">os</span><span class="p">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">fpath</span><span class="p">)</span>
         <span class="k">except</span> <span class="nb">IOError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-            <span class="k">print</span><span class="p">(</span><span class="s">'can</span><span class="se">\'</span><span class="s">t create folder：'</span> <span class="o">+</span> <span class="n">e</span><span class="o">.</span><span class="n">args</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+            <span class="k">print</span><span class="p">(</span><span class="s">'can</span><span class="se">\'</span><span class="s">t create folder：'</span> <span class="o">+</span> <span class="n">e</span><span class="p">.</span><span class="n">args</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
             <span class="nb">exit</span><span class="p">()</span>
-    <span class="n">basename</span> <span class="o">=</span> <span class="n">fpath</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">sep</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">basename</span> <span class="o">=</span> <span class="n">fpath</span><span class="p">.</span><span class="n">split</span><span class="p">(</span><span class="n">os</span><span class="p">.</span><span class="n">sep</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
     <span class="n">exts</span> <span class="o">=</span> <span class="p">(</span><span class="s">'js'</span><span class="p">,</span> <span class="s">'json'</span><span class="p">,</span> <span class="s">'wxml'</span><span class="p">,</span> <span class="s">'wxss'</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">ext</span> <span class="ow">in</span> <span class="n">exts</span><span class="p">:</span>
-        <span class="nb">file</span> <span class="o">=</span> <span class="n">fpath</span> <span class="o">+</span> <span class="n">os</span><span class="o">.</span><span class="n">sep</span> <span class="o">+</span> <span class="n">basename</span> <span class="o">+</span> <span class="s">'.'</span> <span class="o">+</span> <span class="n">ext</span>
-        <span class="k">if</span> <span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="nb">file</span><span class="p">):</span>
+        <span class="nb">file</span> <span class="o">=</span> <span class="n">fpath</span> <span class="o">+</span> <span class="n">os</span><span class="p">.</span><span class="n">sep</span> <span class="o">+</span> <span class="n">basename</span> <span class="o">+</span> <span class="s">'.'</span> <span class="o">+</span> <span class="n">ext</span>
+        <span class="k">if</span> <span class="n">path</span><span class="p">.</span><span class="n">exists</span><span class="p">(</span><span class="nb">file</span><span class="p">):</span>
             <span class="k">continue</span>
         <span class="n">fp</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="nb">file</span><span class="p">,</span> <span class="s">'w'</span><span class="p">)</span>
-        <span class="c"># 使用模板</span>
-        <span class="c"># content = get_tpl_content(ext)</span>
-        <span class="n">content</span> <span class="o">=</span> <span class="s">'test'</span>
-        <span class="n">fp</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">content</span><span class="p">)</span>
-        <span class="n">fp</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="c1"># 使用模板
+</span>        <span class="c1"># content = get_tpl_content(ext)
+</span>        <span class="n">content</span> <span class="o">=</span> <span class="s">'test'</span>
+        <span class="n">fp</span><span class="p">.</span><span class="n">write</span><span class="p">(</span><span class="n">content</span><span class="p">)</span>
+        <span class="n">fp</span><span class="p">.</span><span class="n">close</span><span class="p">()</span>
         <span class="k">print</span><span class="p">(</span><span class="s">'the file </span><span class="se">\'</span><span class="s">'</span> <span class="o">+</span> <span class="nb">file</span> <span class="o">+</span> <span class="s">'</span><span class="se">\'</span><span class="s"> created.'</span><span class="p">)</span>
 
 </code></pre></div></div>
@@ -198,7 +198,7 @@
 </section>
 
 <footer class="g-footer">
-    <section>武仝的博客 © 2019</section>
+    <section>武仝的博客 © 2020</section>
     <section>Powered by <a href="//jekyllrb.com">Jekyll</a> | <a href="https://github.com/kaeyleo/jekyll-theme-H2O">Theme H2O</a></section>
 </footer>
 

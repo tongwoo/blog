@@ -76,7 +76,7 @@
 <p>CentOS 6，其他差不多</p>
 
 <h2 id="安装">安装</h2>
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>yum install proftpd proftpd-mysql
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>yum <span class="nb">install </span>proftpd proftpd-mysql
 </code></pre></div></div>
 
 <h2 id="配置">配置</h2>
@@ -154,21 +154,21 @@ ServerLog /var/log/proftpd/server.log
 <p>运行如下的SQL语句建立 users、groups 表，注意：users没加uid的唯一索引，意味着不同的用户可以使用同样的uid，即同样的apache用户</p>
 
 <div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">CREATE</span> <span class="k">TABLE</span> <span class="nv">`users`</span> <span class="p">(</span>
-  <span class="nv">`userid`</span> <span class="n">varchar</span><span class="p">(</span><span class="mi">30</span><span class="p">)</span> <span class="k">NOT</span> <span class="k">NULL</span><span class="p">,</span>
-  <span class="nv">`passwd`</span> <span class="n">varchar</span><span class="p">(</span><span class="mi">80</span><span class="p">)</span> <span class="k">NOT</span> <span class="k">NULL</span><span class="p">,</span>
-  <span class="nv">`uid`</span> <span class="n">int</span><span class="p">(</span><span class="mi">11</span><span class="p">)</span> <span class="k">DEFAULT</span> <span class="k">NULL</span><span class="p">,</span>
-  <span class="nv">`gid`</span> <span class="n">int</span><span class="p">(</span><span class="mi">11</span><span class="p">)</span> <span class="k">DEFAULT</span> <span class="k">NULL</span><span class="p">,</span>
-  <span class="nv">`homedir`</span> <span class="n">varchar</span><span class="p">(</span><span class="mi">255</span><span class="p">)</span> <span class="k">DEFAULT</span> <span class="k">NULL</span><span class="p">,</span>
-  <span class="nv">`shell`</span> <span class="n">varchar</span><span class="p">(</span><span class="mi">255</span><span class="p">)</span> <span class="k">DEFAULT</span> <span class="k">NULL</span><span class="p">,</span>
+  <span class="nv">`userid`</span> <span class="nb">varchar</span><span class="p">(</span><span class="mi">30</span><span class="p">)</span> <span class="k">NOT</span> <span class="k">NULL</span><span class="p">,</span>
+  <span class="nv">`passwd`</span> <span class="nb">varchar</span><span class="p">(</span><span class="mi">80</span><span class="p">)</span> <span class="k">NOT</span> <span class="k">NULL</span><span class="p">,</span>
+  <span class="nv">`uid`</span> <span class="nb">int</span><span class="p">(</span><span class="mi">11</span><span class="p">)</span> <span class="k">DEFAULT</span> <span class="k">NULL</span><span class="p">,</span>
+  <span class="nv">`gid`</span> <span class="nb">int</span><span class="p">(</span><span class="mi">11</span><span class="p">)</span> <span class="k">DEFAULT</span> <span class="k">NULL</span><span class="p">,</span>
+  <span class="nv">`homedir`</span> <span class="nb">varchar</span><span class="p">(</span><span class="mi">255</span><span class="p">)</span> <span class="k">DEFAULT</span> <span class="k">NULL</span><span class="p">,</span>
+  <span class="nv">`shell`</span> <span class="nb">varchar</span><span class="p">(</span><span class="mi">255</span><span class="p">)</span> <span class="k">DEFAULT</span> <span class="k">NULL</span><span class="p">,</span>
   <span class="k">UNIQUE</span> <span class="k">KEY</span> <span class="nv">`userid`</span> <span class="p">(</span><span class="nv">`userid`</span><span class="p">),</span>
   <span class="k">KEY</span> <span class="nv">`users_userid_idx`</span> <span class="p">(</span><span class="nv">`userid`</span><span class="p">)</span>
 <span class="p">)</span> <span class="n">ENGINE</span><span class="o">=</span><span class="n">InnoDB</span> <span class="k">DEFAULT</span> <span class="n">CHARSET</span><span class="o">=</span><span class="n">utf8</span><span class="p">;</span>
 </code></pre></div></div>
 
 <div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">CREATE</span> <span class="k">TABLE</span> <span class="nv">`groups`</span> <span class="p">(</span>
-  <span class="nv">`groupname`</span> <span class="n">varchar</span><span class="p">(</span><span class="mi">30</span><span class="p">)</span> <span class="k">NOT</span> <span class="k">NULL</span><span class="p">,</span>
-  <span class="nv">`gid`</span> <span class="n">int</span><span class="p">(</span><span class="mi">11</span><span class="p">)</span> <span class="k">NOT</span> <span class="k">NULL</span><span class="p">,</span>
-  <span class="nv">`members`</span> <span class="n">varchar</span><span class="p">(</span><span class="mi">255</span><span class="p">)</span> <span class="k">DEFAULT</span> <span class="k">NULL</span><span class="p">,</span>
+  <span class="nv">`groupname`</span> <span class="nb">varchar</span><span class="p">(</span><span class="mi">30</span><span class="p">)</span> <span class="k">NOT</span> <span class="k">NULL</span><span class="p">,</span>
+  <span class="nv">`gid`</span> <span class="nb">int</span><span class="p">(</span><span class="mi">11</span><span class="p">)</span> <span class="k">NOT</span> <span class="k">NULL</span><span class="p">,</span>
+  <span class="nv">`members`</span> <span class="nb">varchar</span><span class="p">(</span><span class="mi">255</span><span class="p">)</span> <span class="k">DEFAULT</span> <span class="k">NULL</span><span class="p">,</span>
   <span class="k">KEY</span> <span class="nv">`groups_gid_idx`</span> <span class="p">(</span><span class="nv">`gid`</span><span class="p">)</span>
 <span class="p">)</span> <span class="n">ENGINE</span><span class="o">=</span><span class="n">InnoDB</span> <span class="k">DEFAULT</span> <span class="n">CHARSET</span><span class="o">=</span><span class="n">utf8</span><span class="p">;</span>
 </code></pre></div></div>
@@ -184,7 +184,7 @@ ServerLog /var/log/proftpd/server.log
 
 <p>我这里的实现方式是创建一个软连接，比如我想把 /var/www/html/system 映射到我的FTP根目录，则执行如下命令</p>
 
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ln <span class="nt">-s</span> /var/www/html/system /ftpfolder/测试系统
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">ln</span> <span class="nt">-s</span> /var/www/html/system /ftpfolder/测试系统
 </code></pre></div></div>
 
 <p>这个时候在FTP客户端里即可看到“测试系统”的一个文件夹，如果没有显示则是当前用户没有这个文件夹的权限</p>
@@ -413,7 +413,7 @@ ServerLog /var/log/proftpd/server.log
 </section>
 
 <footer class="g-footer">
-    <section>武仝的博客 © 2019</section>
+    <section>武仝的博客 © 2020</section>
     <section>Powered by <a href="//jekyllrb.com">Jekyll</a> | <a href="https://github.com/kaeyleo/jekyll-theme-H2O">Theme H2O</a></section>
 </footer>
 

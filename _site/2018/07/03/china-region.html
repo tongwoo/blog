@@ -87,52 +87,52 @@
 <p>准备一张表。自己根据需要创建相关结构，我自己用的如下结构：</p>
 
 <div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">CREATE</span> <span class="k">TABLE</span> <span class="nv">`region`</span> <span class="p">(</span>
-  <span class="nv">`id`</span> <span class="n">smallint</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span> <span class="n">unsigned</span> <span class="k">NOT</span> <span class="k">NULL</span> <span class="n">AUTO_INCREMENT</span><span class="p">,</span>
-  <span class="nv">`parent_id`</span> <span class="n">smallint</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span> <span class="n">unsigned</span> <span class="k">NOT</span> <span class="k">NULL</span> <span class="k">DEFAULT</span> <span class="s1">'0'</span> <span class="k">COMMENT</span> <span class="s1">'所属父区域'</span><span class="p">,</span>
-  <span class="nv">`name`</span> <span class="n">varchar</span><span class="p">(</span><span class="mi">120</span><span class="p">)</span> <span class="k">NOT</span> <span class="k">NULL</span> <span class="k">DEFAULT</span> <span class="s1">''</span> <span class="k">COMMENT</span> <span class="s1">'区域名称'</span><span class="p">,</span>
-  <span class="nv">`code`</span> <span class="n">varchar</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span> <span class="k">NOT</span> <span class="k">NULL</span> <span class="k">DEFAULT</span> <span class="s1">''</span> <span class="k">COMMENT</span> <span class="s1">'区域代码'</span><span class="p">,</span>
+  <span class="nv">`id`</span> <span class="nb">smallint</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span> <span class="nb">unsigned</span> <span class="k">NOT</span> <span class="k">NULL</span> <span class="n">AUTO_INCREMENT</span><span class="p">,</span>
+  <span class="nv">`parent_id`</span> <span class="nb">smallint</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span> <span class="nb">unsigned</span> <span class="k">NOT</span> <span class="k">NULL</span> <span class="k">DEFAULT</span> <span class="s1">'0'</span> <span class="k">COMMENT</span> <span class="s1">'所属父区域'</span><span class="p">,</span>
+  <span class="nv">`name`</span> <span class="nb">varchar</span><span class="p">(</span><span class="mi">120</span><span class="p">)</span> <span class="k">NOT</span> <span class="k">NULL</span> <span class="k">DEFAULT</span> <span class="s1">''</span> <span class="k">COMMENT</span> <span class="s1">'区域名称'</span><span class="p">,</span>
+  <span class="nv">`code`</span> <span class="nb">varchar</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span> <span class="k">NOT</span> <span class="k">NULL</span> <span class="k">DEFAULT</span> <span class="s1">''</span> <span class="k">COMMENT</span> <span class="s1">'区域代码'</span><span class="p">,</span>
   <span class="k">PRIMARY</span> <span class="k">KEY</span> <span class="p">(</span><span class="nv">`id`</span><span class="p">),</span>
   <span class="k">KEY</span> <span class="nv">`parent_id`</span> <span class="p">(</span><span class="nv">`parent_id`</span><span class="p">)</span>
 <span class="p">)</span> <span class="n">ENGINE</span><span class="o">=</span><span class="n">InnoDB</span> <span class="n">AUTO_INCREMENT</span><span class="o">=</span><span class="mi">1</span> <span class="k">DEFAULT</span> <span class="n">CHARSET</span><span class="o">=</span><span class="n">utf8</span> <span class="n">ROW_FORMAT</span><span class="o">=</span><span class="k">DYNAMIC</span> <span class="k">COMMENT</span><span class="o">=</span><span class="s1">'区域'</span><span class="p">;</span>
 </code></pre></div></div>
 
-<p>将下列代码保存并执行，填上excel的路径、数据库信息即可，使用之前需要执行一下 <code class="highlighter-rouge">composer require phpoffice/phpspreadsheet</code></p>
+<p>将下列代码保存并执行，填上excel的路径、数据库信息即可，使用之前需要执行一下 <code class="language-plaintext highlighter-rouge">composer require phpoffice/phpspreadsheet</code></p>
 
 <div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">&lt;?php</span>
 
-<span class="k">use</span> <span class="nx">PhpOffice\PhpSpreadsheet\IOFactory</span><span class="p">;</span>
+<span class="kn">use</span> <span class="nn">PhpOffice\PhpSpreadsheet\IOFactory</span><span class="p">;</span>
 
 <span class="k">require</span> <span class="s2">"vendor/autoload.php"</span><span class="p">;</span>
 
-<span class="c1">//行政区excel
-</span><span class="nv">$excelPath</span> <span class="o">=</span> <span class="s1">'/Users/wutong/Downloads/行政区域.xlsx'</span><span class="p">;</span>
+<span class="c1">//行政区excel</span>
+<span class="nv">$excelPath</span> <span class="o">=</span> <span class="s1">'/Users/wutong/Downloads/行政区域.xlsx'</span><span class="p">;</span>
 <span class="k">echo</span> <span class="s2">"导入文件："</span> <span class="o">.</span> <span class="nv">$excelPath</span> <span class="o">.</span> <span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="p">;</span>
 
 <span class="nv">$pdo</span> <span class="o">=</span> <span class="nx">getPdo</span><span class="p">();</span>
 <span class="nv">$sheet</span> <span class="o">=</span> <span class="nx">getExcelSheet</span><span class="p">(</span><span class="nv">$excelPath</span><span class="p">);</span>
 
-<span class="c1">//所有区域
-</span><span class="nv">$regions</span> <span class="o">=</span> <span class="nv">$sheet</span><span class="o">-&gt;</span><span class="na">toArray</span><span class="p">();</span>
+<span class="c1">//所有区域</span>
+<span class="nv">$regions</span> <span class="o">=</span> <span class="nv">$sheet</span><span class="o">-&gt;</span><span class="na">toArray</span><span class="p">();</span>
 
-<span class="c1">//要保存到数据中的记录集合
-</span><span class="nv">$records</span> <span class="o">=</span> <span class="p">[];</span>
+<span class="c1">//要保存到数据中的记录集合</span>
+<span class="nv">$records</span> <span class="o">=</span> <span class="p">[];</span>
 
-<span class="c1">//当前省份、城市
-</span><span class="nv">$currentProvince</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
+<span class="c1">//当前省份、城市</span>
+<span class="nv">$currentProvince</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
 <span class="nv">$currentCity</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
 
-<span class="c1">//直辖市列表
-</span><span class="nv">$zhiXiaCities</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'北京'</span><span class="p">,</span> <span class="s1">'天津'</span><span class="p">,</span> <span class="s1">'上海'</span><span class="p">,</span> <span class="s1">'重庆'</span><span class="p">];</span>
+<span class="c1">//直辖市列表</span>
+<span class="nv">$zhiXiaCities</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'北京'</span><span class="p">,</span> <span class="s1">'天津'</span><span class="p">,</span> <span class="s1">'上海'</span><span class="p">,</span> <span class="s1">'重庆'</span><span class="p">];</span>
 
-<span class="c1">//循环处理区域
-</span><span class="k">foreach</span> <span class="p">(</span><span class="nv">$regions</span> <span class="k">as</span> <span class="nv">$i</span> <span class="o">=&gt;</span> <span class="nv">$region</span><span class="p">)</span> <span class="p">{</span>
-    <span class="c1">//是否是直辖市
-</span>    <span class="nv">$zhiXiaCity</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+<span class="c1">//循环处理区域</span>
+<span class="k">foreach</span> <span class="p">(</span><span class="nv">$regions</span> <span class="k">as</span> <span class="nv">$i</span> <span class="o">=&gt;</span> <span class="nv">$region</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">//是否是直辖市</span>
+    <span class="nv">$zhiXiaCity</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
     <span class="k">if</span> <span class="p">(</span><span class="nv">$i</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
         <span class="k">continue</span><span class="p">;</span>
     <span class="p">}</span>
-    <span class="c1">//如果第5栏和第6栏是空的则是省份
-</span>    <span class="k">if</span> <span class="p">(</span><span class="nv">$region</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">==</span> <span class="s1">''</span> <span class="o">&amp;&amp;</span> <span class="nv">$region</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span> <span class="o">==</span> <span class="s1">''</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">//如果第5栏和第6栏是空的则是省份</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nv">$region</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">==</span> <span class="s1">''</span> <span class="o">&amp;&amp;</span> <span class="nv">$region</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span> <span class="o">==</span> <span class="s1">''</span><span class="p">)</span> <span class="p">{</span>
         <span class="k">if</span> <span class="p">(</span><span class="nv">$currentCity</span> <span class="o">!=</span> <span class="kc">null</span><span class="p">)</span> <span class="p">{</span>
             <span class="nv">$currentProvince</span><span class="p">[</span><span class="s1">'children'</span><span class="p">][]</span> <span class="o">=</span> <span class="nv">$currentCity</span><span class="p">;</span>
         <span class="p">}</span>
@@ -140,8 +140,8 @@
         <span class="k">if</span> <span class="p">(</span><span class="nv">$currentProvince</span> <span class="o">!=</span> <span class="kc">null</span><span class="p">)</span> <span class="p">{</span>
             <span class="nv">$records</span><span class="p">[]</span> <span class="o">=</span> <span class="nv">$currentProvince</span><span class="p">;</span>
         <span class="p">}</span>
-        <span class="c1">//直辖市
-</span>        <span class="k">if</span> <span class="p">(</span><span class="nv">$region</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="nv">$region</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">&amp;&amp;</span> <span class="nv">$region</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="nv">$region</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">&amp;&amp;</span> <span class="nb">in_array</span><span class="p">(</span><span class="nb">mb_substr</span><span class="p">(</span><span class="nv">$region</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="nv">$zhiXiaCities</span><span class="p">))</span> <span class="p">{</span>
+        <span class="c1">//直辖市</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nv">$region</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="nv">$region</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">&amp;&amp;</span> <span class="nv">$region</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="nv">$region</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">&amp;&amp;</span> <span class="nb">in_array</span><span class="p">(</span><span class="nb">mb_substr</span><span class="p">(</span><span class="nv">$region</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="nv">$zhiXiaCities</span><span class="p">))</span> <span class="p">{</span>
             <span class="nv">$zhiXiaCity</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
         <span class="p">}</span>
         <span class="nv">$currentProvince</span> <span class="o">=</span> <span class="p">[</span>
@@ -152,8 +152,8 @@
         <span class="p">];</span>
         <span class="k">continue</span><span class="p">;</span>
     <span class="p">}</span>
-    <span class="c1">//如果是直辖市
-</span>    <span class="k">if</span> <span class="p">(</span><span class="nv">$currentProvince</span><span class="p">[</span><span class="s1">'zhixia'</span><span class="p">])</span> <span class="p">{</span>
+    <span class="c1">//如果是直辖市</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nv">$currentProvince</span><span class="p">[</span><span class="s1">'zhixia'</span><span class="p">])</span> <span class="p">{</span>
         <span class="nv">$currentProvince</span><span class="p">[</span><span class="s1">'children'</span><span class="p">][]</span> <span class="o">=</span> <span class="p">[</span>
             <span class="s1">'name'</span>     <span class="o">=&gt;</span> <span class="nv">$region</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span>
             <span class="s1">'code'</span>     <span class="o">=&gt;</span> <span class="nv">$region</span><span class="p">[</span><span class="mi">6</span><span class="p">],</span>
@@ -161,8 +161,8 @@
         <span class="p">];</span>
         <span class="k">continue</span><span class="p">;</span>
     <span class="p">}</span>
-    <span class="c1">//如果第6栏是空的则是市区
-</span>    <span class="k">if</span> <span class="p">(</span><span class="nv">$region</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span> <span class="o">==</span> <span class="s1">''</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">//如果第6栏是空的则是市区</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nv">$region</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span> <span class="o">==</span> <span class="s1">''</span><span class="p">)</span> <span class="p">{</span>
         <span class="k">if</span> <span class="p">(</span><span class="nv">$currentCity</span> <span class="o">!=</span> <span class="kc">null</span><span class="p">)</span> <span class="p">{</span>
             <span class="nv">$currentProvince</span><span class="p">[</span><span class="s1">'children'</span><span class="p">][]</span> <span class="o">=</span> <span class="nv">$currentCity</span><span class="p">;</span>
         <span class="p">}</span>
@@ -186,11 +186,11 @@
     <span class="nv">$records</span><span class="p">[]</span> <span class="o">=</span> <span class="nv">$currentProvince</span><span class="p">;</span>
 <span class="p">}</span>
 
-<span class="c1">//添加进数据库
-</span><span class="nx">insertRecords</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nv">$records</span><span class="p">,</span> <span class="nv">$pdo</span><span class="p">);</span>
+<span class="c1">//添加进数据库</span>
+<span class="nx">insertRecords</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nv">$records</span><span class="p">,</span> <span class="nv">$pdo</span><span class="p">);</span>
 
 
-<span class="sd">/**
+<span class="cd">/**
  * 插入记录
  * @param int   $parentId 父区域Id
  * @param array $records 记录集
@@ -215,7 +215,7 @@
     <span class="p">}</span>
 <span class="p">}</span>
 
-<span class="sd">/**
+<span class="cd">/**
  * 获得PDO实例
  * @return PDO
  */</span>
@@ -234,7 +234,7 @@
     <span class="k">return</span> <span class="nv">$pdo</span><span class="p">;</span>
 <span class="p">}</span>
 
-<span class="sd">/**
+<span class="cd">/**
  * 行政区域物理路径
  * @param $excelPath
  * @return \PhpOffice\PhpSpreadsheet\Worksheet\Worksheet
@@ -313,7 +313,7 @@
 </section>
 
 <footer class="g-footer">
-    <section>武仝的博客 © 2019</section>
+    <section>武仝的博客 © 2020</section>
     <section>Powered by <a href="//jekyllrb.com">Jekyll</a> | <a href="https://github.com/kaeyleo/jekyll-theme-H2O">Theme H2O</a></section>
 </footer>
 

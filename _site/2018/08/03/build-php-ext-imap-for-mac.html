@@ -70,25 +70,25 @@
         <div class="post-forward-message">本文章地址：https://wutong.me/2018/08/03/build-php-ext-imap-for-mac.html 转载请注明出处</div>
         <p>Mac下PHP扩展IMAP安装。</p>
 
-<h2 id="安装-iamp-uw">安装 <code class="highlighter-rouge">iamp-uw</code></h2>
+<h2 id="安装-iamp-uw">安装 <code class="language-plaintext highlighter-rouge">iamp-uw</code></h2>
 
 <p>因为手动编译没成功直接用现成的</p>
 
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>brew install imap-uw 
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>brew <span class="nb">install </span>imap-uw 
 </code></pre></div></div>
 
-<h2 id="安装-kerberos">安装 <code class="highlighter-rouge">kerberos</code></h2>
+<h2 id="安装-kerberos">安装 <code class="language-plaintext highlighter-rouge">kerberos</code></h2>
 
 <p>进入网站 <a href="http://web.mit.edu/kerberos/dist/index.html">http://web.mit.edu/kerberos/dist/index.html</a> 下载源码包，解压后进入src目录执行如下命令</p>
 
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>./configure <span class="nt">--prefix</span><span class="o">=</span>/app/kerberos
 make
-make install
+make <span class="nb">install</span>
 </code></pre></div></div>
 
-<h2 id="编译-imap-扩展">编译 <code class="highlighter-rouge">imap</code> 扩展</h2>
+<h2 id="编译-imap-扩展">编译 <code class="language-plaintext highlighter-rouge">imap</code> 扩展</h2>
 
-<p>下载php源码并进入 <code class="highlighter-rouge">ext/imap</code> 目录，执行如下命令</p>
+<p>下载php源码并进入 <code class="language-plaintext highlighter-rouge">ext/imap</code> 目录，执行如下命令</p>
 
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>./configure <span class="nt">--with-imap-ssl</span><span class="o">=</span>/usr/local/opt/openssl <span class="nt">--with-kerberos</span><span class="o">=</span>/app/kerberos
 make
@@ -96,7 +96,7 @@ make
 
 <h2 id="安装扩展">安装扩展</h2>
 
-<p>将编译后生成的 <code class="highlighter-rouge">ext/imap/modules/imap.so</code> 复制到Php扩展目录并在php.ini中增加 <code class="highlighter-rouge">extension=imap.so</code> 即可</p>
+<p>将编译后生成的 <code class="language-plaintext highlighter-rouge">ext/imap/modules/imap.so</code> 复制到Php扩展目录并在php.ini中增加 <code class="language-plaintext highlighter-rouge">extension=imap.so</code> 即可</p>
 
     </article>
     
@@ -159,7 +159,7 @@ make
 </section>
 
 <footer class="g-footer">
-    <section>武仝的博客 © 2019</section>
+    <section>武仝的博客 © 2020</section>
     <section>Powered by <a href="//jekyllrb.com">Jekyll</a> | <a href="https://github.com/kaeyleo/jekyll-theme-H2O">Theme H2O</a></section>
 </footer>
 

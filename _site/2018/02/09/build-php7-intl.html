@@ -72,7 +72,7 @@
     
     <article class="markdown-body">
         <div class="post-forward-message">本文章地址：https://wutong.me/2018/02/09/build-php7-intl.html 转载请注明出处</div>
-        <p>为了能获得 <code class="highlighter-rouge">intl.so</code> 这个文件，我熬了2个晚上到2，3点，一言难进，下面说说过程。</p>
+        <p>为了能获得 <code class="language-plaintext highlighter-rouge">intl.so</code> 这个文件，我熬了2个晚上到2，3点，一言难进，下面说说过程。</p>
 
 <h3 id="起因">起因</h3>
 
@@ -82,7 +82,7 @@
 Could not create transliterator with ID &amp;quot;Any-Latin;Latin-ASCII; [\u0080-\uffff] remove&amp;quot; (transliterator_create: unable to open ICU transliterator with id &amp;quot;Any-Latin; Latin-ASCII; [\u0080-\uffff] remove&amp;quot;: U_INVALID_ID)
 </code></pre>
 
-<p>不太明白为什么跟国际化的函数有关系，经过跟踪调试，觉得测试服务器的模块可能版本较低，于是执行了 <code class="highlighter-rouge">php -f requirements.php</code> 来检查环境是否满足，输出如下：</p>
+<p>不太明白为什么跟国际化的函数有关系，经过跟踪调试，觉得测试服务器的模块可能版本较低，于是执行了 <code class="language-plaintext highlighter-rouge">php -f requirements.php</code> 来检查环境是否满足，输出如下：</p>
 
 <pre><code class="language-code">.......
 
@@ -122,11 +122,11 @@ PHP mail SMTP: OK
 Errors: 0   Warnings: 4   Total checks: 24
 </code></pre>
 
-<p>可以看到 <code class="highlighter-rouge">ICU</code> 这个库版本太低了，需要 <code class="highlighter-rouge">49</code> 版本才行，于是开始升级 <code class="highlighter-rouge">ICU</code></p>
+<p>可以看到 <code class="language-plaintext highlighter-rouge">ICU</code> 这个库版本太低了，需要 <code class="language-plaintext highlighter-rouge">49</code> 版本才行，于是开始升级 <code class="language-plaintext highlighter-rouge">ICU</code></p>
 
 <h3 id="升级icu过程">升级ICU过程</h3>
 
-<p>运行 <code class="highlighter-rouge">yum info icu</code> 得知版本是 <code class="highlighter-rouge">4.2</code></p>
+<p>运行 <code class="language-plaintext highlighter-rouge">yum info icu</code> 得知版本是 <code class="language-plaintext highlighter-rouge">4.2</code></p>
 
 <pre><code class="language-code">Name        : icu
 Arch        : x86_64
@@ -141,15 +141,15 @@ Description : Tools and utilities for developing with icu.
 </code></pre>
 <h4 id="获取新的icu包">获取新的ICU包</h4>
 
-<p>前往 <a href="http://site.icu-project.org/download">http://site.icu-project.org/download</a> 下载所需要的版本，我选择的是 <code class="highlighter-rouge">49.1</code>，为了方便我直接选择了编译好的版本 <code class="highlighter-rouge">icu4c-49_1_2-RHEL6-i386.tgz</code> ，执行如下命令解压并将解压后的目录结构移动到根目录</p>
+<p>前往 <a href="http://site.icu-project.org/download">http://site.icu-project.org/download</a> 下载所需要的版本，我选择的是 <code class="language-plaintext highlighter-rouge">49.1</code>，为了方便我直接选择了编译好的版本 <code class="language-plaintext highlighter-rouge">icu4c-49_1_2-RHEL6-i386.tgz</code> ，执行如下命令解压并将解压后的目录结构移动到根目录</p>
 
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">tar </span>xzf icu4c-49_1_2-RHEL6-i386.tgz
-mv <span class="nt">-r</span> ./usr/ /
+<span class="nb">mv</span> <span class="nt">-r</span> ./usr/ /
 </code></pre></div></div>
 
 <h4 id="升级intl">升级intl</h4>
 
-<p>因为之前的 <code class="highlighter-rouge">intl</code> 扩展是按照旧的版本<code class="highlighter-rouge">icu</code>编译的，所以我一开始想要升级，于是直接执行 <code class="highlighter-rouge">pecl upgrade intl</code>，报如下错误：</p>
+<p>因为之前的 <code class="language-plaintext highlighter-rouge">intl</code> 扩展是按照旧的版本<code class="language-plaintext highlighter-rouge">icu</code>编译的，所以我一开始想要升级，于是直接执行 <code class="language-plaintext highlighter-rouge">pecl upgrade intl</code>，报如下错误：</p>
 
 <pre><code class="language-code">downloading intl-3.0.0.tgz ...
 Starting to download intl-3.0.0.tgz (248,200 bytes)
@@ -174,11 +174,11 @@ make: *** [php_intl.lo] 错误 1
 ERROR: `make' failed
 </code></pre>
 
-<p>经过百度得知在 <code class="highlighter-rouge">php7</code> 开始后 <code class="highlighter-rouge">ext/standard/php_smart_str.h</code> 文件已经变为 <code class="highlighter-rouge">ext/standard/php_smart_str.h</code> 于是天真的改了源代码的文件名，还是报错。</p>
+<p>经过百度得知在 <code class="language-plaintext highlighter-rouge">php7</code> 开始后 <code class="language-plaintext highlighter-rouge">ext/standard/php_smart_str.h</code> 文件已经变为 <code class="language-plaintext highlighter-rouge">ext/standard/php_smart_str.h</code> 于是天真的改了源代码的文件名，还是报错。</p>
 
 <p><strong>若干时间后……</strong></p>
 
-<p>得知 <code class="highlighter-rouge">intl</code> 扩展已经迁移到官方源代码中，于是 <code class="highlighter-rouge">git clone 当前php版本</code> 的源代码到服务器，删除之前装的 <code class="highlighter-rouge">intl</code> 扩展。</p>
+<p>得知 <code class="language-plaintext highlighter-rouge">intl</code> 扩展已经迁移到官方源代码中，于是 <code class="language-plaintext highlighter-rouge">git clone 当前php版本</code> 的源代码到服务器，删除之前装的 <code class="language-plaintext highlighter-rouge">intl</code> 扩展。</p>
 
 <p>进入克隆之后的代码目录执行：</p>
 
@@ -224,7 +224,7 @@ more information, such as the ld(1) and ld.so(8) manual pages.
 Build complete.
 Don't forget to run 'make test'.
 </code></pre>
-<p>将 <code class="highlighter-rouge">modules/intl.so</code> 文件拷贝到 php 的扩展目录并启用即可</p>
+<p>将 <code class="language-plaintext highlighter-rouge">modules/intl.so</code> 文件拷贝到 php 的扩展目录并启用即可</p>
 
 <p>至此，此更新终于完成，文件也能正常下载了。</p>
 
@@ -289,7 +289,7 @@ Don't forget to run 'make test'.
 </section>
 
 <footer class="g-footer">
-    <section>武仝的博客 © 2019</section>
+    <section>武仝的博客 © 2020</section>
     <section>Powered by <a href="//jekyllrb.com">Jekyll</a> | <a href="https://github.com/kaeyleo/jekyll-theme-H2O">Theme H2O</a></section>
 </footer>
 

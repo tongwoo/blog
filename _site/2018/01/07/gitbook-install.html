@@ -74,15 +74,15 @@
 
 <p>用npm命令来进行安装</p>
 
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>npm install <span class="nt">-g</span> gitbook-cli
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>npm <span class="nb">install</span> <span class="nt">-g</span> gitbook-cli
 </code></pre></div></div>
 
-<p>安装完成之后，我们可以用 <code class="highlighter-rouge">gitbook</code> 命令来生成电子书。</p>
+<p>安装完成之后，我们可以用 <code class="language-plaintext highlighter-rouge">gitbook</code> 命令来生成电子书。</p>
 
 <h3 id="写文章">写文章</h3>
 
 <h4 id="初始化">初始化</h4>
-<p>使用 <code class="highlighter-rouge">gitbook init [book]</code> 初始化一个项目，比如：</p>
+<p>使用 <code class="language-plaintext highlighter-rouge">gitbook init [book]</code> 初始化一个项目，比如：</p>
 
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>gitbook init booktest
 </code></pre></div></div>
@@ -94,26 +94,26 @@
 └── SUMMARY.md
 </code></pre>
 
-<p>其中 <code class="highlighter-rouge">SUMMARY.md</code> 就是目录文件</p>
+<p>其中 <code class="language-plaintext highlighter-rouge">SUMMARY.md</code> 就是目录文件</p>
 
 <h4 id="电子书配置">电子书配置</h4>
-<p>还可以建立一个配置文件 <code class="highlighter-rouge">book.json</code></p>
+<p>还可以建立一个配置文件 <code class="language-plaintext highlighter-rouge">book.json</code></p>
 
 <div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
-    </span><span class="s2">"gitbook"</span><span class="p">:</span><span class="w"> </span><span class="s2">"版本"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"title"</span><span class="p">:</span><span class="w"> </span><span class="s2">"书名"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"介绍"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"language"</span><span class="p">:</span><span class="w"> </span><span class="s2">"zh"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"structure"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-      </span><span class="s2">"readme"</span><span class="p">:</span><span class="w"> </span><span class="s2">"README.md"</span><span class="w">
+    </span><span class="nl">"gitbook"</span><span class="p">:</span><span class="w"> </span><span class="s2">"版本"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"title"</span><span class="p">:</span><span class="w"> </span><span class="s2">"书名"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"介绍"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"language"</span><span class="p">:</span><span class="w"> </span><span class="s2">"zh"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"structure"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"readme"</span><span class="p">:</span><span class="w"> </span><span class="s2">"README.md"</span><span class="w">
     </span><span class="p">},</span><span class="w">
-    </span><span class="s2">"pluginsConfig"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-        </span><span class="s2">"fontSettings"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-            </span><span class="s2">"theme"</span><span class="p">:</span><span class="w"> </span><span class="s2">"white"</span><span class="p">,</span><span class="w">
-            </span><span class="s2">"family"</span><span class="p">:</span><span class="w"> </span><span class="s2">"msyh"</span><span class="p">,</span><span class="w">
-            </span><span class="s2">"size"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="w">
+    </span><span class="nl">"pluginsConfig"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"fontSettings"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+            </span><span class="nl">"theme"</span><span class="p">:</span><span class="w"> </span><span class="s2">"white"</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"family"</span><span class="p">:</span><span class="w"> </span><span class="s2">"msyh"</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"size"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="w">
         </span><span class="p">},</span><span class="w">
-        </span><span class="s2">"plugins"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+        </span><span class="nl">"plugins"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
             </span><span class="s2">"插件名称"</span><span class="w">
         </span><span class="p">]</span><span class="w">
     </span><span class="p">}</span><span class="w">
@@ -121,7 +121,7 @@
 </span></code></pre></div></div>
 <h4 id="设置文章目录">设置文章目录</h4>
 
-<p>编辑 <code class="highlighter-rouge">SUMMARY.md</code> 文件</p>
+<p>编辑 <code class="language-plaintext highlighter-rouge">SUMMARY.md</code> 文件</p>
 
 <div class="language-markdown highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">*</span> <span class="p">[</span><span class="nv">1.文章标题</span><span class="p">](</span><span class="sx">链接的页面</span><span class="p">)</span>
 <span class="p">*</span> <span class="p">[</span><span class="nv">2.PHP的入门与精通</span><span class="p">](</span><span class="sx">php.md</span><span class="p">)</span>
@@ -148,7 +148,7 @@ info: found 1 pages
 info: found 0 asset files
 info: <span class="o">&gt;&gt;</span> generation finished with success <span class="k">in </span>0.5s <span class="o">!</span>
 </code></pre></div></div>
-<p>会出现一个 <code class="highlighter-rouge">_book</code> 的目录，打开 <code class="highlighter-rouge">index.html</code> 预览</p>
+<p>会出现一个 <code class="language-plaintext highlighter-rouge">_book</code> 的目录，打开 <code class="language-plaintext highlighter-rouge">index.html</code> 预览</p>
 
     </article>
     
@@ -211,7 +211,7 @@ info: <span class="o">&gt;&gt;</span> generation finished with success <span cla
 </section>
 
 <footer class="g-footer">
-    <section>武仝的博客 © 2019</section>
+    <section>武仝的博客 © 2020</section>
     <section>Powered by <a href="//jekyllrb.com">Jekyll</a> | <a href="https://github.com/kaeyleo/jekyll-theme-H2O">Theme H2O</a></section>
 </footer>
 

@@ -92,7 +92,7 @@
 
 <h3 id="安装nginx">安装Nginx</h3>
 
-<p>在当前命令行中进行配置Nginx源，建立 <code class="highlighter-rouge">/etc/yum.repos.d/nginx.repo</code> 并粘贴如下内容</p>
+<p>在当前命令行中进行配置Nginx源，建立 <code class="language-plaintext highlighter-rouge">/etc/yum.repos.d/nginx.repo</code> 并粘贴如下内容</p>
 
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>nginx]
 <span class="nv">name</span><span class="o">=</span>nginx repo
@@ -103,12 +103,12 @@
 
 <p>建立后开始安装</p>
 
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>yum install nginx
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>yum <span class="nb">install </span>nginx
 </code></pre></div></div>
 
-<p>修改 <code class="highlighter-rouge">/etc/nginx/nginx.conf</code> 第一行加入 <code class="highlighter-rouge">daemon off</code></p>
+<p>修改 <code class="language-plaintext highlighter-rouge">/etc/nginx/nginx.conf</code> 第一行加入 <code class="language-plaintext highlighter-rouge">daemon off</code></p>
 
-<p>因版本不同 <code class="highlighter-rouge">/etc/nginx/</code> 下的配置文件不太相同，如果没有 <code class="highlighter-rouge">fastcgi.conf</code> 文件自己建立一个并粘贴如下内容</p>
+<p>因版本不同 <code class="language-plaintext highlighter-rouge">/etc/nginx/</code> 下的配置文件不太相同，如果没有 <code class="language-plaintext highlighter-rouge">fastcgi.conf</code> 文件自己建立一个并粘贴如下内容</p>
 
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>fastcgi_param  SCRIPT_FILENAME    <span class="nv">$document_root$fastcgi_script_name</span><span class="p">;</span>
 fastcgi_param  QUERY_STRING       <span class="nv">$query_string</span><span class="p">;</span>
@@ -147,7 +147,7 @@ rpm <span class="nt">-Uvh</span> https://mirror.webtatic.com/yum/el7/webtatic-re
 
 <p>安装 php</p>
 
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>yum install <span class="nt">-y</span> php56w php56w-bcmath php56w-cli php56w-common php56w-dba php56w-devel php56w-embedded php56w-enchant php56w-fpm php56w-gd php56w-imap php56w-interbase php56w-intl php56w-ldap php56w-mbstring php56w-mcrypt php56w-mssql php56w-mysqlnd php56w-odbc php56w-opcache php56w-pdo php56w-pear php56w-pecl-apcu php56w-pecl-apcu-devel php56w-pecl-gearman php56w-pecl-geoip php56w-pecl-igbinary php56w-pecl-igbinary-devel php56w-pecl-imagick php56w-pecl-imagick-devel php56w-pecl-memcache php56w-pecl-memcached php56w-pecl-mongodb php56w-pecl-redis php56w-pecl-xdebug php56w-pgsql php56w-phpdbg php56w-process php56w-pspell php56w-recode php56w-snmp php56w-soap php56w-tidy php56w-xml php56w-xmlrpc 
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>yum <span class="nb">install</span> <span class="nt">-y</span> php56w php56w-bcmath php56w-cli php56w-common php56w-dba php56w-devel php56w-embedded php56w-enchant php56w-fpm php56w-gd php56w-imap php56w-interbase php56w-intl php56w-ldap php56w-mbstring php56w-mcrypt php56w-mssql php56w-mysqlnd php56w-odbc php56w-opcache php56w-pdo php56w-pear php56w-pecl-apcu php56w-pecl-apcu-devel php56w-pecl-gearman php56w-pecl-geoip php56w-pecl-igbinary php56w-pecl-igbinary-devel php56w-pecl-imagick php56w-pecl-imagick-devel php56w-pecl-memcache php56w-pecl-memcached php56w-pecl-mongodb php56w-pecl-redis php56w-pecl-xdebug php56w-pgsql php56w-phpdbg php56w-process php56w-pspell php56w-recode php56w-snmp php56w-soap php56w-tidy php56w-xml php56w-xmlrpc 
 </code></pre></div></div>
 
 <p>安装 zend-loader 扩展（注意32位还是64位）</p>
@@ -157,7 +157,7 @@ wget http://downloads.zend.com/guard/7.0.0/zend-loader-php5.6-linux-x86_64_updat
 <span class="c">#解压</span>
 <span class="nb">tar</span> <span class="nt">-xzvf</span> zend-loader-php5.6-linux-x86_64_update1.tar.gz
 <span class="c">#将扩展拷贝到php扩展目录，提示存在请覆盖</span>
-cp <span class="k">*</span>.so /usr/lib64/php/modules/
+<span class="nb">cp</span> <span class="k">*</span>.so /usr/lib64/php/modules/
 </code></pre></div></div>
 
 <p>查看php是否能正常运行</p>
@@ -176,12 +176,12 @@ Zend Engine v2.6.0, Copyright <span class="o">(</span>c<span class="o">)</span> 
 
 <h3 id="杂项配置">杂项配置</h3>
 
-<p>将 <code class="highlighter-rouge">php-fpm</code> 运行的用户和组变更为 <code class="highlighter-rouge">nginx</code>
-将 <code class="highlighter-rouge">/var/lib/php</code> 的用户和组变更为 <code class="highlighter-rouge">nginx</code></p>
+<p>将 <code class="language-plaintext highlighter-rouge">php-fpm</code> 运行的用户和组变更为 <code class="language-plaintext highlighter-rouge">nginx</code>
+将 <code class="language-plaintext highlighter-rouge">/var/lib/php</code> 的用户和组变更为 <code class="language-plaintext highlighter-rouge">nginx</code></p>
 
 <h3 id="配置zendloader">配置ZendLoader</h3>
 
-<p>打开 <code class="highlighter-rouge">php.ini</code> 粘贴如下内容，如果想要有更好的扩展性最好是挂载宿主机的配置文件</p>
+<p>打开 <code class="language-plaintext highlighter-rouge">php.ini</code> 粘贴如下内容，如果想要有更好的扩展性最好是挂载宿主机的配置文件</p>
 
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">#商派要求下面的参数为-1</span>
 always_populate_raw_post_data <span class="o">=</span> <span class="nt">-1</span>
@@ -194,7 +194,7 @@ zend_loader.license_path<span class="o">=</span>商派许可证文件路径
 
 <h2 id="创建镜像">创建镜像</h2>
 
-<p>在交互式环境下做完上面的事情后，输入 <code class="highlighter-rouge">exit</code> 退出</p>
+<p>在交互式环境下做完上面的事情后，输入 <code class="language-plaintext highlighter-rouge">exit</code> 退出</p>
 
 <p>查看运行过的容器</p>
 
@@ -204,7 +204,7 @@ CONTAINER ID   IMAGE        COMMAND       CREATED      STATUS                   
 b1d45882623f   centos:7     <span class="s2">"/bin/bash"</span>   5 hours ago  Exited <span class="o">(</span>0<span class="o">)</span> 5 hours ago                admiring_newton
 </code></pre></div></div>
 
-<p>对刚才使用的centos容器进行扩展并建立镜像，也可以使用 <code class="highlighter-rouge">Dockerfile</code></p>
+<p>对刚才使用的centos容器进行扩展并建立镜像，也可以使用 <code class="language-plaintext highlighter-rouge">Dockerfile</code></p>
 
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker commit <span class="nt">-m</span> <span class="s2">"CentOS7-Nginx-PHP56-ZendGuardLoader"</span> b1d45882623f tongwoo/centos7-nginx-php56-zend-guard-loader
 </code></pre></div></div>
@@ -217,14 +217,14 @@ docker push tongwoo/centos7-nginx-php56-zend-guard-loader
 
 <h2 id="运行镜像">运行镜像</h2>
 
-<p>因为容器只能有一个主进程，但是要运行代码需要启动 <code class="highlighter-rouge">php-fpm</code> 和 <code class="highlighter-rouge">nginx</code>，所以可以考虑建立一个脚本 <code class="highlighter-rouge">/app/runapp</code> 并增加执行权限</p>
+<p>因为容器只能有一个主进程，但是要运行代码需要启动 <code class="language-plaintext highlighter-rouge">php-fpm</code> 和 <code class="language-plaintext highlighter-rouge">nginx</code>，所以可以考虑建立一个脚本 <code class="language-plaintext highlighter-rouge">/app/runapp</code> 并增加执行权限</p>
 
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">!</span><span class="c">#/usr/bin/sh</span>
 php-fpm
 nginx
 </code></pre></div></div>
 
-<p>为了能顺利运行宿主机的代码，在运行容器的时候需要挂载宿主机的 <code class="highlighter-rouge">源代码目录、php自定义配置文件、Nginx配置文件</code> ，其中 <code class="highlighter-rouge">php自定义配置文件</code> 我们可能想覆盖 <code class="highlighter-rouge">php.ini</code> 的配置，比如商派的许可证文件路径，<code class="highlighter-rouge">Nginx配置文件</code> 自定义主机配置等</p>
+<p>为了能顺利运行宿主机的代码，在运行容器的时候需要挂载宿主机的 <code class="language-plaintext highlighter-rouge">源代码目录、php自定义配置文件、Nginx配置文件</code> ，其中 <code class="language-plaintext highlighter-rouge">php自定义配置文件</code> 我们可能想覆盖 <code class="language-plaintext highlighter-rouge">php.ini</code> 的配置，比如商派的许可证文件路径，<code class="language-plaintext highlighter-rouge">Nginx配置文件</code> 自定义主机配置等</p>
 
 <p>执行下面的命令来运行容器</p>
 
@@ -240,9 +240,9 @@ nginx
   <li>将宿主机的/web/TianDiShop/tiandi.ini配置文件映射到容器的/etc/php.d/tiandi.ini</li>
 </ul>
 
-<p>如果想要守护允许则加上 <code class="highlighter-rouge">-d</code> 选项</p>
+<p>如果想要守护允许则加上 <code class="language-plaintext highlighter-rouge">-d</code> 选项</p>
 
-<p>访问 <code class="highlighter-rouge">http://127.0.0.1:3000</code> 可以看到宿主机的商城显示出来了</p>
+<p>访问 <code class="language-plaintext highlighter-rouge">http://127.0.0.1:3000</code> 可以看到宿主机的商城显示出来了</p>
 
 
     </article>
@@ -306,7 +306,7 @@ nginx
 </section>
 
 <footer class="g-footer">
-    <section>武仝的博客 © 2019</section>
+    <section>武仝的博客 © 2020</section>
     <section>Powered by <a href="//jekyllrb.com">Jekyll</a> | <a href="https://github.com/kaeyleo/jekyll-theme-H2O">Theme H2O</a></section>
 </footer>
 

@@ -68,15 +68,15 @@
     
     <article class="markdown-body">
         <div class="post-forward-message">本文章地址：https://wutong.me/2018/02/01/yii2-rbac-step.html 转载请注明出处</div>
-        <p>Yii2中的<code class="highlighter-rouge">RBAC</code> 还是比较快捷方便的，支持 PHP、数据库等方式存储权限配置。</p>
+        <p>Yii2中的<code class="language-plaintext highlighter-rouge">RBAC</code> 还是比较快捷方便的，支持 PHP、数据库等方式存储权限配置。</p>
 
 <h3 id="检查方式">检查方式</h3>
 
 <div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">\Yii</span><span class="o">::</span><span class="nv">$app</span><span class="o">-&gt;</span><span class="na">authManager</span><span class="o">-&gt;</span><span class="na">checkAccess</span><span class="p">(</span><span class="nx">用户id</span><span class="p">,</span><span class="nx">权限名称</span><span class="p">,</span><span class="nx">提供给Rule的参数</span><span class="p">);</span>
-<span class="c1">//或
-</span><span class="nx">\Yii</span><span class="o">::</span><span class="nv">$app</span><span class="o">-&gt;</span><span class="na">user</span><span class="o">-&gt;</span><span class="na">can</span><span class="p">(</span><span class="nx">权限名称</span><span class="p">,</span><span class="nx">提供给Rule的参数</span><span class="p">);</span>
+<span class="c1">//或</span>
+<span class="nx">\Yii</span><span class="o">::</span><span class="nv">$app</span><span class="o">-&gt;</span><span class="na">user</span><span class="o">-&gt;</span><span class="na">can</span><span class="p">(</span><span class="nx">权限名称</span><span class="p">,</span><span class="nx">提供给Rule的参数</span><span class="p">);</span>
 </code></pre></div></div>
-<p>返回值为 <code class="highlighter-rouge">bool</code> 类型，<code class="highlighter-rouge">true</code> 为有这个权限，<code class="highlighter-rouge">false</code>为没有这个权限</p>
+<p>返回值为 <code class="language-plaintext highlighter-rouge">bool</code> 类型，<code class="language-plaintext highlighter-rouge">true</code> 为有这个权限，<code class="language-plaintext highlighter-rouge">false</code>为没有这个权限</p>
 
 <h3 id="checkaccess-检查流程">checkAccess 检查流程</h3>
 
@@ -91,11 +91,11 @@
     <span class="k">return</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">checkAccessRecursive</span><span class="p">(</span><span class="nv">$userId</span><span class="p">,</span> <span class="nv">$permissionName</span><span class="p">,</span> <span class="nv">$params</span><span class="p">,</span> <span class="nv">$assignments</span><span class="p">);</span>
 <span class="p">}</span>
 </code></pre></div></div>
-<p><strong>第一步</strong>，会调用<code class="highlighter-rouge">AuthManager::getAssignments</code> 方法获得该用户所绑定的角色、权限等信息。</p>
+<p><strong>第一步</strong>，会调用<code class="language-plaintext highlighter-rouge">AuthManager::getAssignments</code> 方法获得该用户所绑定的角色、权限等信息。</p>
 
-<p><strong>第二步</strong>，检查此用户的<code class="highlighter-rouge">角色权限是否为空</code>和<code class="highlighter-rouge">有没有初始化默认角色</code>，如果都没有的话则返回<code class="highlighter-rouge">false</code>并终止权限判断。</p>
+<p><strong>第二步</strong>，检查此用户的<code class="language-plaintext highlighter-rouge">角色权限是否为空</code>和<code class="language-plaintext highlighter-rouge">有没有初始化默认角色</code>，如果都没有的话则返回<code class="language-plaintext highlighter-rouge">false</code>并终止权限判断。</p>
 
-<p><strong>第三步</strong>，递归的调用 <code class="highlighter-rouge">AuthManager::checkAccessRecursive</code> 方法来检查有没有此权限。</p>
+<p><strong>第三步</strong>，递归的调用 <code class="language-plaintext highlighter-rouge">AuthManager::checkAccessRecursive</code> 方法来检查有没有此权限。</p>
 
 <h3 id="checkaccessrecursive-检查流程">checkAccessRecursive 检查流程</h3>
 
@@ -107,7 +107,7 @@
 
     <span class="cm">/* @var $item Item */</span>
     <span class="nv">$item</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">items</span><span class="p">[</span><span class="nv">$itemName</span><span class="p">];</span>
-    <span class="nx">Yii</span><span class="o">::</span><span class="na">trace</span><span class="p">(</span><span class="nv">$item</span> <span class="nx">instanceof</span> <span class="nx">Role</span> <span class="o">?</span> <span class="s2">"Checking role: </span><span class="nv">$itemName</span><span class="s2">"</span> <span class="o">:</span> <span class="s2">"Checking permission : </span><span class="nv">$itemName</span><span class="s2">"</span><span class="p">,</span> <span class="nx">__METHOD__</span><span class="p">);</span>
+    <span class="nx">Yii</span><span class="o">::</span><span class="na">trace</span><span class="p">(</span><span class="nv">$item</span> <span class="k">instanceof</span> <span class="nx">Role</span> <span class="o">?</span> <span class="s2">"Checking role: </span><span class="nv">$itemName</span><span class="s2">"</span> <span class="o">:</span> <span class="s2">"Checking permission : </span><span class="nv">$itemName</span><span class="s2">"</span><span class="p">,</span> <span class="k">__METHOD__</span><span class="p">);</span>
 
     <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">executeRule</span><span class="p">(</span><span class="nv">$user</span><span class="p">,</span> <span class="nv">$item</span><span class="p">,</span> <span class="nv">$params</span><span class="p">))</span> <span class="p">{</span>
         <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
@@ -126,13 +126,13 @@
     <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
 <span class="p">}</span>
 </code></pre></div></div>
-<p><strong>第一步</strong>，判断当前 <code class="highlighter-rouge">AuthManger</code> 实例中的 <code class="highlighter-rouge">items</code> 属性中是否存在这个权限，<code class="highlighter-rouge">items</code> 中保存了所有创建的角色、权限，如果没有的话则直接返回 <code class="highlighter-rouge">false</code> 并结束。</p>
+<p><strong>第一步</strong>，判断当前 <code class="language-plaintext highlighter-rouge">AuthManger</code> 实例中的 <code class="language-plaintext highlighter-rouge">items</code> 属性中是否存在这个权限，<code class="language-plaintext highlighter-rouge">items</code> 中保存了所有创建的角色、权限，如果没有的话则直接返回 <code class="language-plaintext highlighter-rouge">false</code> 并结束。</p>
 
-<p><strong>第二步</strong>，如果有这个权限的话，则判断这个权限是否绑定了 <code class="highlighter-rouge">Rule</code> 实例（通过的权限的<code class="highlighter-rouge">ruleName</code>属性值是否为<code class="highlighter-rouge">null</code>来判断），如果绑定了<code class="highlighter-rouge">Rule</code>则执行<code class="highlighter-rouge">Rule</code>实例的<code class="highlighter-rouge">execute</code>方法，然后根据<code class="highlighter-rouge">execute</code>方法的返回值觉得是否终止检查。</p>
+<p><strong>第二步</strong>，如果有这个权限的话，则判断这个权限是否绑定了 <code class="language-plaintext highlighter-rouge">Rule</code> 实例（通过的权限的<code class="language-plaintext highlighter-rouge">ruleName</code>属性值是否为<code class="language-plaintext highlighter-rouge">null</code>来判断），如果绑定了<code class="language-plaintext highlighter-rouge">Rule</code>则执行<code class="language-plaintext highlighter-rouge">Rule</code>实例的<code class="language-plaintext highlighter-rouge">execute</code>方法，然后根据<code class="language-plaintext highlighter-rouge">execute</code>方法的返回值觉得是否终止检查。</p>
 
-<p><strong>第三步</strong>，判断用户的当前的<code class="highlighter-rouge">$assignments</code>中是否存在这个权限 或者 当前默认所有角色中是否存在这个权限，满足其中一种的话则返回<code class="highlighter-rouge">true</code>,注意：如果权限实际是角色的话才有意义，因为判断代码为 <code class="highlighter-rouge">in_array($itemName, $this-&gt;defaultRoles)</code></p>
+<p><strong>第三步</strong>，判断用户的当前的<code class="language-plaintext highlighter-rouge">$assignments</code>中是否存在这个权限 或者 当前默认所有角色中是否存在这个权限，满足其中一种的话则返回<code class="language-plaintext highlighter-rouge">true</code>,注意：如果权限实际是角色的话才有意义，因为判断代码为 <code class="language-plaintext highlighter-rouge">in_array($itemName, $this-&gt;defaultRoles)</code></p>
 
-<p><strong>第四步</strong>，循环检查<code class="highlighter-rouge">AuthManager::children</code>属性里面每个项的<code class="highlighter-rouge">value</code>数组中是否包含了要验证的权限并且递归调用<code class="highlighter-rouge">checkAccessRecursive</code>检查当前用户是否有这个项的<code class="highlighter-rouge">key</code>对应的权限，如两者都满足的话则返回<code class="highlighter-rouge">true</code>并终止判断。</p>
+<p><strong>第四步</strong>，循环检查<code class="language-plaintext highlighter-rouge">AuthManager::children</code>属性里面每个项的<code class="language-plaintext highlighter-rouge">value</code>数组中是否包含了要验证的权限并且递归调用<code class="language-plaintext highlighter-rouge">checkAccessRecursive</code>检查当前用户是否有这个项的<code class="language-plaintext highlighter-rouge">key</code>对应的权限，如两者都满足的话则返回<code class="language-plaintext highlighter-rouge">true</code>并终止判断。</p>
 
 
     </article>
@@ -196,7 +196,7 @@
 </section>
 
 <footer class="g-footer">
-    <section>武仝的博客 © 2019</section>
+    <section>武仝的博客 © 2020</section>
     <section>Powered by <a href="//jekyllrb.com">Jekyll</a> | <a href="https://github.com/kaeyleo/jekyll-theme-H2O">Theme H2O</a></section>
 </footer>
 

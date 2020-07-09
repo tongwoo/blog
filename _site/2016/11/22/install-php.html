@@ -94,17 +94,17 @@ rpm <span class="nt">-Uvh</span> https://mirror.webtatic.com/yum/el6/latest.rpm
 
 <h4 id="按需安装">按需安装</h4>
 
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>yum install php71w-bcmath php71w-cli php71w-common php71w-dba php71w-devel php71w-embedded php71w-enchant php71w-fpm php71w-gd php71w-imap php71w-interbase php71w-intl php71w-ldap php71w-mbstring php71w-mcrypt php71w-mysqlnd php71w-odbc php71w-opcache php71w-pdo php71w-pdo_dblib php71w-pear php71w-pecl-apcu php71w-pecl-apcu-devel php71w-pecl-geoip php71w-pecl-igbinary php71w-pecl-igbinary-devel php71w-pecl-imagick php71w-pecl-imagick-devel php71w-pecl-memcached php71w-pecl-mongodb php71w-pecl-redis  php71w-pgsql php71w-process php71w-pspell php71w-recode php71w-snmp php71w-soap php71w-tidy php71w-xml php71w-xmlrpc
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>yum <span class="nb">install </span>php71w-bcmath php71w-cli php71w-common php71w-dba php71w-devel php71w-embedded php71w-enchant php71w-fpm php71w-gd php71w-imap php71w-interbase php71w-intl php71w-ldap php71w-mbstring php71w-mcrypt php71w-mysqlnd php71w-odbc php71w-opcache php71w-pdo php71w-pdo_dblib php71w-pear php71w-pecl-apcu php71w-pecl-apcu-devel php71w-pecl-geoip php71w-pecl-igbinary php71w-pecl-igbinary-devel php71w-pecl-imagick php71w-pecl-imagick-devel php71w-pecl-memcached php71w-pecl-mongodb php71w-pecl-redis  php71w-pgsql php71w-process php71w-pspell php71w-recode php71w-snmp php71w-soap php71w-tidy php71w-xml php71w-xmlrpc
 </code></pre></div></div>
 
 <h4 id="全部安装">全部安装</h4>
 
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>yum install <span class="nt">-y</span> php71w-bcmath php71w-cli php71w-common php71w-dba php71w-devel php71w-embedded php71w-enchant php71w-fpm php71w-gd php71w-imap php71w-interbase php71w-intl php71w-ldap php71w-mbstring php71w-mcrypt php71w-mysql php71w-mysqlnd php71w-odbc php71w-opcache php71w-pdo php71w-pdo_dblib php71w-pear php71w-pecl-apcu php71w-pecl-apcu-devel php71w-pecl-geoip php71w-pecl-igbinary php71w-pecl-igbinary-devel php71w-pecl-imagick php71w-pecl-imagick-devel php71w-pecl-memcached php71w-pecl-mongodb php71w-pecl-redis php71w-pecl-xdebug php71w-pgsql php71w-phpdbg php71w-process php71w-pspell php71w-recode php71w-snmp php71w-soap php71w-tidy php71w-xml php71w-xmlrpc
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>yum <span class="nb">install</span> <span class="nt">-y</span> php71w-bcmath php71w-cli php71w-common php71w-dba php71w-devel php71w-embedded php71w-enchant php71w-fpm php71w-gd php71w-imap php71w-interbase php71w-intl php71w-ldap php71w-mbstring php71w-mcrypt php71w-mysql php71w-mysqlnd php71w-odbc php71w-opcache php71w-pdo php71w-pdo_dblib php71w-pear php71w-pecl-apcu php71w-pecl-apcu-devel php71w-pecl-geoip php71w-pecl-igbinary php71w-pecl-igbinary-devel php71w-pecl-imagick php71w-pecl-imagick-devel php71w-pecl-memcached php71w-pecl-mongodb php71w-pecl-redis php71w-pecl-xdebug php71w-pgsql php71w-phpdbg php71w-process php71w-pspell php71w-recode php71w-snmp php71w-soap php71w-tidy php71w-xml php71w-xmlrpc
 </code></pre></div></div>
 
 <h3 id="安装mysql">安装MySQL</h3>
 
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>yum install <span class="nt">-y</span> mariadb mariadb-server
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>yum <span class="nb">install</span> <span class="nt">-y</span> mariadb mariadb-server
 </code></pre></div></div>
 <p>打开 /etc/my.cnf 修改一下默认编码</p>
 
@@ -191,8 +191,8 @@ Thanks <span class="k">for </span>using MariaDB!
 
 <h4 id="安装apache和php模块">安装Apache和PHP模块</h4>
 
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>yum install <span class="nt">-y</span> httpd
-yum install <span class="nt">-y</span> mod_php71w
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>yum <span class="nb">install</span> <span class="nt">-y</span> httpd
+yum <span class="nb">install</span> <span class="nt">-y</span> mod_php71w
 </code></pre></div></div>
 
 <p>修改默认的配置文件：/etc/httpd/conf/httpd.conf</p>
@@ -229,7 +229,7 @@ DocumentRoot "/web"
 
 <h4 id="安装nginx">安装Nginx</h4>
 
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>yum install <span class="nt">-y</span> nginx
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>yum <span class="nb">install</span> <span class="nt">-y</span> nginx
 </code></pre></div></div>
 
 <h4 id="配置nginx">配置Nginx</h4>
@@ -239,35 +239,35 @@ DocumentRoot "/web"
 <p>增加一个server配置段来当做虚拟主机</p>
 
 <div class="language-nginx highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">server</span> <span class="p">{</span>
-    <span class="c1">#网站目录全路径
-</span>    <span class="kn">root</span> <span class="n">/web/explorer</span><span class="p">;</span>
-    <span class="c1">#默认页
-</span>    <span class="kn">index</span> <span class="s">index.html</span> <span class="s">index.php</span><span class="p">;</span>
-    <span class="c1">#监听端口
-</span>    <span class="kn">listen</span> <span class="mi">80</span><span class="p">;</span>
-    <span class="c1">#域名,多个域名用空格隔开
-</span>    <span class="kn">server_name</span> <span class="mi">140</span><span class="s">.143.45.28</span> <span class="s">www.shai.com</span> <span class="s">shai.com</span><span class="p">;</span>
-    <span class="c1">#错误日志路径
-</span>    <span class="kn">error_log</span> <span class="n">/web/explorer/logs/error_log</span> <span class="s">error</span><span class="p">;</span>
-    <span class="c1">#是否启用目录浏览
-</span>    <span class="kn">autoindex</span> <span class="no">on</span><span class="p">;</span>
+    <span class="c1">#网站目录全路径</span>
+    <span class="kn">root</span> <span class="n">/web/explorer</span><span class="p">;</span>
+    <span class="c1">#默认页</span>
+    <span class="kn">index</span> <span class="s">index.html</span> <span class="s">index.php</span><span class="p">;</span>
+    <span class="c1">#监听端口</span>
+    <span class="kn">listen</span> <span class="mi">80</span><span class="p">;</span>
+    <span class="c1">#域名,多个域名用空格隔开</span>
+    <span class="kn">server_name</span> <span class="mi">140</span><span class="s">.143.45.28</span> <span class="s">www.shai.com</span> <span class="s">shai.com</span><span class="p">;</span>
+    <span class="c1">#错误日志路径</span>
+    <span class="kn">error_log</span> <span class="n">/web/explorer/logs/error_log</span> <span class="s">error</span><span class="p">;</span>
+    <span class="c1">#是否启用目录浏览</span>
+    <span class="kn">autoindex</span> <span class="no">on</span><span class="p">;</span>
 
-    <span class="c1">#如果用Yii、Laravel等之类的框架则用下面这段配置
-</span>    <span class="kn">location</span> <span class="n">/</span> <span class="p">{</span>
+    <span class="c1">#如果用Yii、Laravel等之类的框架则用下面这段配置</span>
+    <span class="kn">location</span> <span class="n">/</span> <span class="p">{</span>
         <span class="kn">try_files</span> <span class="nv">$uri</span> <span class="nv">$uri</span><span class="n">/</span> <span class="n">/index.php</span><span class="nv">$is_args$args</span><span class="p">;</span>
     <span class="p">}</span>
 
-    <span class="c1">#如果你用的是ThinkPHP框架则用下面这段配置
-</span>    <span class="kn">location</span> <span class="n">/</span> <span class="p">{</span>
+    <span class="c1">#如果你用的是ThinkPHP框架则用下面这段配置</span>
+    <span class="kn">location</span> <span class="n">/</span> <span class="p">{</span>
         <span class="kn">if</span> <span class="s">(!-e</span> <span class="nv">$request_filename</span><span class="s">)</span> <span class="p">{</span>
             <span class="kn">rewrite</span>  <span class="s">^(.*)</span>$  <span class="n">/index.php?s=</span><span class="nv">$1</span>  <span class="s">last</span><span class="p">;</span>
             <span class="kn">break</span><span class="p">;</span>
         <span class="p">}</span>
     <span class="p">}</span>
-    <span class="c1">#处理PHP格式的文件
-</span>    <span class="kn">location</span> <span class="p">~</span> <span class="sr">\.php$</span> <span class="p">{</span>
-        <span class="c1">#try_files $uri=404;
-</span>        <span class="kn">include</span> <span class="n">/etc/nginx/fastcgi.conf</span><span class="p">;</span>
+    <span class="c1">#处理PHP格式的文件</span>
+    <span class="kn">location</span> <span class="p">~</span> <span class="sr">\.php$</span> <span class="p">{</span>
+        <span class="c1">#try_files $uri=404;</span>
+        <span class="kn">include</span> <span class="n">/etc/nginx/fastcgi.conf</span><span class="p">;</span>
         <span class="kn">fastcgi_pass</span> <span class="nf">127.0.0.1</span><span class="p">:</span><span class="mi">9000</span><span class="p">;</span>
     <span class="p">}</span>
 <span class="p">}</span>
@@ -345,7 +345,7 @@ DocumentRoot "/web"
 </section>
 
 <footer class="g-footer">
-    <section>武仝的博客 © 2019</section>
+    <section>武仝的博客 © 2020</section>
     <section>Powered by <a href="//jekyllrb.com">Jekyll</a> | <a href="https://github.com/kaeyleo/jekyll-theme-H2O">Theme H2O</a></section>
 </footer>
 

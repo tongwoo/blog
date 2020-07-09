@@ -70,19 +70,19 @@
     
     <article class="markdown-body">
         <div class="post-forward-message">本文章地址：https://wutong.me/2018/04/02/pdo-transaction-savepoint.html 转载请注明出处</div>
-        <p>在使用Yii框架事务嵌套的时候出现了错误 <code class="highlighter-rouge">SQLSTATE[HY000]: General error: 2014 Cannot execute queries while other unbuffered queries are active. Consider using PDOStatement::fetchAll(). Alternatively, if your code is only ever going to run against mysql, you may enable query buffering by setting the PDO::MYSQL_ATTR_USE_BUFFERED_QUERY attribute.</code></p>
+        <p>在使用Yii框架事务嵌套的时候出现了错误 <code class="language-plaintext highlighter-rouge">SQLSTATE[HY000]: General error: 2014 Cannot execute queries while other unbuffered queries are active. Consider using PDOStatement::fetchAll(). Alternatively, if your code is only ever going to run against mysql, you may enable query buffering by setting the PDO::MYSQL_ATTR_USE_BUFFERED_QUERY attribute.</code></p>
 
 <h3 id="问题呈现">问题呈现</h3>
 
-<p>代码中不同位置多次调用了 <code class="highlighter-rouge">Yii:$app-&gt;db-&gt;beginTransaction()</code> 方法，Yii创建了 <code class="highlighter-rouge">SAVEPOINT LEVEL1</code> 的SQL语句，但是执行的时候报错，具体错误信息见上方。</p>
+<p>代码中不同位置多次调用了 <code class="language-plaintext highlighter-rouge">Yii:$app-&gt;db-&gt;beginTransaction()</code> 方法，Yii创建了 <code class="language-plaintext highlighter-rouge">SAVEPOINT LEVEL1</code> 的SQL语句，但是执行的时候报错，具体错误信息见上方。</p>
 
 <h3 id="解决过程">解决过程</h3>
 
-<p>按照文档上提示的方法 <code class="highlighter-rouge">closeCursor()</code> 和 连接属性 <code class="highlighter-rouge">PDO::MYSQL_ATTR_USE_BUFFERED_QUERY</code> 都没有解决。</p>
+<p>按照文档上提示的方法 <code class="language-plaintext highlighter-rouge">closeCursor()</code> 和 连接属性 <code class="language-plaintext highlighter-rouge">PDO::MYSQL_ATTR_USE_BUFFERED_QUERY</code> 都没有解决。</p>
 
 <p>尝试自己写PDO操作代码，运行成功。</p>
 
-<p>经过长时间的检查找到在PDO连接数据库的配置中，Yii配置中我多加了一个选项 <code class="highlighter-rouge">PDO::ATTR_EMULATE_PREPARES</code></p>
+<p>经过长时间的检查找到在PDO连接数据库的配置中，Yii配置中我多加了一个选项 <code class="language-plaintext highlighter-rouge">PDO::ATTR_EMULATE_PREPARES</code></p>
 
 <div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="s1">'db'</span> <span class="o">=&gt;</span> <span class="p">[</span>
     <span class="s1">'class'</span> <span class="o">=&gt;</span> <span class="s1">'yii\db\Connection'</span><span class="p">,</span>
@@ -94,7 +94,7 @@
 <span class="p">],</span>
 </code></pre></div></div>
 
-<p>将其改为 <code class="highlighter-rouge">true</code> 或者删除即可，但是带来的另外一个问题就是查询返回的数据都是字符串了，所以在需要在合适的地方去手动执行这个参数设置，比如在需要 <code class="highlighter-rouge">SAVEPOINT</code> 的地方前面加上 <code class="highlighter-rouge">PDO::setAttribute(PDO::ATTR_EMULATE_PREPARES,0); </code>，执行完毕后再改回来</p>
+<p>将其改为 <code class="language-plaintext highlighter-rouge">true</code> 或者删除即可，但是带来的另外一个问题就是查询返回的数据都是字符串了，所以在需要在合适的地方去手动执行这个参数设置，比如在需要 <code class="language-plaintext highlighter-rouge">SAVEPOINT</code> 的地方前面加上 <code class="language-plaintext highlighter-rouge">PDO::setAttribute(PDO::ATTR_EMULATE_PREPARES,0); </code>，执行完毕后再改回来</p>
 
     </article>
     
@@ -157,7 +157,7 @@
 </section>
 
 <footer class="g-footer">
-    <section>武仝的博客 © 2019</section>
+    <section>武仝的博客 © 2020</section>
     <section>Powered by <a href="//jekyllrb.com">Jekyll</a> | <a href="https://github.com/kaeyleo/jekyll-theme-H2O">Theme H2O</a></section>
 </footer>
 

@@ -99,30 +99,30 @@
 
 <h3 id="连接测试">连接测试</h3>
 
-<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">//数据库名
-</span><span class="nv">$dbName</span> <span class="o">=</span> <span class="s2">"PWYWTEST"</span><span class="p">;</span>
-<span class="c1">//数据库用户名
-</span><span class="nv">$dbUser</span> <span class="o">=</span> <span class="s2">"db2admin"</span><span class="p">;</span>
-<span class="c1">//数据库密码
-</span><span class="nv">$dbPassword</span> <span class="o">=</span> <span class="s2">"*****"</span><span class="p">;</span>
-<span class="c1">//连接字符串
-</span><span class="nv">$dbConn</span> <span class="o">=</span> <span class="s2">"DRIVER={IBM DB2 ODBC DRIVER};DATABASE=</span><span class="nv">$dbName</span><span class="s2">;"</span> <span class="o">.</span>
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">//数据库名</span>
+<span class="nv">$dbName</span> <span class="o">=</span> <span class="s2">"PWYWTEST"</span><span class="p">;</span>
+<span class="c1">//数据库用户名</span>
+<span class="nv">$dbUser</span> <span class="o">=</span> <span class="s2">"db2admin"</span><span class="p">;</span>
+<span class="c1">//数据库密码</span>
+<span class="nv">$dbPassword</span> <span class="o">=</span> <span class="s2">"*****"</span><span class="p">;</span>
+<span class="c1">//连接字符串</span>
+<span class="nv">$dbConn</span> <span class="o">=</span> <span class="s2">"DRIVER={IBM DB2 ODBC DRIVER};DATABASE=</span><span class="nv">$dbName</span><span class="s2">;"</span> <span class="o">.</span>
     <span class="s2">"HOSTNAME=127.0.0.1;PORT=50000;PROTOCOL=TCPIP;UID=</span><span class="nv">$dbUser</span><span class="s2">;PWD=</span><span class="nv">$dbPassword</span><span class="s2">;"</span><span class="p">;</span>
-<span class="c1">//测试连接
-</span><span class="nv">$conn</span> <span class="o">=</span> <span class="nb">db2_connect</span><span class="p">(</span><span class="nv">$dbConn</span><span class="p">,</span> <span class="s2">""</span><span class="p">,</span> <span class="s2">""</span><span class="p">);</span>
+<span class="c1">//测试连接</span>
+<span class="nv">$conn</span> <span class="o">=</span> <span class="nb">db2_connect</span><span class="p">(</span><span class="nv">$dbConn</span><span class="p">,</span> <span class="s2">""</span><span class="p">,</span> <span class="s2">""</span><span class="p">);</span>
 <span class="k">if</span> <span class="p">(</span><span class="nv">$conn</span><span class="p">)</span> <span class="p">{</span>
     <span class="k">echo</span> <span class="s2">"suucess"</span><span class="p">;</span>
 <span class="p">}</span><span class="k">else</span><span class="p">{</span>
     <span class="k">echo</span> <span class="s2">"fail"</span><span class="p">;</span>
 <span class="p">}</span>
-<span class="c1">//线路重载
-</span><span class="nv">$sql</span> <span class="o">=</span> <span class="s2">"SELECT * FROM userpd.T_PD_YWZHZBB_PWFH"</span><span class="p">;</span>
-<span class="c1">//执行结果
-</span><span class="nv">$executeResult</span><span class="o">=</span><span class="nb">db2_exec</span><span class="p">(</span><span class="nv">$conn</span><span class="p">,</span><span class="nv">$sql</span><span class="p">);</span>
-<span class="c1">//获取当前行的结果集
-</span><span class="nv">$result</span><span class="o">=</span><span class="nb">db2_fetch_assoc</span><span class="p">(</span><span class="nv">$executeResult</span><span class="p">)</span>
-<span class="c1">//输出
-</span><span class="nb">var_dump</span><span class="p">(</span><span class="nv">$result</span><span class="p">);</span>
+<span class="c1">//线路重载</span>
+<span class="nv">$sql</span> <span class="o">=</span> <span class="s2">"SELECT * FROM userpd.T_PD_YWZHZBB_PWFH"</span><span class="p">;</span>
+<span class="c1">//执行结果</span>
+<span class="nv">$executeResult</span><span class="o">=</span><span class="nb">db2_exec</span><span class="p">(</span><span class="nv">$conn</span><span class="p">,</span><span class="nv">$sql</span><span class="p">);</span>
+<span class="c1">//获取当前行的结果集</span>
+<span class="nv">$result</span><span class="o">=</span><span class="nb">db2_fetch_assoc</span><span class="p">(</span><span class="nv">$executeResult</span><span class="p">)</span>
+<span class="c1">//输出</span>
+<span class="nb">var_dump</span><span class="p">(</span><span class="nv">$result</span><span class="p">);</span>
 </code></pre></div></div>
 
     </article>
@@ -186,7 +186,7 @@
 </section>
 
 <footer class="g-footer">
-    <section>武仝的博客 © 2019</section>
+    <section>武仝的博客 © 2020</section>
     <section>Powered by <a href="//jekyllrb.com">Jekyll</a> | <a href="https://github.com/kaeyleo/jekyll-theme-H2O">Theme H2O</a></section>
 </footer>
 

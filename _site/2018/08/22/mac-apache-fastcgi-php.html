@@ -82,13 +82,13 @@
 
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>./configure.apxs
 make
-make install
+make <span class="nb">install</span>
 </code></pre></div></div>
-<p>如果系统有多个版本的apache httpd的话，保证当前用的是httpd命令是你想要的版本，否则编译后 <code class="highlighter-rouge">mod_fcgid.so</code> 放置的目录不正确。</p>
+<p>如果系统有多个版本的apache httpd的话，保证当前用的是httpd命令是你想要的版本，否则编译后 <code class="language-plaintext highlighter-rouge">mod_fcgid.so</code> 放置的目录不正确。</p>
 
 <h3 id="配置fastcgi">配置fastcgi</h3>
 
-<p>我直接新建一个 <code class="highlighter-rouge">VirtualHost</code> 来创建新的一个主机，配置如下：</p>
+<p>我直接新建一个 <code class="language-plaintext highlighter-rouge">VirtualHost</code> 来创建新的一个主机，配置如下：</p>
 
 <div class="language-apache highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">&lt;</span><span class="nl">VirtualHost</span><span class="sr"> *:8080</span><span class="p">&gt;
 </span>    <span class="nc">DocumentRoot</span> /web/project
@@ -98,7 +98,7 @@ make install
         <span class="c">#FcgidWrapper 参数值为你的php-cgi路径</span>
         FcgidWrapper /usr/local/Cellar/php@7.1/7.1.20/bin/php-cgi .php
     		<span class="nc">Options</span> +ExecCGI
-        <span class="nc">Require</span> all granted
+        <span class="nc">Require</span> <span class="ss">all</span> granted
     <span class="p">&lt;/</span><span class="nl">Directory</span><span class="p">&gt;
 &lt;/</span><span class="nl">VirtualHost</span><span class="p">&gt;
 </span></code></pre></div></div>
@@ -169,7 +169,7 @@ make install
 </section>
 
 <footer class="g-footer">
-    <section>武仝的博客 © 2019</section>
+    <section>武仝的博客 © 2020</section>
     <section>Powered by <a href="//jekyllrb.com">Jekyll</a> | <a href="https://github.com/kaeyleo/jekyll-theme-H2O">Theme H2O</a></section>
 </footer>
 

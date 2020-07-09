@@ -68,9 +68,9 @@
     
     <article class="markdown-body">
         <div class="post-forward-message">本文章地址：https://wutong.me/2019/04/03/certbot-error.html 转载请注明出处</div>
-        <p>使用仓库的 <code class="highlighter-rouge">certbot</code> 命令出错，提示无法导入 <code class="highlighter-rouge">ImportError: No module named 'requests.packages.urllib3'</code> ，用如下命令解决：</p>
+        <p>使用仓库的 <code class="language-plaintext highlighter-rouge">certbot</code> 命令出错，提示无法导入 <code class="language-plaintext highlighter-rouge">ImportError: No module named 'requests.packages.urllib3'</code> ，用如下命令解决：</p>
 
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pip install <span class="nt">--upgrade</span> <span class="nt">--force-reinstall</span> <span class="s1">'requests==2.6.0'</span> urllib3
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pip <span class="nb">install</span> <span class="nt">--upgrade</span> <span class="nt">--force-reinstall</span> <span class="s1">'requests==2.6.0'</span> urllib3
 </code></pre></div></div>
 
     </article>
@@ -134,7 +134,7 @@
 </section>
 
 <footer class="g-footer">
-    <section>武仝的博客 © 2019</section>
+    <section>武仝的博客 © 2020</section>
     <section>Powered by <a href="//jekyllrb.com">Jekyll</a> | <a href="https://github.com/kaeyleo/jekyll-theme-H2O">Theme H2O</a></section>
 </footer>
 

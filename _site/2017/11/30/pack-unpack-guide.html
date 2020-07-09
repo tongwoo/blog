@@ -257,46 +257,46 @@ array unpack ( string $format , string $data )</p>
 <p>常规转换：</p>
 
 <div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">pack</span><span class="p">(</span><span class="s2">"a"</span><span class="p">,</span><span class="s2">"w"</span><span class="p">);</span>
-<span class="c1">// 将 "w" 这个字符转换成二进制字符串，直接对照ASCII码表就晓得了
-// 对应的二进制字符串的16进制就是：0x77
-</span></code></pre></div></div>
+<span class="c1">// 将 "w" 这个字符转换成二进制字符串，直接对照ASCII码表就晓得了</span>
+<span class="c1">// 对应的二进制字符串的16进制就是：0x77</span>
+</code></pre></div></div>
 
 <p>带长度的转换：</p>
 
 <div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">pack</span><span class="p">(</span><span class="s2">"a3"</span><span class="p">,</span><span class="s2">"abcde"</span><span class="p">);</span>
-<span class="c1">// 根据文档说明，我们知道只要转换 "abcde" 的前3个字节
-// 对照ASCII表得知其转换结果是：0x61 0x62 0x63
-</span></code></pre></div></div>
+<span class="c1">// 根据文档说明，我们知道只要转换 "abcde" 的前3个字节</span>
+<span class="c1">// 对照ASCII表得知其转换结果是：0x61 0x62 0x63</span>
+</code></pre></div></div>
 
 <p>带长度但是参数值字节长度不够的转换：</p>
 
 <div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">pack</span><span class="p">(</span><span class="s2">"a8"</span><span class="p">,</span><span class="s2">"abcde"</span><span class="p">);</span>
-<span class="c1">// 根据文档说明，我们要把 "abcde" 字符串来当做8个字节来转换
-// 但是参数值的长度不够怎么办，根据文档说明
-// PHP会把不够的字节转换成NUL(解答了上面的疑问)
-// 所以对照ASCII表得知其最终转换结果是：
-// 0x61 0x62 0x63 0x64 0x65 0x00 0x00 0x00 
-</span></code></pre></div></div>
+<span class="c1">// 根据文档说明，我们要把 "abcde" 字符串来当做8个字节来转换</span>
+<span class="c1">// 但是参数值的长度不够怎么办，根据文档说明</span>
+<span class="c1">// PHP会把不够的字节转换成NUL(解答了上面的疑问)</span>
+<span class="c1">// 所以对照ASCII表得知其最终转换结果是：</span>
+<span class="c1">// 0x61 0x62 0x63 0x64 0x65 0x00 0x00 0x00 </span>
+</code></pre></div></div>
 
 <p>参数不是字符而是数值型的转换：</p>
 
 <div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">pack</span><span class="p">(</span><span class="s1">'a'</span><span class="p">,</span><span class="mi">61</span><span class="p">);</span>
-<span class="c1">// 对于10进制的参数而言，直接当做字符处理，即：pack('a',"61");
-// 对不是10进制的参数要先转换成10进制
-// 转换1个字节，所以ASCII字符6的转换后的结果就是：0x36
-</span>
+<span class="c1">// 对于10进制的参数而言，直接当做字符处理，即：pack('a',"61");</span>
+<span class="c1">// 对不是10进制的参数要先转换成10进制</span>
+<span class="c1">// 转换1个字节，所以ASCII字符6的转换后的结果就是：0x36</span>
+
 <span class="nb">pack</span><span class="p">(</span><span class="s1">'a'</span><span class="p">,</span><span class="mh">0x61</span><span class="p">);</span>
-<span class="c1">// 即：pack('a','97');
-// 结果： 0x39
-</span></code></pre></div></div>
+<span class="c1">// 即：pack('a','97');</span>
+<span class="c1">// 结果： 0x39</span>
+</code></pre></div></div>
 
 <h4 id="代码a-1">代码：”A”</h4>
 
 <p>跟 “a” 代码的区别就是，参数值长度不够的话则以空格代替。</p>
 
 <div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">pack</span><span class="p">(</span><span class="s2">"A8"</span><span class="p">,</span><span class="s2">"abcde"</span><span class="p">);</span>
-<span class="c1">// 结果：0x61 0x62 0x63 0x64 0x65 0x20 0x20 0x20 
-</span></code></pre></div></div>
+<span class="c1">// 结果：0x61 0x62 0x63 0x64 0x65 0x20 0x20 0x20 </span>
+</code></pre></div></div>
 
 <h4 id="代码h">代码：”h”</h4>
 
@@ -313,27 +313,27 @@ array unpack ( string $format , string $data )</p>
 <p>常规转换：</p>
 
 <div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">pack</span><span class="p">(</span><span class="s2">"h2"</span><span class="p">,</span><span class="s2">"A3"</span><span class="p">);</span>
-<span class="c1">// 读取2个字节当做16进制处理，A是高位，3是低位
-// 转换要求是，低位在前，所以结果就是：0x3A
-</span>
+<span class="c1">// 读取2个字节当做16进制处理，A是高位，3是低位</span>
+<span class="c1">// 转换要求是，低位在前，所以结果就是：0x3A</span>
+
 <span class="nb">pack</span><span class="p">(</span><span class="s2">"h"</span><span class="p">,</span><span class="s2">"A3"</span><span class="p">);</span>
-<span class="c1">// 读取一个字节当做16进制，不满1个字节后面补0（很奇怪为什么不是前面补0）
-// 或者可以理解为不满一个字节则不转换
-// A是高位，0是低位，低位在前，结果：0x0A
-</span>
+<span class="c1">// 读取一个字节当做16进制，不满1个字节后面补0（很奇怪为什么不是前面补0）</span>
+<span class="c1">// 或者可以理解为不满一个字节则不转换</span>
+<span class="c1">// A是高位，0是低位，低位在前，结果：0x0A</span>
+
 <span class="nb">pack</span><span class="p">(</span><span class="s2">"h3"</span><span class="p">,</span><span class="s2">"A3B"</span><span class="p">);</span>
-<span class="c1">// 结果：0x3A 0x0B
-</span></code></pre></div></div>
+<span class="c1">// 结果：0x3A 0x0B</span>
+</code></pre></div></div>
 
 <p>数值型转换：</p>
 
 <div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">pack</span><span class="p">(</span><span class="s2">"h2"</span><span class="p">,</span><span class="mi">13</span><span class="p">);</span>
-<span class="c1">// 跟上面的“a”代码运算方式一样，结果：0x31
-</span>
+<span class="c1">// 跟上面的“a”代码运算方式一样，结果：0x31</span>
+
 <span class="nb">pack</span><span class="p">(</span><span class="s2">"h3"</span><span class="p">,</span><span class="mh">0x159</span><span class="p">);</span>
-<span class="c1">// 即：pack("h3","345")
-// 结果：0x43 0x05
-</span></code></pre></div></div>
+<span class="c1">// 即：pack("h3","345")</span>
+<span class="c1">// 结果：0x43 0x05</span>
+</code></pre></div></div>
 
 <h4 id="代码h-1">代码：”H”</h4>
 
@@ -348,10 +348,10 @@ array unpack ( string $format , string $data )</p>
 <p>int类型，只不过是16位的，既范围： -65535-65535，字节序由机器决定</p>
 
 <div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">pack</span><span class="p">(</span><span class="s2">"s2"</span><span class="p">,</span><span class="mi">2400</span><span class="p">,</span><span class="mi">72300</span><span class="p">);</span>
-<span class="c1">// 结果 0x60096C1A
-// 可以得知我的机器是按照小端来的
-// 72300 超过最大范围所以减去 65536 在进行转换
-</span></code></pre></div></div>
+<span class="c1">// 结果 0x60096C1A</span>
+<span class="c1">// 可以得知我的机器是按照小端来的</span>
+<span class="c1">// 72300 超过最大范围所以减去 65536 在进行转换</span>
+</code></pre></div></div>
 
 <h4 id="代码n-和-v">代码：”n” 和 “v”</h4>
 
@@ -370,14 +370,14 @@ array unpack ( string $format , string $data )</p>
 <p>G，浮点型，有效范围根据机器决定（一般4个字节），字节序 大端</p>
 
 <div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">pack</span><span class="p">(</span><span class="s2">"f"</span><span class="p">,</span><span class="mf">3.1415926</span><span class="p">);</span>
-<span class="c1">// 结果 0xDA0F4940
-</span>
+<span class="c1">// 结果 0xDA0F4940</span>
+
 <span class="nb">pack</span><span class="p">(</span><span class="s2">"g"</span><span class="p">,</span><span class="mf">3.1415926</span><span class="p">);</span>
-<span class="c1">// 结果 0xDA0F4940
-</span>
+<span class="c1">// 结果 0xDA0F4940</span>
+
 <span class="nb">pack</span><span class="p">(</span><span class="s2">"G"</span><span class="p">,</span><span class="mf">3.1415926</span><span class="p">);</span>
-<span class="c1">// 结果 0x40490FDA
-</span></code></pre></div></div>
+<span class="c1">// 结果 0x40490FDA</span>
+</code></pre></div></div>
 
 <h4 id="代码-d-e-e">代码 “d” “e” “E”</h4>
 
@@ -388,50 +388,50 @@ array unpack ( string $format , string $data )</p>
 <p>E，双精度浮点型，有效范围根据机器决定（一般8个字节），字节序 大端</p>
 
 <div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">pack</span><span class="p">(</span><span class="s2">"d"</span><span class="p">,</span><span class="mf">3.1415926</span><span class="p">);</span>
-<span class="c1">// 结果 0x4AD8124DFB210940
-</span>
+<span class="c1">// 结果 0x4AD8124DFB210940</span>
+
 <span class="nb">pack</span><span class="p">(</span><span class="s2">"e"</span><span class="p">,</span><span class="mf">3.1415926</span><span class="p">);</span>
-<span class="c1">// 结果 0x4AD8124DFB210940
-</span>
+<span class="c1">// 结果 0x4AD8124DFB210940</span>
+
 <span class="nb">pack</span><span class="p">(</span><span class="s2">"E"</span><span class="p">,</span><span class="mf">3.1415926</span><span class="p">);</span>
-<span class="c1">// 结果 0x400921FB4D12D84A
-</span></code></pre></div></div>
+<span class="c1">// 结果 0x400921FB4D12D84A</span>
+</code></pre></div></div>
 
 <h4 id="代码-x">代码 “x”</h4>
 
 <p>填充1个空字节，即：0x00</p>
 
 <div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">pack</span><span class="p">(</span><span class="s2">"x"</span><span class="p">);</span>
-<span class="c1">// 结果 0x00
-</span><span class="nb">pack</span><span class="p">(</span><span class="s2">"xx"</span><span class="p">);</span>
-<span class="c1">// 结果 0x0000
-</span></code></pre></div></div>
+<span class="c1">// 结果 0x00</span>
+<span class="nb">pack</span><span class="p">(</span><span class="s2">"xx"</span><span class="p">);</span>
+<span class="c1">// 结果 0x0000</span>
+</code></pre></div></div>
 
 <h4 id="代码-x-1">代码 “X”</h4>
 
 <p>删除前面1个字节</p>
 
 <div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">pack</span><span class="p">(</span><span class="s2">"a4X"</span><span class="p">,</span><span class="s2">"haha"</span><span class="p">);</span>
-<span class="c1">// 结果 0x0686168
-</span></code></pre></div></div>
+<span class="c1">// 结果 0x0686168</span>
+</code></pre></div></div>
 
 <h4 id="代码-z">代码 “Z”</h4>
 
 <p>跟 a 差不多，只不过最后一个字节用 0x00填充</p>
 
 <div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">pack</span><span class="p">(</span><span class="s2">"a4Z4"</span><span class="p">,</span><span class="s2">"lala"</span><span class="p">,</span><span class="s2">"haha"</span><span class="p">);</span>
-<span class="c1">// 结果 0x6C616C6168616800
-</span></code></pre></div></div>
+<span class="c1">// 结果 0x6C616C6168616800</span>
+</code></pre></div></div>
 
 <h4 id="代码-">代码 “@”</h4>
 
 <p>取之前的打包数据的数据，如 @3，则取之前打包数据的3个字节，如果不提供位置参数则取1个字节</p>
 
 <div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">pack</span><span class="p">(</span><span class="s2">"a4a2@"</span><span class="p">,</span><span class="s2">"abcdef"</span><span class="p">,</span><span class="s2">"ghijklmn"</span><span class="p">);</span>
-<span class="c1">// 结果 0x61
-</span><span class="nb">pack</span><span class="p">(</span><span class="s2">"a4a2@6"</span><span class="p">,</span><span class="s2">"abcdef"</span><span class="p">,</span><span class="s2">"ghijklmn"</span><span class="p">);</span>
-<span class="c1">// 结果 0x616263646768
-</span></code></pre></div></div>
+<span class="c1">// 结果 0x61</span>
+<span class="nb">pack</span><span class="p">(</span><span class="s2">"a4a2@6"</span><span class="p">,</span><span class="s2">"abcdef"</span><span class="p">,</span><span class="s2">"ghijklmn"</span><span class="p">);</span>
+<span class="c1">// 结果 0x616263646768</span>
+</code></pre></div></div>
 
 
     </article>
@@ -495,7 +495,7 @@ array unpack ( string $format , string $data )</p>
 </section>
 
 <footer class="g-footer">
-    <section>武仝的博客 © 2019</section>
+    <section>武仝的博客 © 2020</section>
     <section>Powered by <a href="//jekyllrb.com">Jekyll</a> | <a href="https://github.com/kaeyleo/jekyll-theme-H2O">Theme H2O</a></section>
 </footer>
 

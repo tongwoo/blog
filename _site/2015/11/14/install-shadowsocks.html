@@ -76,8 +76,8 @@
 
 <h3 id="安装">安装</h3>
 
-<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>yum install python-setuptools <span class="o">&amp;&amp;</span> easy_install pip
-pip install shadowsocks
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>yum <span class="nb">install </span>python-setuptools <span class="o">&amp;&amp;</span> easy_install pip
+pip <span class="nb">install </span>shadowsocks
 </code></pre></div></div>
 <h3 id="命令行启动">命令行启动</h3>
 
@@ -90,13 +90,13 @@ ssserver <span class="nt">-d</span> start
 <p>创建 /etc/shadowsocks/config.json 并填入如下参数</p>
 
 <div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w">
-    </span><span class="s2">"server"</span><span class="p">:</span><span class="s2">"104.214.138.102"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"server_port"</span><span class="p">:</span><span class="mi">443</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"local_address"</span><span class="p">:</span><span class="w"> </span><span class="s2">"127.0.0.1"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"local_port"</span><span class="p">:</span><span class="mi">1080</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"password"</span><span class="p">:</span><span class="s2">"mima"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"timeout"</span><span class="p">:</span><span class="mi">600</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"method"</span><span class="p">:</span><span class="s2">"aes-256-cfb"</span><span class="w">
+    </span><span class="nl">"server"</span><span class="p">:</span><span class="s2">"104.214.138.102"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"server_port"</span><span class="p">:</span><span class="mi">443</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"local_address"</span><span class="p">:</span><span class="w"> </span><span class="s2">"127.0.0.1"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"local_port"</span><span class="p">:</span><span class="mi">1080</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"password"</span><span class="p">:</span><span class="s2">"mima"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"timeout"</span><span class="p">:</span><span class="mi">600</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"method"</span><span class="p">:</span><span class="s2">"aes-256-cfb"</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre></div></div>
 
@@ -171,7 +171,7 @@ ssserver <span class="nt">-d</span> start
 </section>
 
 <footer class="g-footer">
-    <section>武仝的博客 © 2019</section>
+    <section>武仝的博客 © 2020</section>
     <section>Powered by <a href="//jekyllrb.com">Jekyll</a> | <a href="https://github.com/kaeyleo/jekyll-theme-H2O">Theme H2O</a></section>
 </footer>
 

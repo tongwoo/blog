@@ -82,7 +82,7 @@ baseurl=http://download.webmin.com/download/yum
 enabled=1
 gpgcheck=1
 gpgkey=http://www.webmin.com/jcameron-key.asc"</span> <span class="o">&gt;</span>/etc/yum.repos.d/webmin.repo<span class="p">;</span>
-yum <span class="nt">-y</span> install webmin<span class="o">)</span>
+yum <span class="nt">-y</span> <span class="nb">install </span>webmin<span class="o">)</span>
 </code></pre></div></div>
 
 <p>添加端口</p>
@@ -97,7 +97,7 @@ yum <span class="nt">-y</span> install webmin<span class="o">)</span>
 
 <h2 id="使用">使用</h2>
 
-<p>在浏览器中输入 <code class="highlighter-rouge">https://你的IP:10000</code> 默认端口是10000，在登录页面中输入你的Linux用户名和密码登录即可</p>
+<p>在浏览器中输入 <code class="language-plaintext highlighter-rouge">https://你的IP:10000</code> 默认端口是10000，在登录页面中输入你的Linux用户名和密码登录即可</p>
 
 <p><img src="/screenshot/2019-09-29/webmin-ui.png" alt="Webmin" /></p>
 
@@ -138,6 +138,15 @@ yum <span class="nt">-y</span> install webmin<span class="o">)</span>
     </section>
     <section class="post-footer-item read-next">
         
+        <div class="read-next-item">
+            <a href="/2020/04/14/arcgis-local-font.html" class="read-next-link"></a>
+            <section>
+                <span>ArcGIS使用本地字体</span>
+                <p>如果在离线环境下使用TextSymbol会出现找不到字体的问题，本文记录一下如何解决这个问题</p>
+            </section>
+            
+        </div>
+        
         
         <div class="read-next-item">
             <a href="/2019/09/27/arcgis-offline-map.html" class="read-next-link"></a>
@@ -153,7 +162,7 @@ yum <span class="nt">-y</span> install webmin<span class="o">)</span>
 </section>
 
 <footer class="g-footer">
-    <section>武仝的博客 © 2019</section>
+    <section>武仝的博客 © 2020</section>
     <section>Powered by <a href="//jekyllrb.com">Jekyll</a> | <a href="https://github.com/kaeyleo/jekyll-theme-H2O">Theme H2O</a></section>
 </footer>
 
