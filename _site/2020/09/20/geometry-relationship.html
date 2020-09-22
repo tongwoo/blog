@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MacOS安装Oracle驱动与PHP oci8扩展 - 武仝的博客</title>
+    <title>空间关系 - 武仝的博客</title>
     <meta name="author"  content="武仝">
-    <meta name="description" content="MacOS安装Oracle驱动与PHP oci8扩展">
-    <meta name="keywords"  content="oracle">
+    <meta name="description" content="空间关系">
+    <meta name="keywords"  content="gis">
     <!-- Open Graph -->
-    <meta property="og:title" content="MacOS安装Oracle驱动与PHP oci8扩展 - 武仝的博客">
+    <meta property="og:title" content="空间关系 - 武仝的博客">
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://wutong.me/2020/07/09/mac-oracle-extension-install.html">
+    <meta property="og:url" content="https://wutong.me/2020/09/20/geometry-relationship.html">
     <meta property="og:description" content="PHP开发者，热爱技术&设计。很高兴能在这里分享我对技术的思考。">
     <meta property="og:site_name" content="武仝的博客">
     <link rel="stylesheet" href="//cdn.staticfile.org/normalize/6.0.0/normalize.min.css">
@@ -49,14 +49,14 @@
         <div class="post-tags">
             
             
-            <a href="https://wutong.me/tags.html#oracle" class="post-tag">oracle</a>
+            <a href="https://wutong.me/tags.html#gis" class="post-tag">gis</a>
             
             
         </div>
-        <h1>MacOS安装Oracle驱动与PHP oci8扩展</h1>
+        <h1>空间关系</h1>
         <div class="post-meta">
             <span class="post-meta-item"><i class="iconfont icon-author"></i><a href="https://wutong.me" target="_blank" rel="author">wutong</a></></span>
-            <time class="post-meta-item" datetime="2020-07-09"><i class="iconfont icon-date"></i>2020-07-09</time>
+            <time class="post-meta-item" datetime="2020-09-20"><i class="iconfont icon-date"></i>2020-09-20</time>
         </div>
     </div>
     
@@ -65,55 +65,40 @@
 <div class="post-content">
     
     <article class="markdown-body">
-        <div class="post-forward-message">本文章地址：https://wutong.me/2020/07/09/mac-oracle-extension-install.html 转载请注明出处</div>
-        <p>项目需要进行Oracle数据使用，本文记录了如何在MacOS系统下进行Oracle驱动和PHP oci8的扩展</p>
+        <div class="post-forward-message">本文章地址：https://wutong.me/2020/09/20/geometry-relationship.html 转载请注明出处</div>
+        <p>介绍几种常见的相交、包含、覆盖等空间关系</p>
 
-<h2 id="下载">下载</h2>
+<h2 id="相交intersects确定两个实例是否相交">相交（intersects）确定两个实例是否相交</h2>
 
-<p>下载页面：</p>
+<p><img src="/screenshot/2020-09-22/intersects.png" alt="" /></p>
 
-<p><a href="">https://www.oracle.com/database/technologies/instant-client/macos-intel-x86-downloads.html</a></p>
+<h2 id="包含contains确定某个实例是否包含另一个实例">包含（contains）确定某个实例是否包含另一个实例</h2>
 
-<p>需要下载如下2个压缩包：</p>
+<p><img src="/screenshot/2020-09-22/intersects.png" alt="" /></p>
 
-<ul>
-  <li>Basic Package</li>
-  <li>SDK Package</li>
-</ul>
+<h2 id="交叉crosses确定两个实例是否交叉">交叉（crosses）确定两个实例是否交叉</h2>
 
-<p>下载后将2个压缩包进行解压并将SDK压缩包里的sdk文件夹复制到Basic文件夹</p>
+<p><img src="/screenshot/2020-09-22/crosses.png" alt="" /></p>
 
-<h2 id="链接">链接</h2>
+<h2 id="最小矩形交叉envelope-intersects">最小矩形交叉（envelope-intersects）</h2>
 
-<p>链接的目的是让驱动能被其他开发工具或软件能找到驱动目录</p>
+<p><img src="/screenshot/2020-09-22/envelope-intersects.png" alt="" /></p>
 
-<p>假设上面的解压后的文件夹为 <code class="language-plaintext highlighter-rouge">/extensions</code>，则执行如下命令</p>
+<h2 id="重叠overlaps确定两个实例是否重叠">重叠（overlaps）确定两个实例是否重叠</h2>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ln -s /extensions/libclntsh.dylib /usr/local/lib/
-</code></pre></div></div>
+<p><img src="/screenshot/2020-09-22/overlap.png" alt="" /></p>
 
-<p>执行后依赖此驱动的工具软件可开始连接oracle数据库</p>
+<h2 id="接触touches确定两个实例是否接触">接触（touches）确定两个实例是否接触</h2>
 
-<h2 id="安装oci8">安装oci8</h2>
+<p><img src="/screenshot/2020-09-22/touches.png" alt="" /></p>
 
-<p>执行如下命令</p>
+<h2 id="不包含within某个实例是否在另一个实例内部">不包含（within）某个实例是否在另一个实例内部</h2>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>pecl install oci8
-</code></pre></div></div>
+<p><img src="/screenshot/2020-09-22/within.png" alt="" /></p>
 
-<p>提示出现如下文字</p>
+<h2 id="不相接disjoint确定两个实例是否不相接">不相接（disjoint）确定两个实例是否不相接</h2>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>running: phpize
-Configuring for:
-PHP Api Version:         20180731
-Zend Module Api No:      20180731
-Zend Extension Api No:   320180731
-Please provide the path to the ORACLE_HOME directory. Use 'instantclient,/path/to/instant/client/lib' if you're compiling with Oracle Instant Client [autodetect] :
-</code></pre></div></div>
-
-<p>则输入上文中设置的目录 <code class="language-plaintext highlighter-rouge">instantclient,/extensions</code>，确保SDK文件夹也在此目录，稍等片刻后即可编译成功且自动加入<code class="language-plaintext highlighter-rouge">php.ini</code></p>
-
-<p>执行 <code class="language-plaintext highlighter-rouge">php -m</code> 可查看扩展是否载入成功</p>
+<p><img src="/screenshot/2020-09-22/disjoint.png" alt="" /></p>
 
 
     </article>
@@ -153,21 +138,12 @@ Please provide the path to the ORACLE_HOME directory. Use 'instantclient,/path/t
     </section>
     <section class="post-footer-item read-next">
         
-        <div class="read-next-item">
-            <a href="/2020/09/20/geometry-relationship.html" class="read-next-link"></a>
-            <section>
-                <span>空间关系</span>
-                <p>介绍几种常见的相交、包含、覆盖等空间关系相交（intersects）确定两个实例是否相交包含（contains）确...</p>
-            </section>
-            
-        </div>
-        
         
         <div class="read-next-item">
-            <a href="/2020/04/14/arcgis-local-font.html" class="read-next-link"></a>
+            <a href="/2020/07/09/mac-oracle-extension-install.html" class="read-next-link"></a>
             <section>
-                <span>ArcGIS使用本地字体</span>
-                <p>如果在离线环境下使用TextSymbol会出现找不到字体的问题，本文记录一下如何解决这个问题</p>
+                <span>MacOS安装Oracle驱动与PHP oci8扩展</span>
+                <p>项目需要进行Oracle数据使用，本文记录了如何在MacOS系统下进行Oracle驱动和PHP oci8的扩展</p>
             </section>
             
         </div>
