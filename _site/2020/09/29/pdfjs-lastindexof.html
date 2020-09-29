@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PDFJS相关问题 - 武仝的博客</title>
+    <meta name="author"  content="武仝">
+    <meta name="description" content="PDFJS相关问题">
+    <meta name="keywords"  content="pdf, js">
+    <!-- Open Graph -->
+    <meta property="og:title" content="PDFJS相关问题 - 武仝的博客">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://wutong.me/2020/09/29/pdfjs-lastindexof.html">
+    <meta property="og:description" content="PHP开发者，热爱技术&设计。很高兴能在这里分享我对技术的思考。">
+    <meta property="og:site_name" content="武仝的博客">
+    <link rel="stylesheet" href="//cdn.staticfile.org/normalize/6.0.0/normalize.min.css">
+    <link rel="stylesheet" href="//at.alicdn.com/t/font_roc50gemkxpw4s4i.css">
+    <link rel="stylesheet" href="/assets/css/github-markdown.css">
+    <link rel="stylesheet" href="/assets/css/prism.css">
+    <link rel="stylesheet" href="/assets/css/share.min.css">
+    <link rel="stylesheet" href="/assets/css/app.min.css">
+    <link rel="stylesheet" href="/assets/css/common.css">
+</head>
+<body>
+    <!--[if lt IE 10]>
+<div class="alert-danger" role="alert">你的浏览器实在太太太旧了，放学别走，升级完浏览器再说！<a target="_blank" class="alert-link" href="http://browsehappy.com">立即升级</a></div>
+<![endif]-->
+<input id="nm-switch" type="hidden" value="false">
+
+<header class="g-header">
+    <div class="g-logo">
+      <a href="/"></a>
+    </div>
+    <i id="menu-toggle" class="iconfont icon-menu"></i>
+    <nav class="g-nav">
+        <ul>
+            
+            <li><a href="/">Home</a></li>
+            
+            <li><a href="/tags.html">Tags</a></li>
+            
+        </ul>
+    </nav>
+</header>
+
+
+<header class="g-banner post-header post-pattern-circuitBoard bgcolor-default post-no-cover" data-theme="default">
+    <div class="post-wrapper">
+        <div class="post-tags">
+            
+            
+            <a href="https://wutong.me/tags.html#pdf" class="post-tag">pdf</a>
+            
+            <a href="https://wutong.me/tags.html#js" class="post-tag">js</a>
+            
+            
+        </div>
+        <h1>PDFJS相关问题</h1>
+        <div class="post-meta">
+            <span class="post-meta-item"><i class="iconfont icon-author"></i><a href="https://wutong.me" target="_blank" rel="author">wutong</a></></span>
+            <time class="post-meta-item" datetime="2020-09-29"><i class="iconfont icon-date"></i>2020-09-29</time>
+        </div>
+    </div>
+    
+</header>
+
+<div class="post-content">
+    
+    <article class="markdown-body">
+        <div class="post-forward-message">本文章地址：https://wutong.me/2020/09/29/pdfjs-lastindexof.html 转载请注明出处</div>
+        <p>在使用 <code class="language-plaintext highlighter-rouge">PDFJS</code> 的时候，遇到一些问题，下面是问题和解决方式。</p>
+
+<h1 id="在哪里下载pdfjs文件">在哪里下载PDFJS文件？</h1>
+
+<p>访问：<a href="http://mozilla.github.io/pdf.js/getting_started/#download">http://mozilla.github.io/pdf.js/getting_started/#download</a> 下载</p>
+
+<h1 id="ie11提示没有找到-lastindexof">IE11提示没有找到 <code class="language-plaintext highlighter-rouge">lastIndexOf</code></h1>
+
+<p>打开 <code class="language-plaintext highlighter-rouge">viewer.js</code> 文件在第一行中加入如下代码，代码来源于：https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Array/lastIndexOf</p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">if</span> <span class="p">(</span><span class="k">typeof</span> <span class="nb">Uint8Array</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">lastIndexOf</span> <span class="o">!==</span><span class="dl">'</span><span class="s1">function</span><span class="dl">'</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nb">Uint8Array</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">lastIndexOf</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">searchElement</span> <span class="cm">/*, fromIndex*/</span><span class="p">)</span> <span class="p">{</span>
+        <span class="dl">'</span><span class="s1">use strict</span><span class="dl">'</span><span class="p">;</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="k">this</span> <span class="o">===</span> <span class="k">void</span> <span class="mi">0</span> <span class="o">||</span> <span class="k">this</span> <span class="o">===</span> <span class="kc">null</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">throw</span> <span class="k">new</span> <span class="nx">TypeError</span><span class="p">();</span>
+        <span class="p">}</span>
+
+        <span class="kd">var</span> <span class="nx">n</span><span class="p">,</span> <span class="nx">k</span><span class="p">,</span>
+            <span class="nx">t</span> <span class="o">=</span> <span class="nb">Object</span><span class="p">(</span><span class="k">this</span><span class="p">),</span>
+            <span class="nx">len</span> <span class="o">=</span> <span class="nx">t</span><span class="p">.</span><span class="nx">length</span> <span class="o">&gt;&gt;&gt;</span> <span class="mi">0</span><span class="p">;</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">len</span> <span class="o">===</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="nx">n</span> <span class="o">=</span> <span class="nx">len</span> <span class="o">-</span> <span class="mi">1</span><span class="p">;</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">arguments</span><span class="p">.</span><span class="nx">length</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">n</span> <span class="o">=</span> <span class="nb">Number</span><span class="p">(</span><span class="nx">arguments</span><span class="p">[</span><span class="mi">1</span><span class="p">]);</span>
+            <span class="k">if</span> <span class="p">(</span><span class="nx">n</span> <span class="o">!=</span> <span class="nx">n</span><span class="p">)</span> <span class="p">{</span>
+                <span class="nx">n</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+            <span class="p">}</span>
+            <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">n</span> <span class="o">!=</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="nx">n</span> <span class="o">!=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="nx">n</span> <span class="o">!=</span> <span class="o">-</span><span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="mi">0</span><span class="p">))</span> <span class="p">{</span>
+                <span class="nx">n</span> <span class="o">=</span> <span class="p">(</span><span class="nx">n</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="o">||</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">floor</span><span class="p">(</span><span class="nb">Math</span><span class="p">.</span><span class="nx">abs</span><span class="p">(</span><span class="nx">n</span><span class="p">));</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+
+        <span class="k">for</span> <span class="p">(</span><span class="nx">k</span> <span class="o">=</span> <span class="nx">n</span> <span class="o">&gt;=</span> <span class="mi">0</span>
+            <span class="p">?</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">min</span><span class="p">(</span><span class="nx">n</span><span class="p">,</span> <span class="nx">len</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="p">:</span> <span class="nx">len</span> <span class="o">-</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">abs</span><span class="p">(</span><span class="nx">n</span><span class="p">);</span> <span class="nx">k</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">k</span><span class="o">--</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span><span class="nx">k</span> <span class="k">in</span> <span class="nx">t</span> <span class="o">&amp;&amp;</span> <span class="nx">t</span><span class="p">[</span><span class="nx">k</span><span class="p">]</span> <span class="o">===</span> <span class="nx">searchElement</span><span class="p">)</span> <span class="p">{</span>
+                <span class="k">return</span> <span class="nx">k</span><span class="p">;</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+    <span class="p">};</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h1 id="ui显示的是英文怎么换成中文">UI显示的是英文，怎么换成中文？</h1>
+
+<p>打开 <code class="language-plaintext highlighter-rouge">viewer.js</code> 文件，搜索 <code class="language-plaintext highlighter-rouge">defaultOptions.locale</code> 将其 <code class="language-plaintext highlighter-rouge">value</code>  改为 <code class="language-plaintext highlighter-rouge">zh-CN</code></p>
+
+<h1 id="想跨域加载pdf文件怎么处理">想跨域加载PDF文件怎么处理？</h1>
+
+<p>一、打开 <code class="language-plaintext highlighter-rouge">viewer.html</code> 文件 <code class="language-plaintext highlighter-rouge">&lt;head&gt;</code> 中第一行加入如下代码：</p>
+
+<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">&lt;!-- 自行下载jquery文件  --&gt;</span>
+<span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"jquery.min.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
+<span class="nt">&lt;script&gt;</span>
+    <span class="kd">var</span> <span class="nx">PDFData</span> <span class="o">=</span> <span class="dl">""</span><span class="p">;</span>
+    <span class="nx">$</span><span class="p">.</span><span class="nx">ajax</span><span class="p">({</span>
+        <span class="na">type</span><span class="p">:</span> <span class="dl">"</span><span class="s2">get</span><span class="dl">"</span><span class="p">,</span>
+        <span class="na">crossDomain</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+        <span class="na">async</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
+        <span class="na">mimeType</span><span class="p">:</span> <span class="dl">'</span><span class="s1">text/plain;charset=x-user-defined</span><span class="dl">'</span><span class="p">,</span>
+        <span class="na">url</span><span class="p">:</span> <span class="dl">'</span><span class="s1">PDF文件地址</span><span class="dl">'</span><span class="p">,</span>
+        <span class="na">success</span><span class="p">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">data</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">PDFData</span> <span class="o">=</span> <span class="nx">data</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">});</span>
+    <span class="kd">var</span> <span class="nx">rawLength</span> <span class="o">=</span> <span class="nx">PDFData</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span>
+    <span class="kd">var</span> <span class="nx">array</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">Uint8Array</span><span class="p">(</span><span class="k">new</span> <span class="nb">ArrayBuffer</span><span class="p">(</span><span class="nx">rawLength</span><span class="p">));</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">rawLength</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">array</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="o">=</span> <span class="nx">PDFData</span><span class="p">.</span><span class="nx">charCodeAt</span><span class="p">(</span><span class="nx">i</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0xff</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="kd">var</span> <span class="nx">pdf_url</span> <span class="o">=</span> <span class="nx">array</span><span class="p">;</span>
+
+<span class="nt">&lt;/script&gt;</span>
+</code></pre></div></div>
+
+<p>二、 打开 <code class="language-plaintext highlighter-rouge">viewer.js</code> 文件，搜索 <code class="language-plaintext highlighter-rouge">09.pdf</code>，这个文件在根目录中，自行查看文件名，然后替换成 <code class="language-plaintext highlighter-rouge">pdf_url</code></p>
+
+
+    </article>
+    
+    <div class="social-share-wrapper">
+        <div class="social-share"></div>
+    </div>
+    
+</div>
+
+<section class="author-detail">
+    <section class="post-footer-item author-card">
+        <div class="avatar">
+            <img src="/assets/img/profile.jpg" alt="">
+        </div>
+        <div class="author-name" rel="author">武仝</div>
+        <div class="bio">
+            <p>PHP开发，热爱技术&设计</p>
+        </div>
+        
+        <ul class="sns-links">
+            
+            <li>
+                <a href="//" target="_blank">
+                    <i class="iconfont icon-weibo"></i>
+                </a>
+            </li>
+            
+            <li>
+                <a href="//github.com/tongwoo" target="_blank">
+                    <i class="iconfont icon-github"></i>
+                </a>
+            </li>
+            
+        </ul>
+        
+    </section>
+    <section class="post-footer-item read-next">
+        
+        
+        <div class="read-next-item">
+            <a href="/2020/09/20/geometry-relationship.html" class="read-next-link"></a>
+            <section>
+                <span>空间关系</span>
+                <p>介绍几种常见的相交、包含、覆盖等空间关系相交（intersects）确定两个实例是否相交包含（contains）确...</p>
+            </section>
+            
+        </div>
+        
+    </section>
+    
+</section>
+
+<footer class="g-footer">
+    <section>武仝的博客 © 2020</section>
+    <section>Powered by <a href="//jekyllrb.com">Jekyll</a> | <a href="https://github.com/kaeyleo/jekyll-theme-H2O">Theme H2O</a></section>
+</footer>
+
+<script src="/assets/js/social-share.min.js"></script>
+<script>
+    socialShare('.social-share', {
+        sites: ['wechat','weibo','douban','twitter'],
+        wechatQrcodeTitle: "分享到微信朋友圈",
+        wechatQrcodeHelper: '<p>扫码后点击右上角</p><p>将本文分享至朋友圈</p>'
+    });
+</script>
+<script>
+/**
+*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+/*
+var disqus_config = function () {
+this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+*/
+(function() { // DON'T EDIT BELOW THIS LINE
+//var d = document, s = d.createElement('script');
+/*写入自己的disqus信息*/
+//s.src = 'https://liaokeyu.disqus.com/embed.js';
+//s.setAttribute('data-timestamp', +new Date());
+//(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<script src="/assets/js/jquery.min.js"></script>
+<script src="/assets/js/prism.js"></script>
+<script src="/assets/js/index.min.js"></script>
+<script type="text/javascript" src="http://tajs.qq.com/stats?sId=43494337" charset="UTF-8"></script>
+</body>
+</html>

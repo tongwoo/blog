@@ -1,6 +1,12 @@
 [
   
     {
+      "title"    : "PDFJS相关问题",
+      "tags"     : "pdf js",
+      "url"      : "/2020/09/29/pdfjs-lastindexof.html"
+    } ,
+  
+    {
       "title"    : "空间关系",
       "tags"     : "gis",
       "url"      : "/2020/09/20/geometry-relationship.html"
